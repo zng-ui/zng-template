@@ -1,0 +1,9 @@
+[package]
+name = "gui"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+shared = { path = "../shared" }
+zng.workspace = true
+tracing.workspace = true

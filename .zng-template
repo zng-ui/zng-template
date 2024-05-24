@@ -1,0 +1,36 @@
+# Template Keys
+#
+# Use `cargo zng new -s"app=My App" -s"owner=My Company"` to set keys.
+#
+# OR by the position of keys in this file:
+#
+# `cargo zng new "My App" "My Company"`.
+
+# The project name
+#
+# Examples:
+#  "my-app"
+#    New package name "my-app".
+#
+#  "my_app"
+#    New package name "my_app".
+#
+#  "My App!"
+#    New package name "my-app".
+#
+#  "test"
+#    Fails because 'test' is a Cargo protected name.
+app=
+
+# Organization/owner
+#
+# Used in `zng::env::init` as the 'organization' value.
+org=""
+
+# Domain qualifier
+#
+# Used in `zng::env::init` as the 'qualifier' value.
+#
+# Examples:
+#  -s"qualifier=br.com" 
+qualifier=""
