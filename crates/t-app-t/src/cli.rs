@@ -1,10 +1,12 @@
-use std::{
-    fs, io,
-    path::{Path, PathBuf},
-};
+use std::{fs, io, path::PathBuf};
 
 use clap::*;
 use zng::text::{formatx, Txt};
+
+// called on `zng::env::init!`
+zng::env::on_process_start!(|_| {
+    run();
+});
 
 /// {{app}} command line interface (CLI)
 #[derive(Parser, Debug)]
@@ -20,6 +22,10 @@ struct Cli {
     /// The app does not run with this flag, it just saves and closes.
     #[arg(long, action)]
     env_save: bool,
+
+    /// Clear saved env configs.
+    #[arg(long, action)]
+    env_reset: bool,
 
     /// Move config files to new path.
     #[arg(long)]
@@ -54,7 +60,7 @@ struct Cli {
     ///
     /// Set to empty to not save logs
     #[clap(long, env = "T_APP_T_LOG_DIR", value_names = &["DIR"], default_value = "{cache}/log")]
-    pub log_dir: String,
+    pub log_dir: Option<PathBuf>,
 
     /// Log file rotation rolling frequency
     #[clap(
@@ -65,6 +71,30 @@ struct Cli {
         value_names = &["ROTATION"],
     )]
     pub log_rotation: String,
+
+    /// Run the system integration and renderer in the same process
+    ///
+    /// In this mode the app will not recover from driver related crashes.
+    #[clap(long, env = "T_APP_T_NO_VIEW_PROCESS", action)]
+    pub no_view_process: bool,
+
+    /// Don't handle app crashes
+    ///
+    /// In this mode crashes are handled directly by the OS or attached debugger.
+    #[clap(long, env = "T_APP_T_NO_CRASH_HANDLER", action)]
+    pub no_crash_handler: bool,
+
+    /// Initial language
+    ///
+    /// Value must be an Unicode Language Identifier, examples: "en", "en-US", "zh-Hans, en".
+    ///
+    /// Is the system language by default.
+    #[clap(long, env = "T_APP_T_LANG", default_value = "")]
+    pub lang: zng::l10n::Langs,
+
+    /// Localization files dir.
+    #[clap(long, env = "T_APP_T_LANG_DIR", value_names = &["DIR"], default_value = "{res}/l10n")]
+    pub lang_dir: Option<PathBuf>,
 }
 
 /// Runs CLI.
@@ -72,7 +102,7 @@ struct Cli {
 /// Initializes [`shared::env::cfg`].
 ///
 /// Exits process if CLI only flags are set.
-pub fn run() {
+fn run() {
     // init saved env (and .env in dev builds)
     let dotenv_init_result = dotenv_init();
     if let Err(e) = &dotenv_init_result {
@@ -97,9 +127,22 @@ pub fn run() {
         tracing::error!("{e}");
     }
 
+    let mut lang_dir = cli.lang_dir;
+    if let Some(lang) = &mut lang_dir {
+        if let Ok(d) = lang.strip_prefix("{res}") {
+            *lang = zng::env::res(d)
+        } else if let Ok(d) = lang.strip_prefix("{config}") {
+            *lang = zng::env::config(d)
+        }
+    }
+    let lang_dir = lang_dir.unwrap_or_else(|| zng::env::res("l10n"));
+
     if cli.env_save {
         run_env_save(matches);
-        std::process::exit(0);
+        zng::env::exit(0);
+    } else if cli.env_reset {
+        run_env_reset();
+        zng::env::exit(0);
     }
 
     let mut is_cli_only_run = false;
@@ -120,11 +163,20 @@ pub fn run() {
     }
 
     if is_cli_only_run {
-        std::process::exit(0);
+        zng::env::exit(0);
     }
 
-    shared::env::init_args(shared::env::TtAppTtArgs { log_dir })
+    shared::env::init_args(shared::env::TtAppTtArgs {
+        paths: cli.paths,
+        log_dir,
+        no_view_process: cli.no_view_process,
+        no_crash_handler: cli.no_crash_handler,
+        lang: cli.lang,
+        lang_dir,
+    })
 }
+
+const ENV_SAVE_FILE: &str = "env-save.env";
 
 fn dotenv_init() -> Result<(), Txt> {
     // .env only sets unset vars, so we try the "overwrite" first
@@ -139,14 +191,14 @@ fn dotenv_init() -> Result<(), Txt> {
         }
     }
 
-    let path = zng::env::config("env-save.env");
+    let path = zng::env::config(ENV_SAVE_FILE);
     if let Err(e) = dotenv::from_path(&path) {
         if !e.not_found() {
             return Err(formatx!("error reading `{}`, {e}", path.display()));
         }
     }
 
-    let path = zng::env::res("env-save.env");
+    let path = zng::env::res(ENV_SAVE_FILE);
     if let Err(e) = dotenv::from_path(&path) {
         if !e.not_found() {
             return Err(formatx!("error reading `{}`, {e}", path.display()));
@@ -157,7 +209,7 @@ fn dotenv_init() -> Result<(), Txt> {
 }
 
 fn run_env_save(matches: ArgMatches) {
-    let path = zng::env::config("env-save.env");
+    let path = zng::env::config(ENV_SAVE_FILE);
 
     let mut s = format!(
         "# saved by {} --env-save",
@@ -184,18 +236,35 @@ fn run_env_save(matches: ArgMatches) {
 }
 
 fn run_env_reset() {
+    if let Err(e) = fs::remove_file(zng::env::config(ENV_SAVE_FILE)) {
+        if e.kind() != io::ErrorKind::NotFound {
+            eprintln!("failed to reset env save, {e}");
+            return;
+        }
+    }
+    println!("env save reset")
 }
 
 fn run_migrate_config(to: PathBuf) {
-    
+    if let Err(e) = zng::env::migrate_config(to) {
+        eprintln!("failed to migrate config, {e}");
+    } else {
+        println!("config migrated")
+    }
 }
 
 fn run_migrate_cache(to: PathBuf) {
-
+    if let Err(e) = zng::env::migrate_cache(to) {
+        eprintln!("failed to migrate cache, {e}");
+    } else {
+        println!("config migrated")
+    }
 }
 
-fn run_cache_clear() {    
+fn run_cache_clear() {
     if let Err(e) = zng::env::clear_cache() {
-
+        eprintln!("failed to fully clear cache, {e}");
+    } else {
+        println!("cache cleared")
     }
 }

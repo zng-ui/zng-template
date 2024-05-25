@@ -4,13 +4,43 @@
 mod cli;
 mod config;
 mod crash;
+mod l10n;
 mod log;
 
 use zng::prelude::*;
 
+use zng::view_process::prebuilt as view_process;
+
 fn main() {
-    // find app dirs
-    zng::env::init("{{qualifier}}", "{{org}}", "{{app}}");
-    // run and exit as CLI, or inits log and `shared::env`
-    cli::run();
+    // init `zng::env`, `shared::env`
+    // if requested, run as other processes and exit (cli, view, workers)
+    zng::env::init!();
+
+    // run app.
+    if shared::env::args().no_view_process {
+        view_process::run_same_process(app_process);
+    } else {
+        app_process();
+    }
+}
+
+fn app_process() {
+    // start app scope, with default extensions.
+    let app = APP.defaults();
+
+    // if you use "single_instance" for the app, hook event here.
+    // zng::app::APP_INSTANCE_EVENT.on_pre_event(..);
+
+    // register bundled licenses, used by the default `OPEN_LICENSES_CMD` screen.
+    #[cfg(feature = "release")]
+    zng::third_party::LICENSES.register(shared::res::licenses);
+
+    // load/watch Fluent localization files and set initial lang.
+    l10n::app_init();
+
+    // load/watch user config files.
+    config::app_init();
+
+    // run and open main window
+    app.run_window(async { gui::primary::window().await })
 }

@@ -1,0 +1,19 @@
+{
+    "rust-analyzer.diagnostics.disabled": [
+        "non_snake_case" // false positive in when expr with generated #[allow(non_snake_case)]
+    ],
+    "files.associations": {
+        "*.zr-sh": "shellscript",
+        "*.zr-shf": "shellscript",
+        "*.zr-copy": "ini",
+        "*.zr-glob": "ini",
+        "*.md.zr-glob": "md",
+        "*.iss.zr-rp": "innosetup",
+        "*.plist.zr-rp": "plist",
+        "control.zr-rp": "debian-control",
+    },
+    "lldb.launch.env": {
+        // "ZNG_NO_CRASH_HANDLER": "", // var used by zng::app::crash_handler
+        "T_APP_T_NO_CRASH_HANDLER": "" // var in the cli config style
+    }
+}

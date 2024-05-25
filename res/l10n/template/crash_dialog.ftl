@@ -1,0 +1,3 @@
+### Crash Dialog
+
+title = Error

@@ -1,0 +1,3 @@
+cd $ZR_TARGET_DD
+tar -z "t-app-t.tar.gz" "t-app-t"
+rm -r "t-app-t"

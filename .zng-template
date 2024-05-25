@@ -2,7 +2,7 @@
 #
 # Use `cargo zng new -s"app=My App" -s"owner=My Company"` to set keys.
 #
-# OR by the position of keys in this file:
+# OR set keys by their position in this file:
 #
 # `cargo zng new "My App" "My Company"`.
 

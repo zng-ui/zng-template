@@ -3,7 +3,15 @@ name = "gui"
 version = "0.0.0"
 edition = "2021"
 
+[lib]
+# cdylib is used by hot_reload
+crate-type = ["lib", "cdylib"]
+
 [dependencies]
 shared = { path = "../shared" }
-zng.workspace = true
+zng = { workspace = true, features = ["material_icons"] }
 tracing.workspace = true
+
+[features]
+dev = ["zng/hot_reload"]
+release = []

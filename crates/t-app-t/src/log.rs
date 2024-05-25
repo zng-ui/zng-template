@@ -6,29 +6,33 @@ use tracing_subscriber::{prelude::*, *};
 use zng::text::{formatx, Txt};
 
 // called by cli::run as soon as possible
-pub fn init(filter: String, rotation: String, directory: String) -> Result<Option<PathBuf>, Txt> {
+pub fn init(
+    filter: String,
+    rotation: String,
+    directory: Option<PathBuf>,
+) -> Result<Option<PathBuf>, Txt> {
     // always print, good for debug and the crash-handler collects stdout/err.
     let log = registry().with(fmt::layer().without_time());
+
+    // log filter from Zng (noisy dependencies)
+    let zng_filter = tracing_subscriber::filter::FilterFn::new(|m| {
+        zng::app::print_tracing_filter(&tracing::Level::TRACE, m)
+    });
 
     // log filter from env/args
     let filter = EnvFilter::builder()
         .with_default_directive(filter::LevelFilter::INFO.into())
         .parse_lossy(&filter);
 
-    let directory = if directory.is_empty() {
-        Some(if directory.starts_with("{cache}") {
-            zng::env::cache(directory["{cache}".len()..].trim_start_matches('/'))
-        } else if directory.starts_with("{config}") {
-            zng::env::config(directory["{cache}".len()..].trim_start_matches('/'))
-        } else {
-            PathBuf::from(directory)
-        })
-    } else {
-        None
-    };
-
-    if let Some(dir) = directory {
+    if let Some(mut dir) = directory {
         // also append log file, with optional rolling frequency
+
+        if let Ok(d) = dir.strip_prefix("{cache}") {
+            dir = zng::env::cache(d)
+        } else if let Ok(d) = dir.strip_prefix("{config}") {
+            dir = zng::env::config(d)
+        }
+        let dir = dir;
 
         match fs::create_dir_all(&dir) {
             Ok(()) => {
@@ -47,12 +51,12 @@ pub fn init(filter: String, rotation: String, directory: String) -> Result<Optio
 
                 let write_log = fmt::layer().with_ansi(false).with_writer(file_appender);
 
-                log.with(write_log).with(filter).init();
+                log.with(write_log).with(filter).with(zng_filter).init();
 
                 Ok(Some(dir))
             }
             Err(e) => {
-                log.with(filter).init();
+                log.with(filter).with(zng_filter).init();
                 Err(formatx!("cannot log to `{}`, {e}", dir.display()))
             }
         }

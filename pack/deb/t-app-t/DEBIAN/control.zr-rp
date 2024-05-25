@@ -1,0 +1,9 @@
+Package: ${ZR_APP}
+Version: ${ZR_VERSION}
+Maintainer: ${ZR_PKG_AUTHORS}
+Homepage: ${ZR_HOMEPAGE}
+Description: ${ZR_DESCRIPTION}
+Architecture: amd64
+Section: graphics
+Priority: optional
+Depends: ${DO_PACK_DEB_DEPENDS}

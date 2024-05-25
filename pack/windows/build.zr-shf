@@ -1,0 +1,3 @@
+cd $ZR_TARGET_DD
+iscc setup/setup.iss
+rm -r setup

@@ -1,0 +1,46 @@
+[Files]
+Source: files\*; DestDir: {app}; Flags: recursesubdirs createallsubdirs ignoreversion;
+
+; InnoSetup uses non-standard localization files, please map each res/l10n lang manually
+; Options are in %programfiles%/Inno Setup*/Languages
+[Languages]
+Name: en; MessagesFile: compiler:Default.isl
+; Name: pt_br; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
+
+[Setup]
+AppID=${ZR_QUALIFIER:s}.${ZR_ORG:s}.${ZR_APP:s}
+AppName=${ZR_APP}
+AppVerName=${ZR_APP} ${ZR_VERSION}
+AppPublisher=${ZR_ORG}
+DefaultGroupName=${ZR_ORG?${ZR_APP}}
+;AppCopyright=
+
+SetupIconFile=res\icon.ico
+WizardImageFile=res\wizard-image.bmp
+WizardSmallImageFile=res\wizard-small-image.bmp
+
+UninstallDisplayIcon={app}\bin\${ZR_APP:k}.exe
+UninstallDisplayName=AutoId
+
+PrivilegesRequired=admin
+DisableDirPage=false
+DisableProgramGroupPage=false
+
+ArchitecturesInstallIn64BitMode=x64
+DefaultDirName={pf}\${ZR_APP:k}
+DisableDirPage=false
+DisableProgramGroupPage=false
+
+RestartIfNeededByRun=no
+
+OutputDir=..
+OutputBaseFilename=${ZR_APP:k}-{$ZR_VERSION:k}
+
+; SignTool=
+
+[Tasks]
+Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Check: not WizardSilent
+
+[Icons]
+Name: {group}\${ZR_APP}; Filename: {app}\bin\${ZR_APP:k}.exe; WorkingDir: {app}; IconIndex: 0
+Name: {commondesktop}\${ZR_APP}; Filename: {app}\bin\${ZR_APP:k}.exe; WorkingDir: {app}; IconIndex: 0; Tasks: desktopicon

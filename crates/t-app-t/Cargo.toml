@@ -2,10 +2,18 @@
 name = "t-app-t"
 version = "0.1.0"
 edition = "2021"
+[package.metadata.zng.about]
+app = "{{app}}"
+org = "{{org}}"
+qualifier = "{{qualifier}}"
 
 [dependencies]
 shared = { path = "../shared" }
+
+# gui
 zng = { workspace = true, features = ["view_prebuilt"] }
+gui = { path = "../gui" }
+rfd = "0.14"
 
 # log
 tracing.workspace = true
@@ -16,11 +24,15 @@ tracing-appender = "0.2"
 clap = { version = "4.5", features = ["env", "derive"] }
 dotenv = "0.15"
 
+# packaging
+[target.'cfg(windows)'.build-dependencies]
+winresource = "0.1"
+
 [features]
 default = ["dev"]
 
 # default features in debug builds
-dev = ["zng/inspector"]
+dev = ["shared/dev", "gui/dev"]
 
 # default features in release builds (using `cargo-do`)
-release = []
+release = ["shared/release", "gui/release"]

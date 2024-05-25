@@ -1,13 +1,29 @@
 use std::path::{Path, PathBuf};
-use zng::hot_reload::{lazy_static, lazy_static_init};
+use zng::{
+    hot_reload::{lazy_static, lazy_static_init},
+    l10n::Langs,
+};
 
 pub struct TtAppTtArgs {
+    /// Paths the user attempted to open the app with.
+    pub paths: Vec<PathBuf>,
+
     /// Log dir.
     ///
     /// Place files to include in crash reports here.
     ///
     /// Is `None` if log writing is disabled.
     pub log_dir: Option<PathBuf>,
+
+    /// view_process::run_same_process
+    pub no_view_process: bool,
+
+    pub no_crash_handler: bool,
+
+    /// Preferred initial language.
+    pub lang: Langs,
+    /// Localization resources.
+    pub lang_dir: PathBuf,
 }
 
 /// {{app}} parsed startup args.
@@ -29,5 +45,6 @@ pub fn init_args(cfg: TtAppTtArgs) {
     }
 }
 lazy_static! {
-    static ref CFG: TtAppTtArgs = panic!("shared::env::args not inited, only use after t_app_t::cli");
+    static ref CFG: TtAppTtArgs =
+        panic!("shared::env::args not inited, only use after t_app_t::cli");
 }

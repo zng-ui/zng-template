@@ -1,0 +1,4 @@
+cd $ZR_TARGET_DD
+dpkg-deb --root-owner-group --build t-app-t
+rm -r t-app-t
+lintian t-app-t.deb
