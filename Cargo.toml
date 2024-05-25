@@ -8,5 +8,6 @@ default-members = ["crates/*"]
 
 # shared dependencies set version in the workspce
 [workspace.dependencies]
-zng = "0.6"
+# !!: TODO zng = "0.6"
+zng = { git = "https://github.com/zng-ui/zng" }
 tracing = "0.1"

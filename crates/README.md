@@ -18,7 +18,7 @@ The app "view" is implemented here.
 
 Command line interface library, statically linked.
 
-The {{app}} CLI provides advanced config switches and .env, not a GUI alternative.
+The {{app}} CLI provides advanced startup switches and .env, not a GUI alternative.
 
 ## `shared`
 
