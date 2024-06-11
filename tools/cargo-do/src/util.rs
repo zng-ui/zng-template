@@ -50,10 +50,10 @@ impl CmdOutputExt for io::Result<std::process::Output> {
     fn success_or_die(self, comment: &str) -> String {
         match self {
             Ok(s) => {
-                handle_exit_status(comment, &s.status);
                 if !s.status.success() {
                     std::io::stderr().write_all(&s.stderr).unwrap();
                 }
+                handle_exit_status(comment, &s.status);
                 String::from_utf8_lossy(&s.stdout).into_owned()
             }
             Err(e) => die!("{comment}\n       {e}"),

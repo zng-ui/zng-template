@@ -1,9 +1,5 @@
 fn main() {
-    set_windows_metadata();
-}
-
-/// Set windows package (.exe) metadata, icon.
-fn set_windows_metadata() {
+    // Set windows .exe metadata, icon.
     #[cfg(all(windows, feature = "release"))]
     {
         let mut res = winresource::WindowsResource::new();

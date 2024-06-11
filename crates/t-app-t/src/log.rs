@@ -22,7 +22,7 @@ pub fn init(
     // log filter from env/args
     let filter = EnvFilter::builder()
         .with_default_directive(filter::LevelFilter::INFO.into())
-        .parse_lossy(&filter);
+        .parse_lossy(filter);
 
     if let Some(mut dir) = directory {
         // also append log file, with optional rolling frequency

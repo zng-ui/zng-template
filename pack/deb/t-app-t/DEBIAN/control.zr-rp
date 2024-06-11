@@ -1,4 +1,4 @@
-Package: ${ZR_APP}
+Package: ${ZR_PKG_NAME}
 Version: ${ZR_VERSION}
 Maintainer: ${ZR_PKG_AUTHORS}
 Homepage: ${ZR_HOMEPAGE}

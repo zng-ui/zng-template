@@ -12,5 +12,5 @@ lto = "thin"
 
 # shared dependencies set version in the workspce
 [workspace.dependencies]
-zng = "0.8"
+zng = { git = "https://github.com/zng-ui/zng.git" }
 tracing = "0.1"

@@ -1,7 +1,6 @@
 use std::path::{Path, PathBuf};
 use zng::{
-    hot_reload::{lazy_static, lazy_static_init},
-    l10n::Langs,
+    app::app_local, hot_reload::{lazy_static, lazy_static_init}, l10n::Langs
 };
 
 pub struct TtAppTtArgs {
@@ -47,4 +46,9 @@ pub fn init_args(cfg: TtAppTtArgs) {
 lazy_static! {
     static ref CFG: TtAppTtArgs =
         panic!("shared::env::args not inited, only use after t_app_t::cli");
+}
+
+app_local! {
+    /// Config reset service.
+    pub static CONFIG_RESET: Option<Box<dyn zng::config::FallbackConfigReset>> = None;
 }

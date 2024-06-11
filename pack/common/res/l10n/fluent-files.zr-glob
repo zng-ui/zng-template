@@ -1,4 +1,4 @@
-res/l10n
+res/l10n/*
 # only Fluent files
 **/*.ftl
 # except test locales

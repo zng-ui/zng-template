@@ -53,7 +53,7 @@ pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowR
             }
         };
 
-        // force to foreground
+        // bring to foreground
         on_load = hn_once!(|_| {
             let _ = WINDOWS.focus(WINDOW.id());
         });

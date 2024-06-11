@@ -12,7 +12,7 @@ fn main() {
         "pack" => pack(args),
         "build-r" => build_r(args),
         "run-r" => run_r(args),
-        "help" | "" => help(args),
+        "help" | "--help" | "-h" | "" => help(args),
         _other => cmd("cargo", [arg_cmd].into_iter().chain(args))
             .status()
             .success_or_die("cannot run cargo"),
@@ -28,19 +28,25 @@ fn l10n(args: Vec<String>) {
         .success_or_die("cannot scrap l10n")
 }
 
-/// do pack [PACKAGE]
+/// do pack <PACKAGE> [--no-build]
 ///    Compile with release profile+features and package
 ///
 ///    ARGS
-///       [PACKAGE] - Name of a pack/{PACKAGE}
+///       <PACKAGE>  - Name of a pack/{PACKAGE}
+///       --no-build - Skips release build
 fn pack(args: Vec<String>) {
     // parse args
-    let (package, _, args) = split_args(&args, &["PACKAGE"], &[], false, true);
+    let (package, options, args) = split_args(&args, &["PACKAGE"], &["--no-build"], false, true);
 
-    // build release
-    build_r(vec![]);
+    if options.contains_key("--no-build") {
+        println!("skipping release build");
+    } else {
+        println!("building release");
+        build_r(vec![]);
+    }
 
     // pack
+    println!("packing");
     let package = package[0].as_str();
     let mut cmd = cmd(
         "cargo",
@@ -80,8 +86,7 @@ fn build_r(args: Vec<String>) {
 }
 
 /// do run-r
-///    Compile with release profile+features and run
-///    Also builds resources
+///    Compile and run the "cargo-do-run-r" pack
 fn run_r(mut args: Vec<String>) {
     let app_args = if let Some(i) = args.iter().position(|a| a == "--") {
         args.split_off(i)
@@ -89,29 +94,21 @@ fn run_r(mut args: Vec<String>) {
         vec![]
     };
 
-    println!("build release");
-    build_r(args);
+    println!("pack portable");
+    args.push("portable".to_owned());
+    pack(args);
 
-    // must match zng::env::res default
-    println!("build resources");
-    #[allow(unused)]
-    let res_target = "target/res";
-    #[cfg(target_os = "linux")]
-    let res_target = "target/etc";
-    #[cfg(target_os = "macos")]
-    let res_target = "target/Resources";
-    cmd("cargo", &["zng", "res", "./res", res_target])
+    let path = format!(
+        "target/pack/portable/t-app-t{}",
+        std::env::consts::EXE_SUFFIX
+    );
+    println!("\nrunning {path}");
+    let s = cmd(&path, app_args)
         .status()
-        .success_or_die("resources build failed");
-
-    #[cfg(not(windows))]
-    let app = "target/release/t-app-t";
-    #[cfg(windows)]
-    let app = "target/release/t-app-t.exe";
-    cmd(app, app_args)
-        // .current_dir("target/release")
-        .spawn()
-        .ok_or_die("cannot spawn release app");
+        .unwrap_or_die("cannot run app");
+    if !s.success() {
+        std::process::exit(s.code().unwrap_or(1));
+    }
 }
 
 /// do help

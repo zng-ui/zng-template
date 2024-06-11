@@ -4,6 +4,7 @@ pub async fn window() -> window::WindowRoot {
     // l10n-primary_win-### Primary Window
 
     Window! {
+        id = "primary-window";
         title = zng::env::about().app.clone();
         icon = shared::res::ICON_SMALL;
 
@@ -34,6 +35,7 @@ fn content() -> impl UiNode {
             Text! {
                 txt = l10n!("primary_win/greetings", "Hello {{app}}!");
                 font_size = 2.em();
+                txt_align = Align::CENTER;
             },
         ]
     }

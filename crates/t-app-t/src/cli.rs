@@ -109,12 +109,14 @@ fn run() {
         eprintln!("{e}");
     }
 
+    // parse args and env
     let matches = Cli::command().get_matches();
     let cli = match Cli::from_arg_matches(&matches) {
         Ok(c) => c,
         Err(e) => e.exit(),
     };
 
+    // start logging
     let log_dir = match crate::log::init(cli.log, cli.log_rotation, cli.log_dir) {
         Ok(d) => d,
         Err(e) => {
@@ -127,6 +129,7 @@ fn run() {
         tracing::error!("{e}");
     }
 
+    // resolve localization resources
     let mut lang_dir = cli.lang_dir;
     if let Some(lang) = &mut lang_dir {
         if let Ok(d) = lang.strip_prefix("{res}") {
@@ -137,6 +140,7 @@ fn run() {
     }
     let lang_dir = lang_dir.unwrap_or_else(|| zng::env::res("l10n"));
 
+    // if args are just for saving..
     if cli.env_save {
         run_env_save(matches);
         zng::env::exit(0);
@@ -221,15 +225,15 @@ fn run_env_save(matches: ArgMatches) {
             let id = arg.get_id().as_str();
             let env = env.to_string_lossy();
 
-            if let Some(v) = matches.get_one::<String>(&id) {
+            if let Some(v) = matches.get_one::<String>(id) {
                 s.push_str(&env);
                 s.push('=');
-                s.push_str(&v);
+                s.push_str(v);
             }
         }
     }
 
-    match fs::write(&path, s.as_bytes()) {
+    match fs::write(path, s.as_bytes()) {
         Ok(_) => println!("saved"),
         Err(e) => eprintln!("{e}"),
     }

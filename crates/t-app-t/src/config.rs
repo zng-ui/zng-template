@@ -6,9 +6,19 @@ const FILE: &str = "config.json";
 
 /// Initialize user config in the app context.
 pub fn app_init() {
-    let app = FileConfig::sync(zng::env::res(FILE));
-    let app = ReadOnlyConfig::new(app);
+    // read-only default config
+    let app = ReadOnlyConfig::new(FileConfig::sync(zng::env::res(FILE)));
+    // read-write config
     let user = FileConfig::sync(zng::env::config(FILE));
+
+    // final setup
     let config = FallbackConfig::new(user, app);
+
+    // create a control ref to the config, settings UI can use this to reset configs.
+    *shared::env::CONFIG_RESET.write() = Some(config.clone_boxed());
+
     CONFIG.load(config);
+
+    // also see https://github.com/zng-ui/zng/blob/main/examples/config/src/main.rs for
+    // an example of how to split configs with an special key prefix to another file.
 }

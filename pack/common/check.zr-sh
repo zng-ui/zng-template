@@ -1,0 +1,5 @@
+if [[ $ZR_SOURCE_DIR == *"/common" ]]
+then
+    >&2 echo "'common' is only a dependency of other packages, it cannot be packaged"
+    exit 1
+fi

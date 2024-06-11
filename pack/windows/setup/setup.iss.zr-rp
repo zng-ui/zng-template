@@ -27,14 +27,12 @@ DisableDirPage=false
 DisableProgramGroupPage=false
 
 ArchitecturesInstallIn64BitMode=x64
-DefaultDirName={pf}\${ZR_APP:k}
-DisableDirPage=false
-DisableProgramGroupPage=false
+DefaultDirName={commonpf}\${ZR_APP:k}
 
 RestartIfNeededByRun=no
 
 OutputDir=..
-OutputBaseFilename=${ZR_APP:k}-{$ZR_VERSION:k}
+OutputBaseFilename=${ZR_PKG_NAME:k}-${ZR_VERSION:k}
 
 ; SignTool=
 
