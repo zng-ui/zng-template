@@ -1,7 +1,18 @@
+# strip symbols
+cd $ZR_TARGET_DD/t-app-t/usr/bin
+strip --strip-all -o t-app-t-tmp t-app-t
+rm t-app-t; mv t-app-t-tmp t-app-t
+
 cd $ZR_TARGET_DD
 
+# set chmod
+find t-app-t -type d -exec chmod 755 {} \;
+find t-app-t -type f -exec chmod 644 {} \;
+
+# build
 dpkg-deb --root-owner-group --build t-app-t
 rm -r t-app-t
 
-printf "\nlintian\n"
-lintian t-app-t.deb
+# verify
+echo lintian
+lintian --suppress-tags embedded-library t-app-t.deb

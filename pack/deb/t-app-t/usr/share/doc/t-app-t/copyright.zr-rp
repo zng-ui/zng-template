@@ -1,0 +1,6 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Source: ${ZR_HOMEPAGE}
+Upstream-Name: ${ZR_APP}
+Upstream-Contact: ${ZR_PKG_AUTHORS}
+
+# TODO

@@ -10,7 +10,8 @@
         "*.md.zr-glob": "md",
         "*.iss.zr-rp": "innosetup",
         "*.plist.zr-rp": "plist",
-        "control.zr-rp": "debian-control",
+        "**/DEBIAN/control.zr-rp": "debian-control",
+        "**/usr/share/doc/*/copyright.zr-rp": "debian-copyright",
     },
     "lldb.launch.env": {
         // "ZNG_NO_CRASH_HANDLER": "", // var used by zng::app::crash_handler
