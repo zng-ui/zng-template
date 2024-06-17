@@ -1,6 +1,8 @@
 use std::path::{Path, PathBuf};
 use zng::{
-    app::app_local, hot_reload::{lazy_static, lazy_static_init}, l10n::Langs
+    app::app_local,
+    hot_reload::{lazy_static, lazy_static_init},
+    l10n::Langs,
 };
 
 pub struct TtAppTtArgs {

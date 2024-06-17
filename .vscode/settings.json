@@ -7,7 +7,7 @@
         "*.zr-shf": "shellscript",
         "*.zr-copy": "ini",
         "*.zr-glob": "ini",
-        "*.md.zr-glob": "md",
+        "*.md.zr-rp": "markdown",
         "*.iss.zr-rp": "innosetup",
         "*.plist.zr-rp": "plist",
         "**/DEBIAN/control.zr-rp": "debian-control",

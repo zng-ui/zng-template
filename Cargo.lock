@@ -262,7 +262,7 @@ dependencies = [
  "serde",
  "serde_repr",
  "url",
- "zbus 4.2.2",
+ "zbus 4.3.0",
 ]
 
 [[package]]
@@ -1262,9 +1262,9 @@ checksum = "a0474425d51df81997e2f90a21591180b38eccf27292d755f3e30750225c175b"
 
 [[package]]
 name = "etagere"
-version = "0.2.12"
+version = "0.2.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dff377452246a4a2e0ef3a7e85ce78ed77c7f93c3a4771e1c93d0cc0c69eb411"
+checksum = "0e2f1e3be19fb10f549be8c1bf013e8675b4066c445e36eb76d2ebb2f54ee495"
 dependencies = [
  "euclid",
  "svg_fmt",
@@ -5159,9 +5159,9 @@ dependencies = [
 
 [[package]]
 name = "zbus"
-version = "4.2.2"
+version = "4.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "989c3977a7aafa97b12b9a35d21cdcff9b0d2289762b14683f45d66b1ba6c48f"
+checksum = "23915fcb26e7a9a9dc05fd93a9870d336d6d032cd7e8cebf1c5c37666489fdd5"
 dependencies = [
  "async-broadcast 0.7.1",
  "async-executor",
@@ -5190,7 +5190,7 @@ dependencies = [
  "uds_windows",
  "windows-sys 0.52.0",
  "xdg-home",
- "zbus_macros 4.2.2",
+ "zbus_macros 4.3.0",
  "zbus_names 3.0.0",
  "zvariant 4.1.1",
 ]
@@ -5211,9 +5211,9 @@ dependencies = [
 
 [[package]]
 name = "zbus_macros"
-version = "4.2.2"
+version = "4.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6fe9de53245dcf426b7be226a4217dd5e339080e5d46e64a02d6e5dcbf90fca1"
+checksum = "02bcca0b586d2f8589da32347b4784ba424c4891ed86aa5b50d5e88f6b2c4f5d"
 dependencies = [
  "proc-macro-crate 3.1.0",
  "proc-macro2",
@@ -5310,7 +5310,7 @@ dependencies = [
 [[package]]
 name = "zng"
 version = "0.8.2"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "tracing",
  "zng-app",
@@ -5375,7 +5375,7 @@ dependencies = [
 [[package]]
 name = "zng-app"
 version = "0.7.2"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "atomic",
  "bitflags 2.5.0",
@@ -5415,7 +5415,7 @@ dependencies = [
 [[package]]
 name = "zng-app-context"
 version = "0.5.1"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "bytemuck",
  "hashbrown",
@@ -5431,7 +5431,7 @@ dependencies = [
 [[package]]
 name = "zng-app-proc-macros"
 version = "0.3.3"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "fluent-syntax",
  "lazy_static",
@@ -5446,12 +5446,12 @@ dependencies = [
 [[package]]
 name = "zng-clone-move"
 version = "0.2.5"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 
 [[package]]
 name = "zng-color"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "paste",
  "serde",
@@ -5465,7 +5465,7 @@ dependencies = [
 [[package]]
 name = "zng-color-proc-macros"
 version = "0.2.6"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -5475,7 +5475,7 @@ dependencies = [
 [[package]]
 name = "zng-env"
 version = "0.2.2"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "directories",
  "linkme",
@@ -5492,7 +5492,7 @@ dependencies = [
 [[package]]
 name = "zng-env-proc-macros"
 version = "0.1.2"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -5504,7 +5504,7 @@ dependencies = [
 [[package]]
 name = "zng-ext-clipboard"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "tracing",
  "zng-app",
@@ -5518,7 +5518,7 @@ dependencies = [
 [[package]]
 name = "zng-ext-config"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "atomic",
  "bytemuck",
@@ -5539,7 +5539,7 @@ dependencies = [
 [[package]]
 name = "zng-ext-font"
 version = "0.3.14"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "bitflags 2.5.0",
  "byteorder",
@@ -5576,7 +5576,7 @@ dependencies = [
 [[package]]
 name = "zng-ext-fs-watcher"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "atomic",
  "flume",
@@ -5602,7 +5602,7 @@ dependencies = [
 [[package]]
 name = "zng-ext-hot-reload"
 version = "0.1.7"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "glob",
  "libloading",
@@ -5624,7 +5624,7 @@ dependencies = [
 [[package]]
 name = "zng-ext-hot-reload-proc-macros"
 version = "0.1.2"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -5634,7 +5634,7 @@ dependencies = [
 [[package]]
 name = "zng-ext-image"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "base64",
  "dunce",
@@ -5659,7 +5659,7 @@ dependencies = [
 [[package]]
 name = "zng-ext-input"
 version = "0.5.6"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "atomic",
  "bitflags 2.5.0",
@@ -5682,7 +5682,7 @@ dependencies = [
 [[package]]
 name = "zng-ext-l10n"
 version = "0.3.14"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "dunce",
  "fluent",
@@ -5708,7 +5708,7 @@ dependencies = [
 [[package]]
 name = "zng-ext-l10n-proc-macros"
 version = "0.2.7"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "fluent-syntax",
  "proc-macro2",
@@ -5720,7 +5720,7 @@ dependencies = [
 [[package]]
 name = "zng-ext-undo"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "atomic",
  "parking_lot",
@@ -5736,7 +5736,7 @@ dependencies = [
 [[package]]
 name = "zng-ext-window"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "atomic",
  "bitflags 2.5.0",
@@ -5770,12 +5770,12 @@ dependencies = [
 [[package]]
 name = "zng-handle"
 version = "0.2.5"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 
 [[package]]
 name = "zng-layout"
 version = "0.2.14"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "atomic",
  "bitflags 2.5.0",
@@ -5814,7 +5814,7 @@ dependencies = [
 [[package]]
 name = "zng-state-map"
 version = "0.3.3"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "bytemuck",
  "pretty-type-name",
@@ -5836,7 +5836,7 @@ dependencies = [
 [[package]]
 name = "zng-task"
 version = "0.3.2"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "async-fs 2.1.2",
  "bincode",
@@ -5866,7 +5866,7 @@ dependencies = [
 [[package]]
 name = "zng-task-proc-macros"
 version = "0.2.6"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -5876,7 +5876,7 @@ dependencies = [
 [[package]]
 name = "zng-time"
 version = "0.2.12"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "parking_lot",
  "zng-app-context",
@@ -5885,7 +5885,7 @@ dependencies = [
 [[package]]
 name = "zng-tp-licenses"
 version = "0.2.7"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "bincode",
  "deflate",
@@ -5898,7 +5898,7 @@ dependencies = [
 [[package]]
 name = "zng-txt"
 version = "0.2.7"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "serde",
 ]
@@ -5906,7 +5906,7 @@ dependencies = [
 [[package]]
 name = "zng-unique-id"
 version = "0.4.4"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "hashbrown",
  "linkme",
@@ -5921,7 +5921,7 @@ dependencies = [
 [[package]]
 name = "zng-unit"
 version = "0.2.7"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "bytemuck",
  "euclid",
@@ -5932,7 +5932,7 @@ dependencies = [
 [[package]]
 name = "zng-var"
 version = "0.4.4"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "bitflags 2.5.0",
  "bytemuck",
@@ -5952,7 +5952,7 @@ dependencies = [
 [[package]]
 name = "zng-var-proc-macros"
 version = "0.2.7"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -5962,7 +5962,7 @@ dependencies = [
 [[package]]
 name = "zng-view"
 version = "0.4.4"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "accesskit",
  "accesskit_winit",
@@ -6001,7 +6001,7 @@ dependencies = [
 [[package]]
 name = "zng-view-api"
 version = "0.5.3"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "bincode",
  "bitflags 2.5.0",
@@ -6029,7 +6029,7 @@ dependencies = [
 [[package]]
 name = "zng-view-prebuilt"
 version = "0.8.2"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "base64",
  "dunce",
@@ -6105,7 +6105,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt"
 version = "0.4.1"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "paste",
  "pretty-type-name",
@@ -6126,7 +6126,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-access"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "zng-app",
  "zng-ext-l10n",
@@ -6137,7 +6137,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-ansi-text"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "serde",
  "zng-ext-font",
@@ -6152,7 +6152,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-button"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "zng-app",
  "zng-ext-font",
@@ -6171,7 +6171,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-checkerboard"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "serde",
  "zng-color",
@@ -6181,7 +6181,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-container"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "serde",
  "zng-app",
@@ -6191,7 +6191,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-data"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "serde",
  "zng-color",
@@ -6202,7 +6202,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-data-view"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "parking_lot",
  "tracing",
@@ -6214,7 +6214,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-fill"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "zng-wgt",
 ]
@@ -6222,7 +6222,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-filter"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "zng-color",
  "zng-wgt",
@@ -6231,7 +6231,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-grid"
 version = "0.3.6"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "tracing",
  "zng-layout",
@@ -6244,7 +6244,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-image"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "serde",
  "zng-app",
@@ -6259,7 +6259,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-input"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "zng-app",
  "zng-ext-clipboard",
@@ -6274,7 +6274,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-inspector"
 version = "0.2.19"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "open",
  "parking_lot",
@@ -6318,7 +6318,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-layer"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "parking_lot",
  "serde",
@@ -6337,7 +6337,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-markdown"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "dunce",
  "html-escape",
@@ -6375,7 +6375,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-material-icons"
 version = "0.2.19"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "dunce",
  "zng-app",
@@ -6387,7 +6387,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-menu"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "zng-app",
  "zng-ext-font",
@@ -6417,7 +6417,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-panel"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "zng-app",
  "zng-wgt",
@@ -6427,7 +6427,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-rule-line"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "zng-wgt",
  "zng-wgt-access",
@@ -6437,7 +6437,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-scroll"
 version = "0.4.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "atomic",
  "bitflags 2.5.0",
@@ -6463,7 +6463,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-size-offset"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "euclid",
  "serde",
@@ -6473,7 +6473,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-stack"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "euclid",
  "serde",
@@ -6488,7 +6488,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-style"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "tracing",
  "zng-app",
@@ -6498,7 +6498,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-text"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "atomic",
  "bitflags 2.5.0",
@@ -6529,7 +6529,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-text-input"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "zng-app",
  "zng-ext-clipboard",
@@ -6554,7 +6554,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-toggle"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "parking_lot",
  "tracing",
@@ -6580,7 +6580,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-tooltip"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "zng-app",
  "zng-ext-input",
@@ -6596,7 +6596,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-transform"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "euclid",
  "zng-wgt",
@@ -6605,7 +6605,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-undo"
 version = "0.2.18"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "zng-ext-undo",
  "zng-wgt",
@@ -6614,7 +6614,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-undo-history"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "zng-ext-input",
  "zng-ext-l10n",
@@ -6634,7 +6634,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-window"
 version = "0.4.6"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "euclid",
  "parking_lot",
@@ -6658,7 +6658,7 @@ dependencies = [
 [[package]]
 name = "zng-wgt-wrap"
 version = "0.3.8"
-source = "git+https://github.com/zng-ui/zng.git#6db31ef5da4707be6d84a5e84900ab48179dd172"
+source = "git+https://github.com/zng-ui/zng.git#2104b023a4811b44d8dfc10fe2547107170e8ac2"
 dependencies = [
  "tracing",
  "zng-app",

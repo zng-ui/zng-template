@@ -3,6 +3,8 @@ mod help;
 mod util;
 mod pack_deb;
 
+use std::path::Path;
+
 use util::*;
 
 fn main() {
@@ -59,6 +61,16 @@ fn pack(args: Vec<String>) {
         ],
     );
     cmd.args(&args);
+
+    let name = format!("t-app-t{}", std::env::consts::EXE_SUFFIX);
+    cmd.env(
+        "T_APP_T",
+        Path::new("target")
+            .canonicalize()
+            .unwrap()
+            .join("release")
+            .join(&name),
+    );
 
     if package == "deb" {
         cmd.env("DO_PACK_DEB_DEPENDS", pack_deb::depends());
