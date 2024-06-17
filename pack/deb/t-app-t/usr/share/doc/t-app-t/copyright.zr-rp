@@ -3,4 +3,5 @@ Source: ${ZR_HOMEPAGE}
 Upstream-Name: ${ZR_APP}
 Upstream-Contact: ${ZR_PKG_AUTHORS}
 
-# TODO
+License: TODO
+${<LICENSE}
