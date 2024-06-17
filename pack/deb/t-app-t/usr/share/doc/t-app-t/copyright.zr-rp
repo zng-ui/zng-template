@@ -3,5 +3,9 @@ Source: ${ZR_HOMEPAGE}
 Upstream-Name: ${ZR_APP}
 Upstream-Contact: ${ZR_PKG_AUTHORS}
 
-License: TODO
-${<LICENSE}
+Files: *
+Copyright: ${!date +"%Y"} ${ZR_PKG_AUTHORS}
+License: ${ZR_LICENSE}
+
+License: ${ZR_LICENSE}
+${!cat LICENSE | sed 's/^/ /'}

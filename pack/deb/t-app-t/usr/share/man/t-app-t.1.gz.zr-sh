@@ -1,2 +1,0 @@
-help2man -o "$ZR_TARGET_DD/t-app-t.1" target/release/t-app-t
-gzip -9 -n "$ZR_TARGET_DD/t-app-t.1"

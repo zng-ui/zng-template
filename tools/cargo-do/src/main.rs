@@ -39,6 +39,11 @@ fn l10n(args: Vec<String>) {
 fn pack(args: Vec<String>) {
     // parse args
     let (package, options, args) = split_args(&args, &["PACKAGE"], &["--no-build"], false, true);
+    let package = package[0].as_str();
+
+    if package == "deb" && options.contains_key("--changelog") {
+        return pack_deb::changelog();
+    }
 
     if options.contains_key("--no-build") {
         println!("skipping release build");
@@ -49,7 +54,6 @@ fn pack(args: Vec<String>) {
 
     // pack
     println!("packing");
-    let package = package[0].as_str();
     let mut cmd = cmd(
         "cargo",
         &[
