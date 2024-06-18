@@ -35,6 +35,7 @@ pub fn depends() -> String {
 
 pub(crate) fn changelog() {
     // https://manpages.debian.org/testing/dpkg-dev/deb-changelog.5.en.html
+    // https://www.debian.org/doc/manuals/maint-guide/dreq.en.html#changelog
 
     let log = fs::read_to_string("CHANGELOG.md").unwrap_or_die("cannot read CHANGELOG.md");
 
@@ -42,10 +43,10 @@ pub(crate) fn changelog() {
     let mut in_session = false;
     let mut session_blame = String::new();
 
-    let package = env::var("ZR_PKG_NAME").unwrap();
+    let package = env::var("ZR_PKG_NAME").unwrap_or_else(|_| "t-app-t".to_owned());
 
     let mut line_n = 0;
-    'outer: while let Some(line) = lines.next() {
+    while let Some(line) = lines.next() {
         let mut line = line.trim();
         line_n += 1;
 
@@ -54,22 +55,21 @@ pub(crate) fn changelog() {
             while !line.ends_with("-->") {
                 line = match lines.next() {
                     Some(l) => l.trim(),
-                    None => break 'outer,
+                    None => break,
                 }
             }
+            continue;
         }
 
-        if let Some(version) = line.strip_prefix("## ") {
+        if let Some(version) = line.strip_prefix("# ") {
             let version = version.trim();
 
             let was_in_session = in_session;
             // 0.1.0 (2024-12-31)
-            in_session = version.starts_with(|c: char| c.is_digit(10))
-                && version.ends_with(')')
-                && version.contains(" (");
+            in_session = version.starts_with(|c: char| c.is_digit(10));
 
             if was_in_session {
-                println!("-- {session_blame}");
+                println!(" -- {session_blame}");
             }
             if in_session {
                 //  git blame --porcelain -L n,+1 -- CHANGELOG.md
@@ -99,21 +99,21 @@ pub(crate) fn changelog() {
                     die!("please commit changes to CHANGELOG.md first");
                 }
 
-                let date = util::cmd("date", &["-d"])
+                let date = util::cmd("date", &["-R", "-d"])
                     .arg(format!("@{author_time}"))
                     .output()
                     .success_or_die("cannot convert git blame date");
 
-                session_blame = format!("{author} {author_mail} {date}");
+                session_blame = format!("{author} {author_mail}  {}", date.trim());
 
-                println!("\n{package} ({version}) unstable; urgency=low");
+                println!("{package} ({version}) unstable; urgency=medium");
             }
         } else if in_session {
-            println!("{line}");
+            println!("  {line}");
         }
     }
 
     if in_session {
-        println!("-- {session_blame}");
+        println!(" -- {session_blame}");
     }
 }
