@@ -9,7 +9,7 @@ macro_rules! die {
     ($($println_args:tt)*) => {
         {
             $crate::util::print_error();
-            println!($($println_args)*);
+            eprintln!($($println_args)*);
             std::process::exit(102);
         }
     };
@@ -87,7 +87,7 @@ pub fn print_error() {
     const BOLD_RED: &str = "\x1B[1;31m";
     const BOLD_WHITE: &str = "\x1B[1;37m";
     const CLEAR: &str = "\x1B[0m";
-    print!("{BOLD_RED}error{BOLD_WHITE}: {CLEAR}");
+    eprint!("{BOLD_RED}error{BOLD_WHITE}: {CLEAR}");
 }
 
 pub fn args() -> (String, Vec<String>) {
