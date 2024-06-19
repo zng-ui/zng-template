@@ -32,7 +32,7 @@ DefaultDirName={commonpf}\${ZR_APP:k}
 RestartIfNeededByRun=no
 
 OutputDir=..
-OutputBaseFilename=${ZR_PKG_NAME:k}-${ZR_VERSION:k}
+OutputBaseFilename=${ZR_PKG_NAME:k}-${ZR_VERSION}
 
 ; SignTool=
 

@@ -8,7 +8,8 @@ default-members = ["crates/*"]
 
 [profile.release]
 # use `cargo do build-r` or `cargo do run-r` to build with release features.
-lto = "thin"
+lto = "fat"
+codegen-units = 1
 
 # shared dependencies set version in the workspce
 [workspace.dependencies]
