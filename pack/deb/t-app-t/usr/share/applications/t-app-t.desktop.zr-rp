@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=${ZR_APP}
-Comment=${ZR_DESCRIPTION}
+Comment=${ZR_DESCRIPTION:?}
 Exec=/usr/bin/t-app-t
 Icon=t-app-t
 Terminal=false

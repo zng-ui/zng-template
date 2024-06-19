@@ -2,6 +2,7 @@
 name = "t-app-t"
 version = "0.1.0"
 edition = "2021"
+license = "TODO"
 [package.metadata.zng.about]
 app = "{{app}}"
 org = "{{org}}"

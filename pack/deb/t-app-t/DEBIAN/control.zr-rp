@@ -1,9 +1,10 @@
 Package: ${ZR_PKG_NAME}
 Version: ${ZR_VERSION}
-Maintainer: ${ZR_PKG_AUTHORS:?${!git config user.name}}
-Homepage: ${ZR_HOMEPAGE}
-Description: ${ZR_DESCRIPTION:?${ZR_APP} package.}
+Maintainer: ${!git config user.name}  <${!git config user.email}>
+Homepage: ${ZR_HOMEPAGE:?}
 Architecture: amd64
 Section: graphics
 Priority: optional
 Depends: ${DO_PACK_DEB_DEPENDS}
+Description: ${ZR_DESCRIPTION:?${ZR_APP} package.}
+  A Zng based GUI application

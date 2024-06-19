@@ -1,10 +1,10 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Source: ${ZR_HOMEPAGE}
+Source: ${ZR_HOMEPAGE:?}
 Upstream-Name: ${ZR_APP}
-Upstream-Contact: ${ZR_PKG_AUTHORS}
+Upstream-Contact: ${ZR_PKG_AUTHORS:?${!git config user.name} <${!git config user.email}>}
 
 Files: *
-Copyright: ${!date +"%Y"} ${ZR_PKG_AUTHORS}
+Copyright: ${!date +"%Y"} ${ZR_ORG}
 License: ${ZR_LICENSE}
 
 License: ${ZR_LICENSE}

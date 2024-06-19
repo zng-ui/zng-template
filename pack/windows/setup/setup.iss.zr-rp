@@ -12,7 +12,7 @@ AppID=${ZR_QUALIFIER:s}.${ZR_ORG:s}.${ZR_APP:s}
 AppName=${ZR_APP}
 AppVerName=${ZR_APP} ${ZR_VERSION}
 AppPublisher=${ZR_ORG}
-DefaultGroupName=${ZR_ORG?${ZR_APP}}
+DefaultGroupName=${ZR_ORG:?${ZR_APP}}
 ;AppCopyright=
 
 SetupIconFile=res\icon.ico
