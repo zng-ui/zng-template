@@ -1,6 +1,6 @@
 # Template Keys
 #
-# Use `cargo zng new -s"app=My App" -s"owner=My Company"` to set keys.
+# Use `cargo zng new -s"app=My App" -s"org=My Company"` to set keys.
 #
 # OR set keys by their position in this file:
 #

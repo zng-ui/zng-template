@@ -19,7 +19,7 @@ env:
   ZNG_TP_LICENSES: false
 
 jobs:
-  check:
+  check-template:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,3 +29,103 @@ jobs:
       - run: cargo do fmt --check
       - run: cargo do check
       - run: cargo clean
+  check-new:
+    needs: check-template
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: template
+      - uses: dtolnay/rust-toolchain@stable
+      - name: install cargo-about
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: cargo-about
+      - name: install cargo-zng
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: cargo-zng
+          git: https://github.com/zng-ui/zng
+      - uses: Swatinem/rust-cache@v2
+      - name: cargo zng new
+        run: cargo zng new --template ./template -s"app=Test App" -s"org=Test Org" -s"qualifier=test"
+      - run: cargo check
+        working-directory: ./test-app
+  pack-ubuntu:
+    needs: check-new
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: template
+      - uses: dtolnay/rust-toolchain@stable
+      - name: install cargo-about
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: cargo-about
+      - name: install cargo-zng
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: cargo-zng
+          git: https://github.com/zng-ui/zng
+      - uses: Swatinem/rust-cache@v2
+      - name: cargo zng new
+        run: cargo zng new --template ./template -s"app=Test App" -s"org=Test Org" -s"qualifier=test"
+      - run: cargo do pack portable
+        working-directory: ./test-app
+      - run: cargo do pack portable-tar
+        working-directory: ./test-app
+      - run: cargo do pack deb
+        working-directory: ./test-app
+  pack-windows:
+    needs: check-new
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: template
+      - uses: dtolnay/rust-toolchain@stable
+      - name: install cargo-about
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: cargo-about
+      - name: install cargo-zng
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: cargo-zng
+          git: https://github.com/zng-ui/zng
+      - uses: Swatinem/rust-cache@v2
+      - name: cargo zng new
+        run: cargo zng new --template ./template -s"app=Test App" -s"org=Test Org" -s"qualifier=test"
+      - run: cargo do pack portable
+        working-directory: ./test-app
+      - run: cargo do pack portable-tar
+        working-directory: ./test-app
+      - run: cargo do pack windows
+        working-directory: ./test-app
+  pack-macos:
+    needs: check-new
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: template
+      - uses: dtolnay/rust-toolchain@stable
+      - name: install cargo-about
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: cargo-about
+      - name: install cargo-zng
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: cargo-zng
+          git: https://github.com/zng-ui/zng
+      - uses: Swatinem/rust-cache@v2
+      - name: cargo zng new
+        run: cargo zng new --template ./template -s"app=Test App" -s"org=Test Org" -s"qualifier=test"
+      - run: cargo do pack portable
+        working-directory: ./test-app
+      - run: cargo do pack portable-tar
+        working-directory: ./test-app
+      - run: cargo do pack macos
+        working-directory: ./test-app

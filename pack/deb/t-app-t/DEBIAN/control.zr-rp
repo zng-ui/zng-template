@@ -1,8 +1,8 @@
 Package: ${ZR_PKG_NAME}
 Version: ${ZR_VERSION}
-Maintainer: ${ZR_PKG_AUTHORS}
+Maintainer: ${ZR_PKG_AUTHORS:?${!git config user.name}}
 Homepage: ${ZR_HOMEPAGE}
-Description: ${ZR_DESCRIPTION}
+Description: ${ZR_DESCRIPTION:?${ZR_APP} package.}
 Architecture: amd64
 Section: graphics
 Priority: optional
