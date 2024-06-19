@@ -58,6 +58,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: template
+          fetch-depth: 0
       - uses: dtolnay/rust-toolchain@stable
       - name: install cargo-about
         uses: baptiste0928/cargo-install@v3
@@ -71,12 +72,24 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - name: cargo zng new
         run: cargo zng new --template ./template -s"app=Test App" -s"org=Test Org" -s"qualifier=test"
+      - name: git config
+        working-directory: ./test-app
+        run: |
+          git config user.name "Test User"
+          git config user.email "test@email.com"
       - run: cargo do pack portable
         working-directory: ./test-app
       - run: cargo do pack portable-tar
         working-directory: ./test-app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portable-ubuntu.tar.gz
+          path: ./test-app/target/pack/portable-tar/test-app.tar.gz
       - run: cargo do pack deb
         working-directory: ./test-app
+      - uses: actions/upload-artifact@v4
+        with:
+          path: ./test-app/target/pack/deb/test-app.deb
   pack-windows:
     needs: check-new
     runs-on: windows-latest
@@ -101,8 +114,15 @@ jobs:
         working-directory: ./test-app
       - run: cargo do pack portable-tar
         working-directory: ./test-app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: portable-windows.tar.gz
+          path: ./test-app/target/pack/portable-tar/test-app.tar.gz
       - run: cargo do pack windows
         working-directory: ./test-app
+      - uses: actions/upload-artifact@v4
+        with:
+          path: ./test-app/target/pack/windows/test-app-0.1.0.exe
   pack-macos:
     needs: check-new
     runs-on: macos-latest
@@ -129,3 +149,6 @@ jobs:
         working-directory: ./test-app
       - run: cargo do pack macos
         working-directory: ./test-app
+      - uses: actions/upload-artifact@v4
+        with:
+          path: ./test-app/target/pack/macos/test-app.dmg
