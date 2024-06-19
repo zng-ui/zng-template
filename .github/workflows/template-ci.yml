@@ -122,6 +122,7 @@ jobs:
         working-directory: ./test-app
       - uses: actions/upload-artifact@v4
         with:
+          name: test-app-0.1.0.exe
           path: ./test-app/target/pack/windows/test-app-0.1.0.exe
   pack-macos:
     needs: check-new
@@ -151,4 +152,5 @@ jobs:
         working-directory: ./test-app
       - uses: actions/upload-artifact@v4
         with:
+          name: test-app.dmg
           path: ./test-app/target/pack/macos/test-app.dmg
