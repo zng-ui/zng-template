@@ -18,13 +18,13 @@ such a project, this template makes choices for you that you might want to revie
 All crates that are part of the final binary are placed in the `crates` directory. All crates that are only
 used during development are placed in the `tools` directory. 
 
-The root `Cargo.toml` only declares the workspace, dependencies used by multiple project crates and build profiles.
+The root `Cargo.toml` only declares the workspace, shared dependencies and build profiles.
 
 Only `crates/t-app-t/Cargo.toml` declares a version, all other crates are internal with version `0.0.0`.
 
 As the project grows expect the number of crates to reach dozens at least. Prefixes can be used to define "categories",
-for example, as the `gui` crate grows large hot-reload might slow down, you might then declare a `crates/gui-my-widget` 
-for each large screen or widget.
+for example, as the `gui` crate grows hot-reload might slow down, you can them declare a `crates/gui-my-widget` 
+for each screen or widget.
 
 The Zng project uses this pattern successfully, we learned it from the Rust-Analyzer project, read 
 [Large Rust Workspaces](https://matklad.github.io/2021/08/22/large-rust-workspaces.html) for more details.
@@ -40,7 +40,7 @@ The startup config is setup in [crates/t-app-t/src/cli.rs].
 ### User Config
 
 The normal user config uses the Zng `CONFIG` service and is setup in [crates/t-app-t/src/config.rs]. It uses
-JSON by default, but you can easily change it by using [`zng`] Cargo feature flags.
+JSON by default, but you can easily change it by using enabled a config format [`zng`] Cargo feature.
 
 ### Crash Handler
 
@@ -55,12 +55,18 @@ across all Zng crates because it provides structured spans that are easy to inte
 
 ### Localization
 
+!!: TODO, explain, optional bundling?
+
 ### Licenses Bundling
+
+!!: TODO, explain, cargo about
 
 ### Prebuilt View-Process
 
 This project uses the `"view_prebuilt"` Cargo feature. It downloads a prebuilt view-process library from the [zng repository]
-on build and bundles it. If you prefer to build it yourself change the Cargo feature to `"view"`, install all build dependencies
+on first build and bundles it. 
+
+If you prefer to build it yourself change the Cargo feature to `"view"` and install all build dependencies
 described in the [zng repository]. Also override the `profile.dev.package.zng-view` crate `opt-level`, the renderer has a noticeable
 lower framerate in debug builds.
 

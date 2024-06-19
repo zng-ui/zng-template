@@ -4,7 +4,7 @@ pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowR
     // l10n-crash_dialog-### Crash Dialog
 
     Window! {
-        title = l10n!("crash_dialog/title", "{$app} - Error", app=var(zng::env::about().app.clone())); // !!:TODO, no var after 0.8.1
+        title = l10n!("crash_dialog/title", "{$app} - Error", app=zng::env::about().app.clone());
         icon = shared::res::ICON_SMALL;
         child = Container! {
             // error icon to the left (or right if RTL)

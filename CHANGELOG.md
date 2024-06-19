@@ -9,7 +9,7 @@
 * {{app}} project started.
 
 <!--
-Parsed by 'tools/cargo-do/pack_deb.rs#fn changelog', expected format is:
+Parsed by 'tools/cargo-do/pack_deb.rs#fn changelog', expected format:
 
 # 0.1.0
 
@@ -17,5 +17,5 @@ Parsed by 'tools/cargo-do/pack_deb.rs#fn changelog', expected format is:
 * Change 2. 
 
 Also note that the "git blame" author and date of the version title line is used as the 
-"maintainer" metadata for that section.
+"maintainer" metadata for that section of the Debian package changelog.
 -->
