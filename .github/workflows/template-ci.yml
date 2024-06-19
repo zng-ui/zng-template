@@ -69,6 +69,7 @@ jobs:
         with:
           crate: cargo-zng
           git: https://github.com/zng-ui/zng
+      - run: sudo apt-get install -y help2man
       - uses: Swatinem/rust-cache@v2
       - name: cargo zng new
         run: cargo zng new --template ./template -s"app=Test App" -s"org=Test Org" -s"qualifier=test"

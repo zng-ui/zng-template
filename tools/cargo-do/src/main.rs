@@ -54,7 +54,7 @@ fn pack(args: Vec<String>) {
 
     // pack
     println!("packing");
-    let mut cmd = cmd(
+    let mut pack_cmd = cmd(
         "cargo",
         &[
             "zng",
@@ -64,23 +64,27 @@ fn pack(args: Vec<String>) {
             "--pack",
         ],
     );
-    cmd.args(&args);
+    pack_cmd.args(&args);
 
     let name = format!("t-app-t{}", std::env::consts::EXE_SUFFIX);
-    cmd.env(
-        "T_APP_T",
-        Path::new("target")
-            .canonicalize()
-            .unwrap()
-            .join("release")
-            .join(&name),
-    );
+
+    let app_path = Path::new("target")
+        .canonicalize()
+        .unwrap()
+        .join("release")
+        .join(&name)
+        .display()
+        .to_string();
+    #[cfg(windows)]
+    let app_path = app_path.trim_start_matches(r#"\\?\"#).replace('\\', "/");
+    pack_cmd.env("DO_PACK_EXE", app_path);
 
     if package == "deb" {
-        cmd.env("DO_PACK_DEB_DEPENDS", pack_deb::depends());
+        pack_cmd.env("DO_PACK_DEB_DEPENDS", pack_deb::depends());
     }
 
-    cmd.status()
+    pack_cmd
+        .status()
         .success_or_die("cannot package, failed cargo zng res");
 }
 
