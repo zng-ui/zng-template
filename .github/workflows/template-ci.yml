@@ -93,6 +93,7 @@ jobs:
         working-directory: ./test-app
       - uses: actions/upload-artifact@v4
         with:
+          name: test-app.deb
           path: ./test-app/target/pack/deb/test-app.deb
   pack-windows:
     needs: check-new
