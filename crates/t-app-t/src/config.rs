@@ -15,7 +15,7 @@ pub fn app_init() {
     let config = FallbackConfig::new(user, app);
 
     // create a control ref to the config, settings UI can use this to reset configs.
-    *shared::env::CONFIG_RESET.write() = Some(config.clone_boxed());
+    shared::env::init_config_reset(config.clone_boxed());
 
     CONFIG.load(config);
 

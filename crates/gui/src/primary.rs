@@ -16,7 +16,7 @@ pub async fn window() -> window::WindowRoot {
 // #[zng::hot_reload::hot_node]
 fn menu() -> impl UiNode {
     Menu!(ui_vec![SubMenu!(
-        l10n!("primary_win/menu-about", "About"),
+        l10n!("primary/menu-about", "About"),
         ui_vec![
             #[cfg(feature = "dev")]
             Button!(zng::window::cmd::INSPECT_CMD.scoped(WINDOW.id())),

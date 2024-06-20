@@ -86,7 +86,7 @@ struct Cli {
 
     /// Initial language
     ///
-    /// Value must be an Unicode Language Identifier, examples: "en", "en-US", "zh-Hans, en".
+    /// Value must be an Unicode Language Identifier, examples: "en-US", "zh-Hans, en".
     ///
     /// Is the system language by default.
     #[clap(long, env = "T_APP_T_LANG", default_value = "")]

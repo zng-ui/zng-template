@@ -50,7 +50,20 @@ lazy_static! {
         panic!("shared::env::args not inited, only use after t_app_t::cli");
 }
 
+// called by t-app-t/config.rs
+pub fn init_config_reset(reset_service: Box<dyn zng::config::FallbackConfigReset>) {
+    *CONFIG_RESET.write() = Some(reset_service);
+}
+
+/// Reset an user config.
+pub fn config_reset(key: &zng::config::ConfigKey) {
+    CONFIG_RESET
+        .read()
+        .as_ref()
+        .expect("config_reset not inited")
+        .reset(key)
+}
+
 app_local! {
-    /// Config reset service.
-    pub static CONFIG_RESET: Option<Box<dyn zng::config::FallbackConfigReset>> = None;
+    static CONFIG_RESET: Option<Box<dyn zng::config::FallbackConfigReset>> = None;
 }

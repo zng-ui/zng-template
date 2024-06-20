@@ -1,3 +1,9 @@
 ### Crash Dialog
 
-title = Eřřooř
+debug-dialog = Şħooẇ ḓeeƀuuɠ ƈřaaşħ ḓiaaŀooɠ
+
+exit = Eẋiŧ
+
+restart = Řeeşŧaařŧ
+
+title = {$app} - Eřřooř
