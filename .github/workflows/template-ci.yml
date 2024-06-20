@@ -159,3 +159,8 @@ jobs:
         with:
           name: test-app.dmg
           path: ./test-app/target/pack/macos/test-app.dmg
+  test-all:
+    needs: [pack-ubuntu, pack-macos, pack-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 0
