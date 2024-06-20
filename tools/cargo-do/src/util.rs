@@ -113,6 +113,10 @@ pub fn split_args<'a, S: AsRef<str>>(
     allow_no_positional: bool,
     allow_unknown_options: bool,
 ) -> (&'a [S], HashMap<&'a str, &'a str>, Vec<&'a str>) {
+    if args.is_empty() {
+        return (args, HashMap::new(), vec![]);
+    }
+
     let (positional, options) = args.split_at(
         args.iter()
             .position(|a| !a.as_ref().starts_with('-'))

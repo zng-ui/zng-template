@@ -1,10 +1,10 @@
 # Template Ignore
 #
-# Paths matched here are not copied to new crate.
+# Paths matched here are not copied to new crate. Matching is relative to workspace root.
 
 # Cargo.lock not exclude by .gitignore for --bin crates,
 # but we want to force an update for new projects
 **/Cargo.lock
 
-# Workflows that test the template
-.github/workflows/template-*
+# Template workflows
+.github
