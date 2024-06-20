@@ -88,21 +88,39 @@ fn pack(args: Vec<String>) {
         .success_or_die("cannot package, failed cargo zng res");
 }
 
-/// do build-r
+/// do build-r [--bleed]
 ///    Compile with release profile+features
+///
+///    ARGS
+///       --bleed - Build with nightly compiler optimizations.
 fn build_r(args: Vec<String>) {
-    cmd(
-        "cargo",
-        &[
-            "build",
-            "--release",
-            "--no-default-features",
-            "--features=release",
-        ],
-    )
-    .args(args)
-    .status()
-    .success_or_die("release build failed");
+    let (_, options, args) = split_args(&args, &[], &["--bleed"], true, true);
+    let bleed = options.contains_key("--bleed");
+
+    let mut cmd = std::process::Command::new("cargo");
+    if bleed {
+        cmd.arg("+nightly");
+    }
+    cmd.args([
+        "build",
+        "--release",
+        "--no-default-features",
+        "--features=release",
+    ])
+    .args(args);
+
+    if bleed {
+        // -Zshare-generics - halves binary size
+        // -C link-args=-znostart-stop-gc - Fixes build error
+        cmd.env(
+            "RUSTFLAGS",
+            format!(
+                "{} -Z share-generics -C link-args=-znostart-stop-gc",
+                std::env::var("RUSTFLAGS").unwrap_or_default()
+            ),
+        );
+    }
+    cmd.status().success_or_die("release build failed");
 }
 
 /// do run-r
