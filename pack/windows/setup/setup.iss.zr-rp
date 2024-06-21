@@ -19,20 +19,20 @@ SetupIconFile=res\icon.ico
 WizardImageFile=res\wizard-image.bmp
 WizardSmallImageFile=res\wizard-small-image.bmp
 
-UninstallDisplayIcon={app}\bin\${ZR_APP:k}.exe
-UninstallDisplayName=AutoId
+UninstallDisplayIcon={app}\bin\${ZR_PKG_NAME}.exe
+UninstallDisplayName=${ZR_APP}
 
 PrivilegesRequired=admin
 DisableDirPage=false
 DisableProgramGroupPage=false
 
-ArchitecturesInstallIn64BitMode=x64
-DefaultDirName={commonpf}\${ZR_APP:k}
+ArchitecturesInstallIn64BitMode=x64os
+DefaultDirName={commonpf}\${ZR_PKG_NAME}
 
 RestartIfNeededByRun=no
 
 OutputDir=..
-OutputBaseFilename=${ZR_PKG_NAME:k}-${ZR_VERSION}
+OutputBaseFilename=${ZR_PKG_NAME}-${ZR_VERSION}
 
 ; SignTool=
 
@@ -42,3 +42,6 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 [Icons]
 Name: {group}\${ZR_APP}; Filename: {app}\bin\${ZR_APP:k}.exe; WorkingDir: {app}; IconIndex: 0
 Name: {commondesktop}\${ZR_APP}; Filename: {app}\bin\${ZR_APP:k}.exe; WorkingDir: {app}; IconIndex: 0; Tasks: desktopicon
+
+[Run]
+Filename: {app}\bin\${ZR_PKG_NAME}.exe; Flags: postinstall nowait

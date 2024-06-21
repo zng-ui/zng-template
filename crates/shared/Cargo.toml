@@ -8,9 +8,9 @@ zng.workspace = true
 tracing.workspace = true
 
 # dependency license collection & bundling in builds with `features=bundle_licenses`.
-zng-tp-licenses = { git = "https://github.com/zng-ui/zng.git", features = ["bundle"], optional = true }
+zng-tp-licenses = { version = "0.2", features = ["bundle"], optional = true }
 [build-dependencies]
-zng-tp-licenses = { git = "https://github.com/zng-ui/zng.git", features = ["build"], optional = true }
+zng-tp-licenses = { version = "0.2", features = ["build"], optional = true }
 
 [features]
 default = ["dev"]

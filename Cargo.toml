@@ -13,5 +13,5 @@ codegen-units = 1
 
 # shared dependencies set version in the workspce
 [workspace.dependencies]
-zng = { git = "https://github.com/zng-ui/zng.git" }
+zng = "0.9"
 tracing = "0.1"
