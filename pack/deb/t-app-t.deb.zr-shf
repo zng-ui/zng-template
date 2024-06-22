@@ -1,0 +1,21 @@
+# strip symbols
+cd $ZR_TARGET_DD/t-app-t/usr/bin
+strip --strip-all -o t-app-t-tmp t-app-t
+rm t-app-t; mv t-app-t-tmp t-app-t
+cd $ZR_TARGET_DD
+
+# validate
+desktop-file-validate t-app-t/usr/share/applications/t-app-t.desktop
+
+# set chmod
+find t-app-t -type d -exec chmod 755 {} \;
+find t-app-t -type f -exec chmod 644 {} \;
+chmod 755 t-app-t/usr/bin/t-app-t
+
+# build
+dpkg-deb --root-owner-group --build t-app-t
+rm -r t-app-t
+
+# verify
+echo verifying package
+lintian --suppress-tags embedded-library t-app-t.deb

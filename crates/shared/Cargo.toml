@@ -1,0 +1,19 @@
+[package]
+name = "shared"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+zng.workspace = true
+tracing.workspace = true
+
+# dependency license collection & bundling in builds with `features=bundle_licenses`.
+zng-tp-licenses = { version = "0.2", features = ["bundle"], optional = true }
+[build-dependencies]
+zng-tp-licenses = { version = "0.2", features = ["build"], optional = true }
+
+[features]
+default = ["dev"]
+dev = []
+# Collect and bundle crate licenses.
+release = ["dep:zng-tp-licenses"]

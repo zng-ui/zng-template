@@ -1,0 +1,17 @@
+[workspace]
+resolver = "2"
+
+# all crates in the project build to same target
+members = ["crates/*", "tools/*"]
+# only these crates are part of the final executable
+default-members = ["crates/*"]
+
+[profile.release]
+# use `cargo do build-r` or `cargo do run-r` to build with release features.
+lto = "fat"
+codegen-units = 1
+
+# shared dependencies set version in the workspce
+[workspace.dependencies]
+zng = "0.9"
+tracing = "0.1"

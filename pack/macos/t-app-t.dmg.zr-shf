@@ -1,0 +1,6 @@
+cd $ZR_TARGET_DD
+mkdir dmg-folder
+cp -R t-app-t.app dmg-folder/t-app-t.app
+hdiutil create temp.dmg -ov -volname "$ZR_APP" -fs HFS+ -srcfolder "dmg-folder"
+hdiutil convert temp.dmg -format UDZO -o t-app-t.dmg
+rm -r dmg-folder
