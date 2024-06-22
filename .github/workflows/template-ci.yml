@@ -48,7 +48,8 @@ jobs:
           git: https://github.com/zng-ui/zng
       - uses: Swatinem/rust-cache@v2
       - name: cargo zng new
-        run: cargo zng new --template ./template -s"app=Test App" -s"org=Test Org" -s"qualifier=test"
+        #  /?/ to test that the name is cleaned
+        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/" -s"qualifier=test"
       - run: cargo check
         working-directory: ./test-app
   pack-ubuntu:
@@ -74,7 +75,7 @@ jobs:
       - run: sudo apt-get install -y lintian
       - uses: Swatinem/rust-cache@v2
       - name: cargo zng new
-        run: cargo zng new --template ./template -s"app=Test App" -s"org=Test Org" -s"qualifier=test"
+        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/" -s"qualifier=test"
       - name: git config
         working-directory: ./test-app
         run: |
@@ -115,7 +116,7 @@ jobs:
           git: https://github.com/zng-ui/zng
       - uses: Swatinem/rust-cache@v2
       - name: cargo zng new
-        run: cargo zng new --template ./template -s"app=Test App" -s"org=Test Org" -s"qualifier=test"
+        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/" -s"qualifier=test"
       - run: cargo do pack portable
         working-directory: ./test-app
       - run: cargo do pack portable-tar
@@ -149,7 +150,7 @@ jobs:
           git: https://github.com/zng-ui/zng
       - uses: Swatinem/rust-cache@v2
       - name: cargo zng new
-        run: cargo zng new --template ./template -s"app=Test App" -s"org=Test Org" -s"qualifier=test"
+        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/" -s"qualifier=test"
       - run: cargo do pack portable
         working-directory: ./test-app
       - run: cargo do pack portable-tar
