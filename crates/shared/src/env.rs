@@ -1,6 +1,7 @@
 use std::path::{Path, PathBuf};
 use zng::{
     app::app_local,
+    config::{ConfigKey, FallbackConfigReset},
     hot_reload::{lazy_static, lazy_static_init},
     l10n::Langs,
 };
@@ -51,19 +52,37 @@ lazy_static! {
 }
 
 // called by t-app-t/config.rs
-pub fn init_config_reset(reset_service: Box<dyn zng::config::FallbackConfigReset>) {
-    *CONFIG_RESET.write() = Some(reset_service);
+pub fn init_config_reset(
+    config_reset: Box<dyn FallbackConfigReset>,
+    settings_reset: Box<dyn FallbackConfigReset>,
+) {
+    *CONFIG_RESET.write() = Some([config_reset, settings_reset]);
 }
 
-/// Reset an user config.
-pub fn config_reset(key: &zng::config::ConfigKey) {
+/// Reset an user config or setting.
+pub fn config_reset(key: &ConfigKey) {
+    match key.strip_prefix("settings.") {
+        Some(key) => settings_resetter().reset(&ConfigKey::from_str(key)),
+        None => config_resetter().reset(key),
+    }
+}
+
+pub fn settings_resetter() -> Box<dyn FallbackConfigReset> {
     CONFIG_RESET
         .read()
         .as_ref()
-        .expect("config_reset not inited")
-        .reset(key)
+        .expect("config_reset not inited")[1]
+        .clone()
+}
+
+pub fn config_resetter() -> Box<dyn FallbackConfigReset> {
+    CONFIG_RESET
+        .read()
+        .as_ref()
+        .expect("config_reset not inited")[1]
+        .clone()
 }
 
 app_local! {
-    static CONFIG_RESET: Option<Box<dyn zng::config::FallbackConfigReset>> = None;
+    static CONFIG_RESET: Option<[Box<dyn zng::config::FallbackConfigReset>; 2]> = None;
 }

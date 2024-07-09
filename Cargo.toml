@@ -13,5 +13,5 @@ codegen-units = 1
 
 # shared dependencies set version in the workspce
 [workspace.dependencies]
-zng = "0.9"
+zng = "0.10"
 tracing = "0.1"
