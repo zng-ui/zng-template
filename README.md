@@ -20,7 +20,7 @@ used during development are placed in the `tools` directory.
 
 The root [`Cargo.toml`](./Cargo.toml) only declares the workspace, shared dependencies and build profiles.
 
-Only [`crates/t-app-t/Cargo.toml`](./crates/t-app-t/Cargo.toml) declares a version, all other crates are internal with version `0.0.0`.
+Only [`crates/t-app-t/Cargo.toml`](./crates/t-app-t/Cargo.toml) declares a version, all other crates are internal with version `0.0.0-local`.
 
 As the project grows expect the number of crates to reach dozens at least. Prefixes can be used to define "categories",
 for example, as the `gui` crate grows hot-reload might slow down, you can them declare a `crates/gui-my-widget` 

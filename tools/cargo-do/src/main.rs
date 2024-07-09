@@ -27,7 +27,14 @@ fn l10n(args: Vec<String>) {
     let _ = fs::remove_dir_all("res/l10n/template");
     cmd(
         "cargo",
-        &["zng", "l10n", "--package", "gui", "--output", "res/l10n"],
+        &[
+            "zng",
+            "l10n",
+            "--package",
+            "t-app-t",
+            "--output",
+            "res/l10n",
+        ],
     )
     .args(args)
     .status()
