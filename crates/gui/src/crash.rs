@@ -8,8 +8,9 @@ pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowR
         icon = shared::res::ICON_SMALL;
         child = Container! {
             // error icon to the left (or right if RTL)
-            child_start = zng::icon::Icon! {
-                ico = zng::icon::material_outlined::ERROR;
+            child_start = Wgt! {
+                widget::background = ICONS.get("error");
+                layout::size = 40;
                 layout::align = Align::TOP;
                 layout::margin = 10;
             }, 0;

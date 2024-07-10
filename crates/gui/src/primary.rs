@@ -15,14 +15,20 @@ pub async fn window() -> window::WindowRoot {
 
 // #[zng::hot_reload::hot_node]
 fn menu() -> impl UiNode {
-    Menu!(ui_vec![SubMenu!(
-        l10n!("primary/menu-about", "About"),
-        ui_vec![
-            #[cfg(feature = "dev")]
-            Button!(zng::window::cmd::INSPECT_CMD.scoped(WINDOW.id())),
-            Button!(zng::third_party::OPEN_LICENSES_CMD),
-        ],
-    ),])
+    Menu!(ui_vec![
+        SubMenu!(
+            l10n!("primary/menu-edit", "Edit"),
+            ui_vec![Button!(zng::config::settings::SETTINGS_CMD)]
+        ),
+        SubMenu!(
+            l10n!("primary/menu-about", "About"),
+            ui_vec![
+                #[cfg(feature = "dev")]
+                Button!(zng::window::cmd::INSPECT_CMD.scoped(WINDOW.id())),
+                Button!(zng::third_party::OPEN_LICENSES_CMD),
+            ],
+        ),
+    ])
 }
 
 // #[zng::hot_reload::hot_node]

@@ -2,23 +2,30 @@ use zng::config::*;
 
 // others formats are available as Cargo features
 type FileConfig = JsonConfig;
-const FILE: &str = "config.json";
+const CONFIG_FILE: &str = "config.json";
+const SETTINGS_FILE: &str = "settings.json";
 
 /// Initialize user config in the app context.
 pub fn app_init() {
-    // read-only default config
-    let app = ReadOnlyConfig::new(FileConfig::sync(zng::env::res(FILE)));
-    // read-write config
-    let user = FileConfig::sync(zng::env::config(FILE));
+    // configs the user does not edit directly
+    let default_config = ReadOnlyConfig::new(FileConfig::sync(zng::env::res(CONFIG_FILE)));
+    let user_config = FileConfig::sync(zng::env::config(CONFIG_FILE));
+    let config = FallbackConfig::new(user_config, default_config);
 
-    // final setup
-    let config = FallbackConfig::new(user, app);
+    // configs the user edits directly (all keys with "settings." prefix)
+    let default_settings = ReadOnlyConfig::new(FileConfig::sync(zng::env::res(SETTINGS_FILE)));
+    let user_settings = FileConfig::sync(zng::env::config(SETTINGS_FILE));
+    let settings = FallbackConfig::new(user_settings, default_settings);
 
-    // create a control ref to the config, settings UI can use this to reset configs.
-    shared::env::init_config_reset(config.clone_boxed());
+    // init reset service
+    shared::env::init_config_reset(config.clone_boxed(), settings.clone_boxed());
 
-    CONFIG.load(config);
+    gui::settings::init();
 
-    // also see https://github.com/zng-ui/zng/blob/main/examples/config/src/main.rs for
-    // an example of how to split configs with an special key prefix to another file.
+    // split settings
+    CONFIG.load(
+        SwitchConfig::new()
+            .with_prefix("settings.", settings)
+            .with_prefix("", config),
+    );
 }

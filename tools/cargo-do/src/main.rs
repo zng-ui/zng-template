@@ -3,7 +3,7 @@ mod help;
 mod util;
 mod pack_deb;
 
-use std::path::Path;
+use std::{fs, path::Path};
 
 use util::*;
 
@@ -24,10 +24,21 @@ fn main() {
 /// do l10n
 ///    Scraps localization text
 fn l10n(args: Vec<String>) {
-    cmd("cargo", &["zng", "l10n", "crates/**/*.rs", "res/l10n"])
-        .args(args)
-        .status()
-        .success_or_die("cannot scrap l10n")
+    let _ = fs::remove_dir_all("res/l10n/template");
+    cmd(
+        "cargo",
+        &[
+            "zng",
+            "l10n",
+            "--package",
+            "t-app-t",
+            "--output",
+            "res/l10n",
+        ],
+    )
+    .args(args)
+    .status()
+    .success_or_die("cannot scrap l10n")
 }
 
 /// do pack <PACKAGE> [--no-build]
