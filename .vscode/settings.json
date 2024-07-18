@@ -2,6 +2,13 @@
     "rust-analyzer.diagnostics.disabled": [
         "non_snake_case" // false positive in when expr with generated #[allow(non_snake_case)]
     ],
+    // format Zng macros too
+    "rust-analyzer.rustfmt.overrideCommand": [
+        "cargo",
+        "zng",
+        "fmt",
+        "--stdin"
+    ],
     "files.associations": {
         "*.zr-sh": "shellscript",
         "*.zr-shf": "shellscript",

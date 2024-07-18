@@ -10,6 +10,7 @@ use util::*;
 fn main() {
     let (arg_cmd, args) = args();
     match arg_cmd.as_str() {
+        "fmt" => fmt(args),
         "l10n" => l10n(args),
         "pack" => pack(args),
         "build-r" => build_r(args),
@@ -19,6 +20,15 @@ fn main() {
             .status()
             .success_or_die("cannot run cargo"),
     }
+}
+
+/// do fmt
+///    Calls cargo zng fmt
+fn fmt(args: Vec<String>) {
+    cmd("cargo", &["zng", "fmt"])
+        .args(args)
+        .status()
+        .success_or_die("cannot zng fmt")
 }
 
 /// do l10n
