@@ -90,22 +90,27 @@ mod lang {
             padding = 4;
             checked_popup = wgt_fn!(|_| {
                 // drop down, presents available_langs dynamically, will probably not change with it open tho
-                popup::Popup!(presenter(available_langs(), wgt_fn!(selected, |langs: Vec<Lang>| {
-                    Stack! {
-                        toggle::selector = toggle::Selector::single(selected.clone());
+                popup::Popup!(presenter(
+                    available_langs(),
+                    wgt_fn!(selected, |langs: Vec<Lang>| {
+                        Stack! {
+                            toggle::selector = toggle::Selector::single(selected.clone());
 
-                        direction = StackDirection::top_to_bottom();
-                        children = langs.into_iter().map(|l| {
-                            // drop down item
-                            Toggle! {
-                                child = lang_text(l.clone());
-                                child_align = Align::START;
-                                value::<Lang> = l;
-                            }
-                        })
-                        .collect::<UiNodeVec>()
-                    }
-                })))
+                            direction = StackDirection::top_to_bottom();
+                            children = langs
+                                .into_iter()
+                                .map(|l| {
+                                    // drop down item
+                                    Toggle! {
+                                        child = lang_text(l.clone());
+                                        child_align = Align::START;
+                                        value::<Lang> = l;
+                                    }
+                                })
+                                .collect::<UiNodeVec>()
+                        }
+                    })
+                ))
             });
         }
     }
