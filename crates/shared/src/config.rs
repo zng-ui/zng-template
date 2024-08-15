@@ -1,3 +1,5 @@
+//! Settings configuration.
+
 use zng::config::*;
 
 // others formats are available as Cargo features
@@ -18,9 +20,7 @@ pub fn app_init() {
     let settings = FallbackConfig::new(user_settings, default_settings);
 
     // init reset service
-    shared::env::init_config_reset(config.clone_boxed(), settings.clone_boxed());
-
-    gui::settings::init();
+    crate::env::init_config_reset(config.clone_boxed(), settings.clone_boxed());
 
     // split settings
     CONFIG.load(

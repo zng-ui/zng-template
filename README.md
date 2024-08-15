@@ -39,7 +39,7 @@ The startup config is setup in [`t-app-t/src/cli.rs`](./crates/t-app-t/src/cli.r
 
 ### User Config
 
-The normal user config uses the Zng `CONFIG` service and is setup in [`t-app-t/src/config.rs`](./crates/t-app-t/src/config.rs). It uses
+The normal user config uses the Zng `CONFIG` service and is setup in [`shared/src/config.rs`](./crates/shared/src/config.rs). It uses
 JSON by default, but you can easily change it by using enabled a config format [`zng`] Cargo feature.
 
 ### Crash Handler
@@ -58,7 +58,7 @@ across all Zng crates because it provides structured spans that are easy to inte
 Localization is implemented using the [Project Fluent] format. Use the `zng::l10n::l10n!` macro to declare localizable text.
 Use `cargo do l10n` to scrap a localization template and test locales.
 
-The localization files are saved in [`res/l10n`](./res/l10n/). Localization is setup in [`t-app-t/src/l10n.rs`](./crates/t-app-t/src/l10n.rs),
+The localization files are saved in [`res/l10n`](./res/l10n/). Localization is setup in [`shared/src/l10n.rs`](./crates/shared/src/l10n.rs),
 the `L10N` service watches the files and updates text in real time, you can use this and the app's `--lang-dir` option to setup a translation
 environment that provides real time feedback as the localization files are edited.
 

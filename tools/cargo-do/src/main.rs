@@ -14,6 +14,7 @@ fn main() {
         "l10n" => l10n(args),
         "pack" => pack(args),
         "build-r" => build_r(args),
+        "build-ndk" => build_ndk(args),
         "run-r" => run_r(args),
         "help" | "--help" | "-h" | "" => help(args),
         _other => cmd("cargo", [arg_cmd].into_iter().chain(args))
@@ -70,7 +71,11 @@ fn pack(args: Vec<String>) {
         println!("skipping release build");
     } else {
         println!("building release");
-        build_r(vec![]);
+        if package == "android" {
+            build_ndk(vec!["--release".to_owned()]);
+        } else {
+            build_r(vec![]);
+        }
     }
 
     // pack
@@ -110,7 +115,7 @@ fn pack(args: Vec<String>) {
 }
 
 /// do build-r [--bleed]
-///    Compile with release profile+features
+///    Compile t-app-t release profile+features
 ///
 ///    ARGS
 ///       --bleed - Build with nightly compiler optimizations.
@@ -127,6 +132,8 @@ fn build_r(args: Vec<String>) {
         "--release",
         "--no-default-features",
         "--features=release",
+        "--package",
+        "t-app-t",
     ])
     .args(args);
 
@@ -145,7 +152,7 @@ fn build_r(args: Vec<String>) {
 }
 
 /// do run-r
-///    Compile and run the "cargo-do-run-r" pack
+///    Compile and run the "portable" pack
 fn run_r(mut args: Vec<String>) {
     let app_args = if let Some(i) = args.iter().position(|a| a == "--") {
         args.split_off(i)
@@ -165,6 +172,67 @@ fn run_r(mut args: Vec<String>) {
     let s = cmd(&path, app_args)
         .status()
         .unwrap_or_die("cannot run app");
+    if !s.success() {
+        std::process::exit(s.code().unwrap_or(1));
+    }
+}
+
+/// do build-ndk [--platform API-LEVEL] [--target TRIPLE] [--release]
+///    Compile t-app-t-mobile for Android using cargo-ndk
+///
+///    Default --platform is the latest installed
+///    Default --target is all android targets installed
+fn build_ndk(args: Vec<String>) {
+    let (_, options, _) = split_args(
+        &args,
+        &[],
+        &["--release", "--platform", "--target"],
+        false,
+        false,
+    );
+
+    let mut args = vec![
+        "ndk",
+        "--manifest-path",
+        "crates/t-app-t-mobile/Cargo.toml",
+        "--output-dir",
+        "target/build-ndk",
+    ];
+    if let Some(p) = options.get("--platform") {
+        args.extend_from_slice(&["--platform", p[0]]);
+    }
+
+    let installed_targets;
+    if let Some(t) = options.get("--target") {
+        for t in t {
+            args.extend_from_slice(&["--target", t]);
+        }
+    } else {
+        installed_targets = cmd("rustup", &["target", "list", "--installed"])
+            .output()
+            .success_or_die("cannot get installed targets");
+
+        let mut any = false;
+        for line in installed_targets.lines() {
+            if line.contains("-android") {
+                any = true;
+                args.extend_from_slice(&["--target", line]);
+            }
+        }
+
+        if !any {
+            die!("no android target installed, rustup target add aarch64-linux-android")
+        }
+    }
+
+    args.extend_from_slice(&["build"]);
+    if options.contains_key("--release") {
+        args.push("--release");
+    }
+
+    let s = cmd("cargo", &args)
+        .status()
+        .unwrap_or_die("cannot run cargo-ndk");
     if !s.success() {
         std::process::exit(s.code().unwrap_or(1));
     }

@@ -1,0 +1,2 @@
+# output of 'cargo do build-ndk'
+target/cargo-ndk
