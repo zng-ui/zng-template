@@ -1,6 +1,7 @@
 mod help;
 #[macro_use]
 mod util;
+mod pack_android;
 mod pack_deb;
 
 use std::{fs, path::Path};
@@ -65,6 +66,9 @@ fn pack(args: Vec<String>) {
 
     if package == "deb" && options.contains_key("--changelog") {
         return pack_deb::changelog();
+    }
+    if package == "android" && options.contains_key("--locales") {
+        return pack_android::locales();
     }
 
     if options.contains_key("--no-build") {
