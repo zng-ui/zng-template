@@ -7,6 +7,7 @@
         android:targetSdkVersion="29" />
 
     <application android:label="${ZR_APP}"
+        android:icon="@mipmap/icon"
         android:hasCode="false"
         android:debuggable="true">
         <!--zng feature "android_native_activity" expects NativeActivity base-->
