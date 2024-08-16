@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="${ZR_QUALIFIER}.${ZR_PKG_NAME}"
+    package="${ZR_QUALIFIER:k}.${ZR_ORG:k}.${ZR_CRATE_NAME}"
     android:versionName="${ZR_VERSION}"
     android:versionCode="1">    <!--increment versionCode for each APK release-->
 
