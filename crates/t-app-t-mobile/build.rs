@@ -14,8 +14,8 @@ fn android() {
         let output_path = PathBuf::from(output_path);
         // cargo ndk can set incorrect relative paths, absolutize --output-dir
         assert!(
-            output_path.is_dir(),
-            "{} is not a dir",
+            output_path.exists(),
+            "--output-dir {} not found, use absolute path",
             output_path.display()
         );
 
