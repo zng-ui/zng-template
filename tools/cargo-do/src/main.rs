@@ -183,20 +183,27 @@ fn run_r(mut args: Vec<String>) {
 ///    Default --platform is the latest installed
 ///    Default --target is all android targets installed
 fn build_ndk(args: Vec<String>) {
-    let (_, options, _) = split_args(
+    let (_, options, unknown_args) = split_args(
         &args,
         &[],
         &["--release", "--platform", "--target"],
         false,
-        false,
+        true,
     );
+
+    // avoid relative path, see issue https://github.com/bbqsrc/cargo-ndk/issues/139
+    let output_dir = std::env::current_dir()
+        .unwrap()
+        .join("target/build-ndk")
+        .display()
+        .to_string();
 
     let mut args = vec![
         "ndk",
         "--manifest-path",
         "crates/t-app-t-mobile/Cargo.toml",
         "--output-dir",
-        "target/build-ndk",
+        &output_dir,
     ];
     if let Some(p) = options.get("--platform") {
         args.extend_from_slice(&["--platform", p[0]]);
@@ -227,12 +234,20 @@ fn build_ndk(args: Vec<String>) {
 
     args.extend_from_slice(&["build"]);
     if options.contains_key("--release") {
-        args.push("--release");
+        args.extend_from_slice(&["--release", "--no-default-features", "--features=release"]);
     }
+    args.extend_from_slice(&unknown_args);
 
-    let s = cmd("cargo", &args)
-        .status()
-        .unwrap_or_die("cannot run cargo-ndk");
+    let mut cmd = cmd("cargo", &args);
+    // args required to build linkme
+    cmd.env(
+        "RUSTFLAGS",
+        format!(
+            "{} -Clink-arg=-z -Clink-arg=nostart-stop-gc",
+            std::env::var("RUSTFLAGS").unwrap_or_default()
+        ),
+    );
+    let s = cmd.status().unwrap_or_die("cannot run cargo-ndk");
     if !s.success() {
         std::process::exit(s.code().unwrap_or(1));
     }
