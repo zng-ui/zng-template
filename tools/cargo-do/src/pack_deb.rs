@@ -17,7 +17,9 @@ pub fn depends() -> String {
     .ok_or_die("cannot create temp dir");
 
     // call pkg-shlibdeps
-    let exe = Path::new("target/release/t-app-t").canonicalize().unwrap_or_die("no release build");
+    let exe = Path::new("target/release/t-app-t")
+        .canonicalize()
+        .unwrap_or_die("no release build");
     let exe = exe.to_string_lossy();
     let stdout = cmd("dpkg-shlibdeps", &["-O", &exe])
         .current_dir(&temp)
