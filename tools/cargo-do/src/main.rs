@@ -195,19 +195,12 @@ fn build_ndk(args: Vec<String>) {
         true,
     );
 
-    // avoid relative path, see issue https://github.com/bbqsrc/cargo-ndk/issues/139
-    let output_dir = std::env::current_dir()
-        .unwrap()
-        .join("target/build-ndk")
-        .display()
-        .to_string();
-
     let mut args = vec![
         "ndk",
         "--manifest-path",
         "crates/t-app-t-mobile/Cargo.toml",
         "--output-dir",
-        &output_dir,
+        "target/build-ndk",
     ];
     if let Some(p) = options.get("--platform") {
         args.extend_from_slice(&["--platform", p[0]]);
