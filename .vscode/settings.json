@@ -15,6 +15,7 @@
         "*.zr-copy": "ini",
         "*.zr-glob": "ini",
         "*.md.zr-rp": "markdown",
+        "*.xml.zr-rp": "xml",
         "*.iss.zr-rp": "innosetup",
         "*.plist.zr-rp": "plist",
         "**/DEBIAN/control.zr-rp": "debian-control",

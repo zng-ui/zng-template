@@ -30,3 +30,9 @@ Builds a macOS .app folder and a .dmg image file from it.
 **windows**
 
 Builds an InnoSetup installer.
+
+**android**
+
+Builds an Android APK. 
+
+Note that `apk/res/` is for Android specific resources, Zng resources are placed in `assets/res/`.

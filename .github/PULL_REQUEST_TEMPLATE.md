@@ -7,3 +7,4 @@
 - [ ] Windows portable
 - [ ] Windows setup
 - [ ] macOS dmg install
+- [ ] Android apk install

@@ -112,31 +112,33 @@ pub fn split_args<'a, S: AsRef<str>>(
     option_names: &'_ [&str],
     allow_no_positional: bool,
     allow_unknown_options: bool,
-) -> (&'a [S], HashMap<&'a str, &'a str>, Vec<&'a str>) {
+) -> (&'a [S], HashMap<&'a str, Vec<&'a str>>, Vec<&'a str>) {
     if args.is_empty() {
         return (args, HashMap::new(), vec![]);
     }
 
     let (positional, options) = args.split_at(
         args.iter()
-            .position(|a| !a.as_ref().starts_with('-'))
-            .unwrap_or(args.len() - 1)
-            + 1,
+            .position(|a| a.as_ref().starts_with('-'))
+            .unwrap_or(args.len()),
     );
+
     if positional.len() != arg_names.len() && !(positional.is_empty() && allow_no_positional) {
-        die!("requested args: {}", arg_names.join(", "));
+        die!("unexpected args, expected: {}", arg_names.join(", "));
     }
 
-    let mut options_map = HashMap::new();
+    let mut options_map = HashMap::<_, Vec<_>>::new();
     let mut unknowns = vec![];
 
     let mut last = "";
+    let mut last_unknown = false;
     for opt in options {
         let opt = opt.as_ref();
         if opt.starts_with('-') {
             let (key, val) = opt.split_once('=').unwrap_or((opt, ""));
 
-            if !option_names.contains(&key) {
+            last_unknown = !option_names.contains(&key);
+            if last_unknown {
                 if allow_unknown_options {
                     unknowns.push(opt);
                 } else {
@@ -144,7 +146,7 @@ pub fn split_args<'a, S: AsRef<str>>(
                 }
             }
 
-            options_map.insert(key, val);
+            options_map.entry(key).or_default().push(val);
             if val.is_empty() {
                 last = key;
             }
@@ -152,7 +154,10 @@ pub fn split_args<'a, S: AsRef<str>>(
         if last.is_empty() {
             die!("unexpected value '{opt}'");
         } else {
-            *options_map.get_mut(last).unwrap() = opt;
+            if last_unknown {
+                unknowns.push(opt);
+            }
+            options_map.entry(last).or_default().push(opt);
         }
     }
 

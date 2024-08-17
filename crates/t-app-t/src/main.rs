@@ -2,9 +2,7 @@
 #![cfg_attr(feature = "release", windows_subsystem = "windows")]
 
 mod cli;
-mod config;
 mod crash;
-mod l10n;
 mod log;
 
 use zng::prelude::*;
@@ -36,10 +34,12 @@ fn app_process() {
     zng::third_party::LICENSES.register(shared::res::licenses);
 
     // load/watch Fluent localization files and set initial lang.
-    l10n::app_init();
+    shared::l10n::app_init();
 
     // load/watch user config files.
-    config::app_init();
+    shared::config::app_init();
+    // register settings metadata providers.
+    gui::settings::init();
 
     // run and open main window
     app.run_window(async { gui::primary::window().await })
