@@ -167,7 +167,8 @@ jobs:
           path: ./test-app/target/pack/macos/test-app.dmg
   pack-android:
     needs: check-new
-    runs-on: ubuntu-latest
+    # macos runner is faster (zng ci tests ubuntu, windows)
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -199,7 +200,7 @@ jobs:
           path: ./test-app/target/pack/android/test-app.apk
 
   test-all:
-    needs: [pack-ubuntu, pack-macos, pack-windows]
+    needs: [pack-ubuntu, pack-macos, pack-windows, pack-android]
     runs-on: ubuntu-latest
     steps:
       - run: exit 0
