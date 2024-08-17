@@ -14,7 +14,7 @@
         <!--configChanges value enables window resize events-->
         <activity android:name="android.app.NativeActivity"
             android:label="${ZR_APP}"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden">
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode">
             <!--name of the compiled lib, without prefix and suffix, that is "lib{t_app_t_mobile}.so"-->
             <meta-data android:name="android.app.lib_name"
                 android:value="t_app_t_mobile" />
