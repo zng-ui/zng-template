@@ -44,7 +44,6 @@ pub(crate) fn locales() {
         }
     }
 }
-
 fn write_dummy(apk_res_value: PathBuf) {
     fs::create_dir(&apk_res_value).unwrap_or_die("cannot create value dir");
     let dummy = apk_res_value.join("strings.xml");
