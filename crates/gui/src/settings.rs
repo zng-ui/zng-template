@@ -107,7 +107,7 @@ mod lang {
                                         value::<Lang> = l;
                                     }
                                 })
-                                .collect::<UiNodeVec>()
+                                .collect::<UiVec>()
                         }
                     })
                 ))
