@@ -4,7 +4,7 @@ mod util;
 mod pack_android;
 mod pack_deb;
 
-use std::{fs, path::Path};
+use std::path::Path;
 
 use util::*;
 
@@ -37,21 +37,6 @@ fn fmt(args: Vec<String>) {
 /// do l10n
 ///    Scraps localization text
 fn l10n(args: Vec<String>) {
-    // cleanup old deps
-    for lang in std::fs::read_dir("res/l10n")
-        .ok()
-        .into_iter()
-        .flatten()
-        .filter_map(|d| Some(d.ok()?.path()))
-    {
-        let _ = std::fs::remove_dir_all(lang.join("deps"));
-    }
-
-    // cleanup template
-    if args.is_empty() {
-        let _ = fs::remove_dir_all("res/l10n/template");
-    }
-
     cmd(
         "cargo",
         &[
@@ -61,6 +46,7 @@ fn l10n(args: Vec<String>) {
             "t-app-t",
             "--output",
             "res/l10n",
+            "--clean",
         ],
     )
     .args(args)
