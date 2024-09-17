@@ -294,7 +294,8 @@ fn update(args: Vec<String>) {
         .success_or_die("cargo update failed");
 
     if args.is_empty() {
-        l10n(vec!["--no-local".to_owned()]);
+        // update l10n resources from external dependencies
+        l10n(vec!["--no-local".to_owned(), "--no-pkg".to_owned()]);
     }
 }
 
