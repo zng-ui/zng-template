@@ -17,6 +17,7 @@ fn main() {
         "build-r" => build_r(args),
         "build-ndk" => build_ndk(args),
         "run-r" => run_r(args),
+        "update" => update(args),
         "help" | "--help" | "-h" | "" => help(args),
         _other => cmd("cargo", [arg_cmd].into_iter().chain(args))
             .status()
@@ -36,7 +37,21 @@ fn fmt(args: Vec<String>) {
 /// do l10n
 ///    Scraps localization text
 fn l10n(args: Vec<String>) {
-    let _ = fs::remove_dir_all("res/l10n/template");
+    // cleanup old deps
+    for lang in std::fs::read_dir("res/l10n")
+        .ok()
+        .into_iter()
+        .flatten()
+        .filter_map(|d| Some(d.ok()?.path()))
+    {
+        let _ = std::fs::remove_dir_all(lang.join("deps"));
+    }
+
+    // cleanup template
+    if args.is_empty() {
+        let _ = fs::remove_dir_all("res/l10n/template");
+    }
+
     cmd(
         "cargo",
         &[
@@ -118,14 +133,16 @@ fn pack(args: Vec<String>) {
         .success_or_die("cannot package, failed cargo zng res");
 }
 
-/// do build-r [--bleed]
+/// do build-r [--bleed] [--dev]
 ///    Compile t-app-t release profile+features
 ///
 ///    ARGS
 ///       --bleed - Build with nightly compiler optimizations.
+///       --dev   - Build with dev profile and release features.
 fn build_r(args: Vec<String>) {
-    let (_, options, args) = split_args(&args, &[], &["--bleed"], true, true);
+    let (_, options, args) = split_args(&args, &[], &["--bleed", "--dev"], true, true);
     let bleed = options.contains_key("--bleed");
+    let dev = options.contains_key("--dev");
 
     let mut cmd = std::process::Command::new("cargo");
     if bleed {
@@ -133,7 +150,11 @@ fn build_r(args: Vec<String>) {
     }
     cmd.args([
         "build",
-        "--release",
+        if dev {
+            "--profile=dev"
+        } else {
+            "--profile=release"
+        },
         "--no-default-features",
         "--features=release",
         "--package",
@@ -142,7 +163,7 @@ fn build_r(args: Vec<String>) {
     .args(args);
 
     if bleed {
-        // -Zshare-generics - halves binary size
+        // -Zshare-generics               - halves binary size
         // -C link-args=-znostart-stop-gc - Fixes build error
         cmd.env(
             "RUSTFLAGS",
@@ -181,16 +202,21 @@ fn run_r(mut args: Vec<String>) {
     }
 }
 
-/// do build-ndk [--platform API-LEVEL] [--target TRIPLE] [--release]
+/// do build-ndk [--platform API-LEVEL] [--target TRIPLE] [--release] [--dev]
 ///    Compile t-app-t-mobile for Android using cargo-ndk
 ///
 ///    Default --platform is the latest installed
 ///    Default --target is all android targets installed
+///    Default profile is 'dev'
+///
+///    ARGS
+///       --release - Build with release profile and features
+///       --dev     - Build with dev profile and release features
 fn build_ndk(args: Vec<String>) {
     let (_, options, unknown_args) = split_args(
         &args,
         &[],
-        &["--release", "--platform", "--target"],
+        &["--release", "--dev", "--platform", "--target"],
         false,
         true,
     );
@@ -239,6 +265,8 @@ fn build_ndk(args: Vec<String>) {
     args.extend_from_slice(&["build"]);
     if options.contains_key("--release") {
         args.extend_from_slice(&["--release", "--no-default-features", "--features=release"]);
+    } else if options.contains_key("--dev") {
+        args.extend_from_slice(&["--no-default-features", "--features=release"]);
     }
     args.extend_from_slice(&unknown_args);
 
@@ -254,6 +282,19 @@ fn build_ndk(args: Vec<String>) {
     let s = cmd.status().unwrap_or_die("cannot run cargo-ndk");
     if !s.success() {
         std::process::exit(s.code().unwrap_or(1));
+    }
+}
+
+/// do update
+///    Update dependencies and localization from dependencies
+fn update(args: Vec<String>) {
+    cmd("cargo", &["update"])
+        .args(&args)
+        .status()
+        .success_or_die("cargo update failed");
+
+    if args.is_empty() {
+        l10n(vec!["--no-local".to_owned()]);
     }
 }
 
