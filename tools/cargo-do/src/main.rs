@@ -162,8 +162,11 @@ fn build_r(args: Vec<String>) {
     cmd.status().success_or_die("release build failed");
 }
 
-/// do run-r
+/// do run-r [--dev]
 ///    Compile and run the "portable" pack
+///
+///    ARGS
+///       --dev   - Build with dev profile and release features.
 fn run_r(mut args: Vec<String>) {
     let app_args = if let Some(i) = args.iter().position(|a| a == "--") {
         args.split_off(i)
