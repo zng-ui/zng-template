@@ -31,6 +31,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - run: cargo do version --verbose
       - run: cargo do fmt --check
+      - run: pkg-config --exists fontconfig
       - run: cargo do check
       - run: cargo clean
   check-new:
