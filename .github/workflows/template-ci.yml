@@ -28,6 +28,7 @@ jobs:
         uses: baptiste0928/cargo-install@v3
         with:
           crate: cargo-zng
+      - run: sudo apt install libfontconfig1-dev
       - uses: Swatinem/rust-cache@v2
       - run: cargo do version --verbose
       - run: cargo do fmt --check
@@ -50,6 +51,7 @@ jobs:
         with:
           crate: cargo-zng
           git: https://github.com/zng-ui/zng
+      - run: sudo apt install libfontconfig1-dev
       - uses: Swatinem/rust-cache@v2
       - name: cargo zng new
         #  /?/ to test that the name is cleaned
@@ -77,6 +79,7 @@ jobs:
       - run: sudo apt-get install -y help2man
       - run: sudo apt-get install -y desktop-file-utils
       - run: sudo apt-get install -y lintian
+      - run: sudo apt install libfontconfig1-dev
       - uses: Swatinem/rust-cache@v2
       - name: cargo zng new
         run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/" -s"qualifier=test"
