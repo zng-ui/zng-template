@@ -53,11 +53,6 @@ pub mod lang {
         };
         let app_lang = L10N.app_lang();
         actual_lang.set_bind(&app_lang).perm();
-        app_lang
-            .hook(move |_| {
-                let _hold = &actual_lang;
-                true
-            })
-            .perm();
+        app_lang.hold(actual_lang).perm();
     }
 }
