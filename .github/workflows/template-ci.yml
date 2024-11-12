@@ -76,6 +76,7 @@ jobs:
         with:
           crate: cargo-zng
           git: https://github.com/zng-ui/zng
+      - run: sudo apt-get update
       - run: sudo apt-get install -y help2man
       - run: sudo apt-get install -y desktop-file-utils
       - run: sudo apt-get install -y lintian
