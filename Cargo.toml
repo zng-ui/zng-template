@@ -11,7 +11,7 @@ default-members = ["crates/*"]
 lto = "fat"
 codegen-units = 1
 
-# shared dependencies set version in the workspce
+# shared dependencies set version in the workspace
 [workspace.dependencies]
-zng = "0.12"
+zng = "0.13"
 tracing = "0.1"
