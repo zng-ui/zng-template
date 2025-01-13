@@ -14,6 +14,14 @@ zng-tp-licenses = { version = "0.2", features = ["build"], optional = true }
 
 [features]
 default = ["dev"]
-dev = []
-# Collect and bundle crate licenses.
-release = ["dep:zng-tp-licenses"]
+dev = [
+    # enable all default features in dev builds
+    "zng/default",
+]
+release = [
+    # Collect and bundle crate licenses
+    "dep:zng-tp-licenses",
+    # enable default features in release builds, 
+    # you can replace this with only features used to optimize binary size
+    "zng/default",
+]

@@ -28,4 +28,31 @@ pub fn app_init() {
             .with_prefix("settings.", settings)
             .with_prefix("", config),
     );
+
+    lang::init();
+}
+
+/// Lang config
+pub mod lang {
+    use zng::{l10n::Lang, prelude::*};
+
+    pub const CONFIG_KEY: &str = "settings.lang";
+
+    /// Config placeholder for [`L10N::sys_lang`].
+    pub const SYSTEM_LANG: Lang = lang!("system");
+
+    /// Bind the `L10n.app_lang` to the setting.
+    pub(crate) fn init() {
+        let actual_lang = expr_var! {
+            let lang = #{CONFIG.get(CONFIG_KEY, SYSTEM_LANG)};
+            if lang == &SYSTEM_LANG {
+                #{L10N.sys_lang()}.clone()
+            } else {
+                lang.clone().into()
+            }
+        };
+        let app_lang = L10N.app_lang();
+        actual_lang.set_bind(&app_lang).perm();
+        app_lang.hold(actual_lang).perm();
+    }
 }

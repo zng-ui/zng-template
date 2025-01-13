@@ -11,7 +11,8 @@ default-members = ["crates/*"]
 lto = "fat"
 codegen-units = 1
 
-# shared dependencies set version in the workspce
+# set versions for dependencies used by multiple workspace crates
+# features are defined on each crate, per build profile
 [workspace.dependencies]
-zng = "0.12"
+zng = { version = "0.13", default-features = false }
 tracing = "0.1"

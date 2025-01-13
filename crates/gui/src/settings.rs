@@ -13,13 +13,12 @@ pub fn init() {
 
 // l10n-## Lang
 mod lang {
+    use super::*;
+    use shared::config::lang::{CONFIG_KEY, SYSTEM_LANG};
     use widget::node::presenter;
     use zng::l10n::Lang;
 
-    use super::*;
-
     pub const CATEGORY_ID: &str = "lang";
-    pub const CONFIG_KEY: &str = "setting.lang";
 
     pub(super) fn register_category(b: &mut CategoriesBuilder) {
         b.entry(CATEGORY_ID, |b| {
@@ -36,27 +35,7 @@ mod lang {
             b.editor_fn(WidgetFn::new(editor));
             b.reset(shared::env::settings_resetter(), "settings.")
         });
-
-        let actual_lang = expr_var! {
-            let lang = #{CONFIG.get(CONFIG_KEY, SYSTEM_LANG)};
-            if lang == &SYSTEM_LANG {
-                #{L10N.sys_lang()}.clone()
-            } else {
-                lang.clone().into()
-            }
-        };
-        let app_lang = L10N.app_lang();
-        actual_lang.set_bind(&app_lang).perm();
-        app_lang
-            .hook(move |_| {
-                let _hold = &actual_lang;
-                true
-            })
-            .perm();
     }
-
-    /// Config placeholder for [`L10N::sys_lang`].
-    const SYSTEM_LANG: Lang = lang!("system");
 
     /// Langs that have local translations.
     fn available_langs() -> impl Var<Vec<Lang>> {
