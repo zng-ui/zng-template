@@ -28,7 +28,24 @@ tracing-appender = "0.2"
 default = ["dev"]
 
 # default features in debug builds
-dev = ["shared/dev", "gui/dev"]
+dev = [
+    "shared/dev", 
+    "gui/dev",
+    # `shared` dependency enables "zng/default" for dev builds
+]
 
 # default features in release builds (using `cargo-do`)
-release = ["shared/release", "gui/release"]
+release = [
+    "shared/release", 
+    "gui/release",
+    # `shared`dependency enables "zng/default" for release builds
+    # you can set only the used features here to optimize binary size
+]
+
+# default features in release builds optimized for size (using `cargo-do`)
+release-z = [
+    "release",
+    # use more dynamic dispatch to avoid some generics bloat
+    "zng/dyn_node",
+    "zng/dyn_closure",
+]
