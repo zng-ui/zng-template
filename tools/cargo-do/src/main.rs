@@ -59,7 +59,7 @@ fn l10n(args: Vec<String>) {
 ///
 ///    ARGS
 ///       <PACKAGE>  - Name of a pack/{PACKAGE}
-///       --no-build - Skips release build
+///       --no-build - Skips release build, you must call 'do build-r' before
 fn pack(args: Vec<String>) {
     // parse args
     let (package, options, args) = split_args(&args, &["PACKAGE"], &["--no-build"], false, true);
@@ -119,16 +119,18 @@ fn pack(args: Vec<String>) {
         .success_or_die("cannot package, failed cargo zng res");
 }
 
-/// do build-r [--bleed] [--dev]
+/// do build-r [-z] [--bleed] [--dev]
 ///    Compile t-app-t release profile+features
 ///
 ///    ARGS
+///       -z      - Optimize release for binary size
 ///       --bleed - Build with nightly compiler optimizations.
 ///       --dev   - Build with dev profile and release features.
 fn build_r(args: Vec<String>) {
-    let (_, options, args) = split_args(&args, &[], &["--bleed", "--dev"], true, true);
+    let (_, options, args) = split_args(&args, &[], &["-z", "--bleed", "--dev"], true, true);
     let bleed = options.contains_key("--bleed");
     let dev = options.contains_key("--dev");
+    let z = options.contains_key("-z");
 
     let mut cmd = std::process::Command::new("cargo");
     if bleed {
@@ -142,11 +144,19 @@ fn build_r(args: Vec<String>) {
             "--profile=release"
         },
         "--no-default-features",
-        "--features=release",
+        if z {
+            "--features=release-z"
+        } else {
+            "--features=release"
+        },
         "--package",
         "t-app-t",
     ])
     .args(args);
+
+    if z {
+        cmd.env("CARGO_PROFILE_RELEASE_OPT_LEVEL", "z");
+    }
 
     if bleed {
         // -Zshare-generics               - halves binary size
@@ -191,7 +201,7 @@ fn run_r(mut args: Vec<String>) {
     }
 }
 
-/// do build-ndk [--platform API-LEVEL] [--target TRIPLE] [--release] [--dev]
+/// do build-ndk [--platform API-LEVEL] [--target TRIPLE] [--release] [-z] [--dev]
 ///    Compile t-app-t-mobile for Android using cargo-ndk
 ///
 ///    Default --platform is the latest installed
@@ -199,13 +209,14 @@ fn run_r(mut args: Vec<String>) {
 ///    Default profile is 'dev'
 ///
 ///    ARGS
-///       --release - Build with release profile and features
-///       --dev     - Build with dev profile and release features
+///       --release    - Build with release profile and features
+///       --release -z - Build with release profile and features, and optimize for size
+///       --dev        - Build with dev profile and release features
 fn build_ndk(args: Vec<String>) {
     let (_, options, unknown_args) = split_args(
         &args,
         &[],
-        &["--release", "--dev", "--platform", "--target"],
+        &["--release", "-z", "--dev", "--platform", "--target"],
         false,
         true,
     );
@@ -251,11 +262,18 @@ fn build_ndk(args: Vec<String>) {
         }
     }
 
+    let z = options.contains_key("-z");
+    let feature = if z {
+        "--features=release-z"
+    } else {
+        "--features=release"
+    };
+
     args.extend_from_slice(&["build"]);
     if options.contains_key("--release") {
-        args.extend_from_slice(&["--release", "--no-default-features", "--features=release"]);
+        args.extend_from_slice(&["--release", "--no-default-features", feature]);
     } else if options.contains_key("--dev") {
-        args.extend_from_slice(&["--no-default-features", "--features=release"]);
+        args.extend_from_slice(&["--no-default-features", feature]);
     }
     args.extend_from_slice(&unknown_args);
 
@@ -268,6 +286,10 @@ fn build_ndk(args: Vec<String>) {
             std::env::var("RUSTFLAGS").unwrap_or_default()
         ),
     );
+    // optimize for size
+    if z {
+        cmd.env("CARGO_PROFILE_RELEASE_OPT_LEVEL", "z");
+    }
     if options.contains_key("--release") {
         // LTO "fat" have caused miscompilation for "aarch64-linux-android"
         // see https://github.com/zng-ui/zng/issues/488 for details.

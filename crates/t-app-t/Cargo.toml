@@ -12,7 +12,7 @@ qualifier = "{{qualifier}}"
 shared = { path = "../shared" }
 
 # gui
-zng = { workspace = true, features = ["view_prebuilt"] }
+zng = { workspace = true }
 gui = { path = "../gui" }
 rfd = "0.14"
 
@@ -33,7 +33,29 @@ winresource = "0.1"
 default = ["dev"]
 
 # default features in debug builds
-dev = ["shared/dev", "gui/dev"]
+dev = [
+    "shared/dev", 
+    "gui/dev",
+    # use prebuilt view in dev builds for better perf
+    "zng/view_prebuilt",
+    # `shared` dependency enables "zng/default" for dev builds
+]
 
 # default features in release builds (using `cargo-do`)
-release = ["shared/release", "gui/release"]
+release = [
+    "shared/release", 
+    "gui/release",
+    # use prebuilt view in release builds to avoid installing external dependencies
+    # replace with "zng/view" to optimize binary size
+    "zng/view_prebuilt",
+    # `shared`dependency enables "zng/default" for release builds
+    # you can set only the used features here to optimize binary size
+]
+
+# default features in release builds optimized for size (using `cargo-do`)
+release-z = [
+    "release",
+    # use more dynamic dispatch to avoid some generics bloat
+    "zng/dyn_node",
+    "zng/dyn_closure",
+]
