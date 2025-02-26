@@ -3,7 +3,7 @@
 use std::{fs, path::PathBuf};
 
 use tracing_subscriber::{prelude::*, *};
-use zng::text::{formatx, Txt};
+use zng::text::{Txt, formatx};
 
 // called by cli::run as soon as possible
 pub fn init(
