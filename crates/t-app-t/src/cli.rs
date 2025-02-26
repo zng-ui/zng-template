@@ -1,7 +1,7 @@
 use std::{fs, io, path::PathBuf};
 
 use clap::*;
-use zng::text::{formatx, Txt};
+use zng::text::{Txt, formatx};
 
 // called on `zng::env::init!`
 zng::env::on_process_start!(|_| {
