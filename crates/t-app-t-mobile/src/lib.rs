@@ -3,7 +3,7 @@ mod android {
     use zng::view_process::default::*;
 
     // Android entry point.
-    #[no_mangle]
+    #[unsafe(no_mangle)]
     fn android_main(app: android::AndroidApp) {
         zng::env::init!();
 
