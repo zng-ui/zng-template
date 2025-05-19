@@ -8,9 +8,9 @@ zng.workspace = true
 tracing.workspace = true
 
 # dependency license collection & bundling in builds with `features=bundle_licenses`.
-zng-tp-licenses = { version = "0.3", features = ["bundle"], optional = true }
+zng-tp-licenses = { version = "0.4", features = ["bundle"], optional = true }
 [build-dependencies]
-zng-tp-licenses = { version = "0.3", features = ["build"], optional = true }
+zng-tp-licenses = { version = "0.4", features = ["build"], optional = true }
 
 [features]
 default = ["dev"]
