@@ -28,7 +28,7 @@ DisableProgramGroupPage=false
 
 ArchitecturesInstallIn64BitMode=x64os
 DefaultDirName={commonpf}\${ZR_PKG_NAME}
-
+git
 RestartIfNeededByRun=no
 
 OutputDir=..
@@ -41,7 +41,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 [Icons]
 Name: {group}\${ZR_APP}; Filename: {app}\bin\${ZR_APP:k}.exe; WorkingDir: {app}; IconIndex: 0
-Name: {commondesktop}\${ZR_APP}; Filename: {app}\bin\${ZR_APP:k}.exe; WorkingDir: {app}; IconIndex: 0; Tasks: desktopicon
+Name: {commondesktop}\${ZR_APP:f}; Filename: {app}\bin\${ZR_APP:k}.exe; WorkingDir: {app}; IconIndex: 0; Tasks: desktopicon
 
 [Run]
 Filename: {app}\bin\${ZR_PKG_NAME}.exe; Flags: postinstall nowait
