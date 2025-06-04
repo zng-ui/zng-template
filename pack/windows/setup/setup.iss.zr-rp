@@ -28,7 +28,6 @@ DisableProgramGroupPage=false
 
 ArchitecturesInstallIn64BitMode=x64os
 DefaultDirName={commonpf}\${ZR_PKG_NAME}
-git
 RestartIfNeededByRun=no
 
 OutputDir=..
@@ -40,7 +39,7 @@ OutputBaseFilename=${ZR_PKG_NAME}-${ZR_VERSION}
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Check: not WizardSilent
 
 [Icons]
-Name: {group}\${ZR_APP}; Filename: {app}\bin\${ZR_APP:k}.exe; WorkingDir: {app}; IconIndex: 0
+Name: {group}\${ZR_APP:f}; Filename: {app}\bin\${ZR_APP:k}.exe; WorkingDir: {app}; IconIndex: 0
 Name: {commondesktop}\${ZR_APP:f}; Filename: {app}\bin\${ZR_APP:k}.exe; WorkingDir: {app}; IconIndex: 0; Tasks: desktopicon
 
 [Run]
