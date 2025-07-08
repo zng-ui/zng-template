@@ -1,6 +1,6 @@
 use zng::{config::settings::*, prelude::*};
 
-// called by t-app-t/config.rs
+// called by t-app-t/main.rs
 pub fn init() {
     SETTINGS.register_categories(|b| {
         lang::register_category(b);

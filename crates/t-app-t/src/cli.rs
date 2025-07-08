@@ -28,7 +28,7 @@ struct Cli {
     env_reset: bool,
 
     /// Move config files to new path.
-    #[arg(long)]
+    #[arg(long, value_name = "DIR")]
     config_migrate: Option<PathBuf>,
 
     /// Remove cache files.
@@ -36,7 +36,7 @@ struct Cli {
     cache_clear: bool,
 
     /// Move cache files to new path.
-    #[arg(long)]
+    #[arg(long, value_name = "DIR")]
     cache_migrate: Option<PathBuf>,
 
     /// Log filter
@@ -52,14 +52,19 @@ struct Cli {
         long,
         env="T_APP_T_LOG",
         default_value_t = {"info".to_owned()},
-        value_names = &["FILTER"],
+        value_name = "FILTER",
     )]
     pub log: String,
 
     /// Log files directory
     ///
     /// Set to empty to not save logs
-    #[clap(long, env = "T_APP_T_LOG_DIR", value_names = &["DIR"], default_value = "{cache}/log")]
+    #[clap(
+        long,
+        env = "T_APP_T_LOG_DIR",
+        value_name = "DIR",
+        default_value = "{cache}/log"
+    )]
     pub log_dir: Option<PathBuf>,
 
     /// Log file rotation rolling frequency
@@ -68,7 +73,7 @@ struct Cli {
         env="T_APP_T_LOG_ROTATION",
         default_value = "daily",
         value_parser = builder::PossibleValuesParser::new(["daily", "hourly", "minutely", "never"]),
-        value_names = &["ROTATION"],
+        value_name = "ROTATION",
     )]
     pub log_rotation: String,
 
