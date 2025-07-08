@@ -51,8 +51,7 @@ lazy_static! {
         panic!("shared::env::args not inited, only use after t_app_t::cli");
 }
 
-// called by t-app-t/config.rs
-pub fn init_config_reset(
+pub(crate) fn init_config_reset(
     config_reset: Box<dyn FallbackConfigReset>,
     settings_reset: Box<dyn FallbackConfigReset>,
 ) {
