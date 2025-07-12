@@ -1,7 +1,7 @@
 use zng::prelude::*;
 
 pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowRoot {
-    // l10n-crash_dialog-### Crash Dialog
+    // l10n-## Crash Dialog
 
     Window! {
         title = l10n!(

@@ -1,4 +1,4 @@
-### Crash Dialog
+## Crash Dialog
 
 debug-dialog = Show debug crash dialog
 
