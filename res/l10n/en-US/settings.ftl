@@ -1,4 +1,3 @@
-
 ## Lang
 
 # Label of the category lang
