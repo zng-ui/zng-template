@@ -2,6 +2,6 @@
 
 greetings = Olá {{app}}!
 
-menu-about = Sobre
-
-menu-edit = Editar
+menu =
+    .about = Sobre
+    .edit = Editar

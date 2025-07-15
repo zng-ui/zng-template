@@ -17,11 +17,11 @@ pub async fn window() -> window::WindowRoot {
 fn menu() -> impl UiNode {
     Menu!(ui_vec![
         SubMenu!(
-            l10n!("primary/menu-edit", "Edit"),
+            l10n!("primary/menu.edit", "Edit"),
             ui_vec![Button!(zng::config::settings::SETTINGS_CMD)]
         ),
         SubMenu!(
-            l10n!("primary/menu-about", "About"),
+            l10n!("primary/menu.about", "About"),
             ui_vec![
                 #[cfg(feature = "dev")]
                 Button!(zng::window::cmd::INSPECT_CMD.scoped(WINDOW.id())),
