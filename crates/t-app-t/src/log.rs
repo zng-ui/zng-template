@@ -42,7 +42,10 @@ pub fn init(
                         "hourly" => tracing_appender::rolling::Rotation::HOURLY,
                         "minutely" => tracing_appender::rolling::Rotation::MINUTELY,
                         "never" => tracing_appender::rolling::Rotation::NEVER,
-                        _ => unreachable!(),
+                        u => {
+                            eprintln!("unknown log rotation {u:?}, will never rotate");
+                            tracing_appender::rolling::Rotation::NEVER
+                        }
                     })
                     .filename_prefix("t-app-t")
                     .filename_suffix("log")

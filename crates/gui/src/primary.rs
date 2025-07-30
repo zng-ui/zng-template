@@ -1,7 +1,7 @@
 use zng::prelude::*;
 
 pub async fn window() -> window::WindowRoot {
-    // l10n-primary_win-### Primary Window
+    // l10n-## Primary Window
 
     Window! {
         id = "primary-window";
@@ -17,11 +17,11 @@ pub async fn window() -> window::WindowRoot {
 fn menu() -> impl UiNode {
     Menu!(ui_vec![
         SubMenu!(
-            l10n!("primary/menu-edit", "Edit"),
+            l10n!("primary/menu.edit", "Edit"),
             ui_vec![Button!(zng::config::settings::SETTINGS_CMD)]
         ),
         SubMenu!(
-            l10n!("primary/menu-about", "About"),
+            l10n!("primary/menu.about", "About"),
             ui_vec![
                 #[cfg(feature = "dev")]
                 Button!(zng::window::cmd::INSPECT_CMD.scoped(WINDOW.id())),
@@ -39,7 +39,7 @@ fn content() -> impl UiNode {
         children = ui_vec![
             Image!(shared::res::ICON_MEDIUM),
             Text! {
-                txt = l10n!("primary_win/greetings", "Hello {{app}}!");
+                txt = l10n!("primary/greetings", "Hello {{app}}!");
                 font_size = 2.em();
                 txt_align = Align::CENTER;
             },

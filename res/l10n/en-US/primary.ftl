@@ -1,4 +1,7 @@
+## Primary Window
 
-menu-about = About
+greetings = Hello {{app}}!
 
-menu-edit = Edit
+menu =
+    .about = About
+    .edit = Edit
