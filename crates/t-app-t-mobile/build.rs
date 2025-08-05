@@ -16,7 +16,7 @@ fn android() {
         let sysroot_libs_path = PathBuf::from(env::var_os("CARGO_NDK_SYSROOT_LIBS_PATH").unwrap());
         let lib_path = sysroot_libs_path.join("libc++_shared.so");
 
-        let output_path = output_path.join(env::var("CARGO_NDK_ANDROID_TARGET").unwrap());
+        let output_path = output_path.join(env::var("CARGO_NDK_ANDROID_PLATFORM").unwrap());
         let _ = fs::create_dir(&output_path);
 
         let output_path = output_path.join("libc++_shared.so");
@@ -24,5 +24,5 @@ fn android() {
         println!("cargo:rerun-if-changed={}", output_path.display());
     }
     println!("cargo:rerun-if-env-changed=CARGO_NDK_OUTPUT_PATH");
-    println!("cargo:rerun-if-env-changed=CARGO_NDK_ANDROID_TARGET");
+    println!("cargo:rerun-if-env-changed=CARGO_NDK_ANDROID_PLATFORM");
 }
