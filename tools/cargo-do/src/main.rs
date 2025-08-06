@@ -223,6 +223,7 @@ fn build_ndk(args: Vec<String>) {
 
     let mut args = vec![
         "ndk",
+        "--link-cxx-shared",
         "--manifest-path",
         "crates/t-app-t-mobile/Cargo.toml",
         "--output-dir",
