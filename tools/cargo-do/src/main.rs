@@ -223,7 +223,6 @@ fn build_ndk(args: Vec<String>) {
 
     let mut args = vec![
         "ndk",
-        "--link-cxx-shared",
         "--manifest-path",
         "crates/t-app-t-mobile/Cargo.toml",
         "--output-dir",
@@ -263,7 +262,7 @@ fn build_ndk(args: Vec<String>) {
         "--features=release"
     };
 
-    args.extend_from_slice(&["build"]);
+    args.extend_from_slice(&["build", "--link-cxx-shared"]);
     if options.contains_key("--release") {
         args.extend_from_slice(&["--release", "--no-default-features", feature]);
     } else if options.contains_key("--dev") {
