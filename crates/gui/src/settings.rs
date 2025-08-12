@@ -38,7 +38,7 @@ mod lang {
     }
 
     /// Langs that have local translations.
-    fn available_langs() -> impl Var<Vec<Lang>> {
+    fn available_langs() -> Var<Vec<Lang>> {
         L10N.available_langs().map(|m| {
             let mut r = vec![];
             for (lang, files) in m.iter() {
@@ -60,7 +60,7 @@ mod lang {
         })
     }
 
-    fn editor(_: Setting) -> impl UiNode {
+    fn editor(_: Setting) -> UiNode {
         let selected = CONFIG.get(CONFIG_KEY, SYSTEM_LANG);
         // combo box
         Toggle! {
@@ -94,7 +94,7 @@ mod lang {
         }
     }
 
-    fn lang_text(lang: impl IntoVar<Lang>) -> impl UiNode {
+    fn lang_text(lang: impl IntoVar<Lang>) -> UiNode {
         let lang = lang.into_var();
         Text! {
             txt = lang.map_to_txt();

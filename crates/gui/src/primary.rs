@@ -14,7 +14,7 @@ pub async fn window() -> window::WindowRoot {
 }
 
 // #[zng::hot_reload::hot_node]
-fn menu() -> impl UiNode {
+fn menu() -> UiNode {
     Menu!(ui_vec![
         SubMenu!(
             l10n!("primary/menu.edit", "Edit"),
@@ -32,7 +32,7 @@ fn menu() -> impl UiNode {
 }
 
 // #[zng::hot_reload::hot_node]
-fn content() -> impl UiNode {
+fn content() -> UiNode {
     Stack! {
         layout::align = Align::CENTER;
         direction = StackDirection::top_to_bottom();
