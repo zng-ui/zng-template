@@ -8,15 +8,16 @@ zng.workspace = true
 tracing.workspace = true
 
 # dependency license collection & bundling in builds with `features=bundle_licenses`.
-zng-tp-licenses = { version = "0.4", features = ["bundle"], optional = true }
+zng-tp-licenses = { version = "0.5", features = ["bundle"], optional = true }
 [build-dependencies]
-zng-tp-licenses = { version = "0.4", features = ["build"], optional = true }
+zng-tp-licenses = { version = "0.5", features = ["build"], optional = true }
 
 [features]
 default = ["dev"]
 dev = [
     # enable all default features in dev builds
     "zng/default",
+    "zng/config_json",
 ]
 release = [
     # Collect and bundle crate licenses
@@ -24,4 +25,5 @@ release = [
     # enable default features in release builds, 
     # you can replace this with only features used to optimize binary size
     "zng/default",
+    "zng/config_json",
 ]

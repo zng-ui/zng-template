@@ -14,5 +14,5 @@ codegen-units = 1
 # set versions for dependencies used by multiple workspace crates
 # features are defined on each crate, per build profile
 [workspace.dependencies]
-zng = { version = "0.15", default-features = false }
+zng = { version = "0.16", default-features = false }
 tracing = "0.1"
