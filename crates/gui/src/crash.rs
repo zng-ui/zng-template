@@ -12,12 +12,15 @@ pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowR
         icon = shared::res::ICON_SMALL;
         child = Container! {
             // error icon to the left (or right if RTL)
-            child_start = Wgt! {
-                widget::background = ICONS.get("error");
-                layout::size = 40;
-                layout::align = Align::TOP;
-                layout::margin = 10;
-            }, 0;
+            child_start =
+                Wgt! {
+                    widget::background = ICONS.get("error");
+                    layout::size = 40;
+                    layout::align = Align::TOP;
+                    layout::margin = 10;
+                },
+                0,
+            ;
             // error message and link to show debug dialog
             child = Stack! {
                 direction = StackDirection::top_to_bottom();
@@ -27,14 +30,17 @@ pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowR
                     #[cfg(feature = "dev")]
                     Button! {
                         style_fn = zng::button::LinkStyle!();
-                        child = Text!(l10n!("crash_dialog/debug-dialog", "Show debug crash dialog"));
+                        child = Text!(l10n!(
+                            "crash_dialog/debug-dialog",
+                            "Show debug crash dialog"
+                        ));
                         on_click = hn_once!(args, |_| {
                             WINDOWS.open(async move { zng::app::crash_handler::debug_dialog(args) });
                             WINDOW.close();
                         });
                     }
-                ]
-            }
+                ];
+            };
         };
         // control buttons, [Restart] [Exit]
         child_bottom = {
@@ -54,7 +60,7 @@ pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowR
                             args.exit(0);
                         });
                     }
-                ]
+                ];
             },
         };
 
