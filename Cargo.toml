@@ -7,7 +7,7 @@ members = ["crates/*", "tools/*"]
 default-members = ["crates/*"]
 
 [profile.release]
-# use `cargo do build-r` or `cargo do run-r` to build with release features.
+# use `cargo do build-release` or `cargo do run-release` to build with release features.
 lto = "fat"
 codegen-units = 1
 
