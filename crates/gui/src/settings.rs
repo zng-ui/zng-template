@@ -76,19 +76,14 @@ mod lang {
                             toggle::selector = toggle::Selector::single(selected.clone());
 
                             direction = StackDirection::top_to_bottom();
-                            children =
-                                langs
-                                    .into_iter()
-                                    .map(|l| {
-                                        // drop down item
-                                        Toggle! {
-                                            child = lang_text(l.clone());
-                                            child_align = Align::START;
-                                            value::<Lang> = l;
-                                        }
-                                    })
-                                    .collect::<UiVec>(),
-                            ;
+                            children = langs.into_iter().map(|l| {
+                                // drop down item
+                                Toggle! {
+                                    child = lang_text(l.clone());
+                                    child_align = Align::START;
+                                    value::<Lang> = l;
+                                }
+                            });
                         }
                     })
                 ))
