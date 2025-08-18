@@ -43,6 +43,6 @@ fn content() -> UiNode {
                 font_size = 2.em();
                 txt_align = Align::CENTER;
             },
-        ]
+        ];
     }
 }
