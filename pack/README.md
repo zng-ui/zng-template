@@ -13,7 +13,7 @@ Not a full package, just groups bin and res in an easy place for other packages 
 
 **portable**
 
-Portable app folder, app should be executable from a flash drive (on the target OS). Used by `cargo do run-r`.
+Portable app folder, app should be executable from a flash drive (on the target OS). Used by `cargo do run-release`.
 
 **portable-tar**
 

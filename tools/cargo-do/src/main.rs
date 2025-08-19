@@ -14,9 +14,11 @@ fn main() {
         "fmt" => fmt(args),
         "l10n" => l10n(args),
         "pack" => pack(args),
-        "build-r" => build_r(args),
+        "build-release" | "build-r" => build_release(args),
+        "build" => build(args),
         "build-ndk" => build_ndk(args),
-        "run-r" => run_r(args),
+        "run-release" | "run-r" => run_release(args),
+        "run" => run(args),
         "update" => update(args),
         "help" | "--help" | "-h" | "" => help(args),
         _other => cmd("cargo", [arg_cmd].into_iter().chain(args))
@@ -54,15 +56,17 @@ fn l10n(args: Vec<String>) {
     .success_or_die("cannot scrap l10n")
 }
 
-/// do pack <PACKAGE> [--no-build]
+/// do pack <PACKAGE> [--no-build] [--dev]
 ///    Compile with release profile+features and package
 ///
 ///    ARGS
 ///       <PACKAGE>  - Name of a pack/{PACKAGE}
-///       --no-build - Skips release build, you must call 'do build-r' before
+///       --no-build - Skips release build, you must call 'do build-release' before
+///       --dev      - Pack the dev (debug) binary.
 fn pack(args: Vec<String>) {
     // parse args
-    let (package, options, args) = split_args(&args, &["PACKAGE"], &["--no-build"], false, true);
+    let (package, options, args) =
+        split_args(&args, &["PACKAGE"], &["--no-build", "--dev"], false, true);
     let package = package[0].as_str();
 
     if package == "deb" && options.contains_key("--changelog") {
@@ -73,13 +77,18 @@ fn pack(args: Vec<String>) {
     }
 
     if options.contains_key("--no-build") {
-        println!("skipping release build");
+        println!("packing previous build");
     } else {
         println!("building release");
         if package == "android" {
             build_ndk(vec!["--release".to_owned()]);
         } else {
-            build_r(vec![]);
+            let args = if options.contains_key("--dev") {
+                vec!["--dev".to_owned()]
+            } else {
+                vec![]
+            };
+            build_release(args);
         }
     }
 
@@ -102,7 +111,11 @@ fn pack(args: Vec<String>) {
     let app_path = Path::new("target")
         .canonicalize()
         .unwrap()
-        .join("release")
+        .join(if options.contains_key("--dev") {
+            "debug"
+        } else {
+            "release"
+        })
         .join(&name)
         .display()
         .to_string();
@@ -119,14 +132,14 @@ fn pack(args: Vec<String>) {
         .success_or_die("cannot package, failed cargo zng res");
 }
 
-/// do build-r [-z] [--bleed] [--dev]
+/// do build-release, build-r [-z] [--bleed] [--dev]
 ///    Compile t-app-t release profile+features
 ///
 ///    ARGS
 ///       -z      - Optimize release for binary size
 ///       --bleed - Build with nightly compiler optimizations.
 ///       --dev   - Build with dev profile and release features.
-fn build_r(args: Vec<String>) {
+fn build_release(args: Vec<String>) {
     let (_, options, args) = split_args(&args, &[], &["-z", "--bleed", "--dev"], true, true);
     let bleed = options.contains_key("--bleed");
     let dev = options.contains_key("--dev");
@@ -171,22 +184,35 @@ fn build_r(args: Vec<String>) {
     }
     cmd.status().success_or_die("release build failed");
 }
+fn build(args: Vec<String>) {
+    if args.iter().any(|a| a.starts_with("--release")) {
+        die!("use `cargo do build-release` to build release")
+    }
+    cmd("cargo", ["build".to_owned()].into_iter().chain(args))
+        .status()
+        .success_or_die("cannot run cargo");
+}
 
-/// do run-r [--dev]
+/// do run-release, run-r [--dev]
 ///    Compile and run the "portable" pack
 ///
 ///    ARGS
 ///       --dev   - Build with dev profile and release features.
-fn run_r(mut args: Vec<String>) {
+fn run_release(mut args: Vec<String>) {
     let app_args = if let Some(i) = args.iter().position(|a| a == "--") {
         args.split_off(i)
     } else {
         vec![]
     };
 
+    let dev = args.iter().any(|a| a == "--dev");
+
     println!("pack portable");
-    args.push("portable".to_owned());
-    pack(args);
+    let mut pack_args = vec!["portable".to_owned()];
+    if dev {
+        pack_args.push("--dev".to_owned());
+    }
+    pack(pack_args);
 
     let path = format!(
         "target/pack/portable/t-app-t{}",
@@ -199,6 +225,14 @@ fn run_r(mut args: Vec<String>) {
     if !s.success() {
         std::process::exit(s.code().unwrap_or(1));
     }
+}
+fn run(args: Vec<String>) {
+    if args.iter().any(|a| a.starts_with("--release")) {
+        die!("use `cargo do run-release` to run release")
+    }
+    cmd("cargo", ["run".to_owned()].into_iter().chain(args))
+        .status()
+        .success_or_die("cannot run cargo");
 }
 
 /// do build-ndk [--platform API-LEVEL] [--target TRIPLE] [--release] [-z] [--dev]
