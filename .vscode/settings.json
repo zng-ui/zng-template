@@ -20,6 +20,6 @@
     },
     "lldb.launch.env": {
         // "ZNG_NO_CRASH_HANDLER": "", // var used by zng::app::crash_handler
-        "T_APP_T_NO_CRASH_HANDLER": "" // var in the cli config style
+        "T_APP_T_NO_CRASH_HANDLER": "true" // var in the cli config style
     }
 }
