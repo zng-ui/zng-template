@@ -115,6 +115,8 @@ jobs:
         with:
           path: template
       - uses: dtolnay/rust-toolchain@stable
+      - name: install InnoSetup
+        run: winget install --id JRSoftware.InnoSetup -e -s winget -h
       - name: install cargo-about
         uses: baptiste0928/cargo-install@v3
         with:
@@ -136,6 +138,8 @@ jobs:
           name: portable-windows.tar.gz
           path: ./test-app/target/pack/portable-tar/test-app.tar.gz
       - run: cargo do pack windows
+        env:
+          ISCC_PATH: C:\Users\runneradmin\AppData\Local\Programs\Inno Setup 6\ISCC.exe
         working-directory: ./test-app
       - uses: actions/upload-artifact@v4
         with:
