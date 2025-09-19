@@ -11,6 +11,7 @@ use util::*;
 fn main() {
     let (arg_cmd, args) = args();
     match arg_cmd.as_str() {
+        "check" => check(args),
         "fmt" => fmt(args),
         "l10n" => l10n(args),
         "pack" => pack(args),
@@ -25,6 +26,26 @@ fn main() {
             .status()
             .success_or_die("cannot run cargo"),
     }
+}
+
+/// do check [--release]
+///    Cargo check, with release handling
+fn check(args: Vec<String>) {
+    let (_, options, args) = split_args(&args, &[], &["--release"], false, true);
+    let mut cmd = if options.contains_key("--release") {
+        cmd(
+            "cargo",
+            &[
+                "check",
+                "--release",
+                "--no-default-features",
+                "--features=release",
+            ],
+        )
+    } else {
+        cmd("cargo", &["check"])
+    };
+    cmd.args(args).status().success_or_die("cannot check");
 }
 
 /// do fmt
