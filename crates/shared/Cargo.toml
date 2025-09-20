@@ -13,7 +13,6 @@ zng-tp-licenses = { version = "0.5", features = ["bundle"], optional = true }
 zng-tp-licenses = { version = "0.5", features = ["build"], optional = true }
 
 [features]
-default = ["dev"]
 dev = [
     # enable all default features in dev builds
     "zng/default",
