@@ -40,19 +40,23 @@ fn app() {
 
     // start app scope, with default extensions.
     let app = APP.defaults();
-
-    // register bundled licenses, used by the default `OPEN_LICENSES_CMD` screen.
-    #[cfg(feature = "release")]
-    zng::third_party::LICENSES.register(shared::res::licenses);
-
-    // load Fluent localization files and set initial lang.
-    shared::l10n::app_init();
-
-    // load user config files.
-    shared::config::app_init();
-    // register settings metadata providers.
-    gui::settings::init();
+    // add extensions here
+    //let app = app.extend(MyExt::default());
 
     // run and open main window
-    app.run_window(async { gui::primary::window().await })
+    app.run_window(async {
+        // register bundled licenses, used by the default `OPEN_LICENSES_CMD` screen.
+        #[cfg(feature = "release")]
+        zng::third_party::LICENSES.register(shared::res::licenses);
+
+        // load Fluent localization files and set initial lang.
+        shared::l10n::app_init();
+
+        // load user config files.
+        shared::config::app_init();
+        // register settings metadata providers.
+        gui::settings::init();
+
+        gui::primary::window().await
+    })
 }
