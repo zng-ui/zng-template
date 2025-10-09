@@ -55,7 +55,5 @@ release = [
 # default features in release builds optimized for size (using `cargo-do`)
 release-z = [
     "release",
-    # use more dynamic dispatch to avoid some generics bloat
-    "zng/dyn_node",
-    "zng/dyn_closure",
+    "zng/dyn_app_extension",
 ]
