@@ -8,7 +8,7 @@ pub async fn window() -> window::WindowRoot {
         title = zng::env::about().app.clone();
         icon = shared::res::ICON_SMALL;
 
-        child_top = menu(), 0;
+        child_top = menu();
         child = content();
     }
 }

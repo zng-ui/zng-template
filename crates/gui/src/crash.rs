@@ -16,15 +16,12 @@ pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowR
         size = (400, 150);
         child = Container! {
             // error icon to the left (or right if RTL)
-            child_start =
-                Wgt! {
-                    widget::background = ICONS.get("error");
-                    layout::size = 40;
-                    layout::align = Align::TOP;
-                    layout::margin = 10;
-                },
-                0,
-            ;
+            child_start = Wgt! {
+                widget::background = ICONS.get("error");
+                layout::size = 40;
+                layout::align = Align::TOP;
+                layout::margin = 10;
+            };
             // error message and link to show debug dialog
             child = Stack! {
                 direction = StackDirection::top_to_bottom();
@@ -47,25 +44,23 @@ pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowR
             };
         };
         // control buttons, [Restart] [Exit]
-        child_bottom = {
-            spacing: 5,
-            node: Wrap! {
-                layout::align = Align::END;
-                children = ui_vec![
-                    Button! {
-                        child = Text!(l10n!("crash_dialog/restart", "Restart"));
-                        on_click = hn_once!(args, |_| {
-                            args.restart();
-                        });
-                    },
-                    Button! {
-                        child = Text!(l10n!("crash_dialog/exit", "Exit"));
-                        on_click = hn_once!(args, |_| {
-                            args.exit(0);
-                        });
-                    }
-                ];
-            },
+        child_spacing = 5;
+        child_bottom = Wrap! {
+            layout::align = Align::END;
+            children = ui_vec![
+                Button! {
+                    child = Text!(l10n!("crash_dialog/restart", "Restart"));
+                    on_click = hn_once!(args, |_| {
+                        args.restart();
+                    });
+                },
+                Button! {
+                    child = Text!(l10n!("crash_dialog/exit", "Exit"));
+                    on_click = hn_once!(args, |_| {
+                        args.exit(0);
+                    });
+                }
+            ];
         };
 
         // bring to foreground
