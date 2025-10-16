@@ -4352,7 +4352,7 @@ version = "0.0.0-local"
 dependencies = [
  "tracing",
  "zng",
- "zng-tp-licenses 0.5.2",
+ "zng-tp-licenses",
 ]
 
 [[package]]
@@ -6487,7 +6487,7 @@ dependencies = [
  "zng-state-map",
  "zng-task",
  "zng-time",
- "zng-tp-licenses 0.6.0",
+ "zng-tp-licenses",
  "zng-txt",
  "zng-unique-id",
  "zng-var",
@@ -7015,27 +7015,13 @@ dependencies = [
 
 [[package]]
 name = "zng-tp-licenses"
-version = "0.5.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f4ae4421201a34fef7b42a973530caaa69774336575c9fa25611f760c2a35b37"
-dependencies = [
- "bincode 2.0.1",
- "deflate",
- "inflate",
- "serde",
- "serde_json",
- "tempfile",
- "zng-txt",
-]
-
-[[package]]
-name = "zng-tp-licenses"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "996d89b0a0049a0fd0821658df7d2f164e839105c131151667ecbaf6f4ad966f"
 dependencies = [
  "bincode 2.0.1",
  "deflate",
+ "inflate",
  "serde",
  "serde_json",
  "tempfile",
@@ -7152,7 +7138,7 @@ dependencies = [
  "x11-dl",
  "zng-env",
  "zng-swgl",
- "zng-tp-licenses 0.6.0",
+ "zng-tp-licenses",
  "zng-txt",
  "zng-unit",
  "zng-view-api",
@@ -7184,7 +7170,7 @@ dependencies = [
  "unic-langid",
  "web-time",
  "zng-env",
- "zng-tp-licenses 0.6.0",
+ "zng-tp-licenses",
  "zng-txt",
  "zng-unit",
  "zng-var",
