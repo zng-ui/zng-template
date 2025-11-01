@@ -115,8 +115,10 @@ jobs:
         with:
           path: template
       - uses: dtolnay/rust-toolchain@stable
+      # winget returns an error code when package is already installed...
+      # GitHub removed InnoSetup at least once before.
       - name: install InnoSetup
-        run: winget install --id JRSoftware.InnoSetup -e -s winget -h
+        run: winget install --id JRSoftware.InnoSetup -e -s winget -h --force
       - name: install cargo-about
         uses: baptiste0928/cargo-install@v3
         with:
