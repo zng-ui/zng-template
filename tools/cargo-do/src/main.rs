@@ -282,6 +282,7 @@ fn build_ndk(args: Vec<String>) {
         "crates/t-app-t-mobile/Cargo.toml",
         "--output-dir",
         "target/build-ndk",
+        "--link-libcxx-shared",
     ];
     if let Some(p) = options.get("--platform") {
         args.extend_from_slice(&["--platform", p[0]]);
