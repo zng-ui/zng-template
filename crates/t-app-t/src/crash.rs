@@ -17,7 +17,7 @@ fn crash_dialog_process(args: crash_handler::CrashArgs) {
             .show();
     } else {
         // start app to show a custom crash dialog.
-        APP.defaults().run_window(async {
+        APP.defaults().run_window("crash-dialog", async {
             // you can start packing a crash report here
             // if let Some(_logs) = &shared::env::args().log_dir { }
 

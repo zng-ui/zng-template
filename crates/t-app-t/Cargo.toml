@@ -6,7 +6,7 @@ license = "TODO"
 [package.metadata.zng.about]
 app = "{{app}}"
 org = "{{org}}"
-qualifier = "{{qualifier}}"
+app_id = "rs.zng.t-org-t.t-app-t"
 
 [dependencies]
 shared = { path = "../shared" }
@@ -55,5 +55,4 @@ release = [
 # default features in release builds optimized for size (using `cargo-do`)
 release-z = [
     "release",
-    "zng/dyn_app_extension",
 ]

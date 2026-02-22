@@ -29,7 +29,7 @@ fn app_process() {
     //let app = app.extend(MyExt::default());
 
     // run and open main window
-    app.run_window(async {
+    app.run_window("main", async {
         // if you use "single_instance" for the app, hook event here.
         // zng::app::APP_INSTANCE_EVENT.on_pre_event(..);
 

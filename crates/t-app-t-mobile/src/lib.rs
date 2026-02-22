@@ -44,7 +44,7 @@ fn app() {
     //let app = app.extend(MyExt::default());
 
     // run and open main window
-    app.run_window(async {
+    app.run_window("main", async {
         // register bundled licenses, used by the default `OPEN_LICENSES_CMD` screen.
         #[cfg(feature = "release")]
         zng::third_party::LICENSES.register(shared::res::licenses);
