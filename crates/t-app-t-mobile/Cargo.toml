@@ -45,5 +45,4 @@ release = [
 # default features in release builds optimized for size (using `cargo-do`)
 release-z = [
     "release",
-    "zng/dyn_app_extension",
 ]

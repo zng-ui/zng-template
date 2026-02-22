@@ -36,7 +36,9 @@ pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowR
                             "Show debug crash dialog"
                         ));
                         on_click = hn_once!(args, |_| {
-                            WINDOWS.open(async move { zng::app::crash_handler::debug_dialog(args) });
+                            WINDOWS.open("crash-dialog-dbg", async move {
+                                zng::app::crash_handler::debug_dialog(args)
+                            });
                             WINDOW.close();
                         });
                     }
@@ -62,10 +64,5 @@ pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowR
                 }
             ];
         };
-
-        // bring to foreground
-        on_load = hn_once!(|_| {
-            let _ = WINDOWS.focus(WINDOW.id());
-        });
     }
 }

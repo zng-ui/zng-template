@@ -16,7 +16,7 @@ pub fn init(
 
     // log filter from Zng (noisy dependencies)
     let zng_filter = tracing_subscriber::filter::FilterFn::new(|m| {
-        zng::app::print_tracing_filter(&tracing::Level::TRACE, m)
+        zng::app::print_tracing_filter(&tracing::Level::TRACE, m, &|_| true)
     });
 
     // log filter from env/args

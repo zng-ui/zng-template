@@ -57,7 +57,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - name: cargo zng new
         #  /?/ to test that the name is cleaned
-        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/" -s"qualifier=test"
+        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/"
       - run: cargo check
         working-directory: ./test-app
   pack-ubuntu:
@@ -85,7 +85,7 @@ jobs:
       - run: sudo apt install libfontconfig1-dev
       - uses: Swatinem/rust-cache@v2
       - name: cargo zng new
-        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/" -s"qualifier=test"
+        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/"
       - name: git config
         working-directory: ./test-app
         run: |
@@ -130,7 +130,7 @@ jobs:
           git: https://github.com/zng-ui/zng
       - uses: Swatinem/rust-cache@v2
       - name: cargo zng new
-        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/" -s"qualifier=test"
+        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/"
       - run: cargo do pack portable
         working-directory: ./test-app
       - run: cargo do pack portable-tar
@@ -166,7 +166,7 @@ jobs:
           git: https://github.com/zng-ui/zng
       - uses: Swatinem/rust-cache@v2
       - name: cargo zng new
-        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/" -s"qualifier=test"
+        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/"
       - run: cargo do pack portable
         working-directory: ./test-app
       - run: cargo do pack portable-tar
@@ -203,7 +203,7 @@ jobs:
           git: https://github.com/zng-ui/zng
       - uses: Swatinem/rust-cache@v2
       - name: cargo zng new
-        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/" -s"qualifier=test"
+        run: cargo zng new --template ./template -s"app=Test App /?/" -s"org=Test Org /?/"
       - run: cargo do pack android
         working-directory: ./test-app
       - uses: actions/upload-artifact@v4

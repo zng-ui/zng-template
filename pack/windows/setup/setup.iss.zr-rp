@@ -8,7 +8,7 @@ Name: en; MessagesFile: compiler:Default.isl
 ; Name: pt_br; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
 
 [Setup]
-AppID=${ZR_QUALIFIER:s}.${ZR_ORG:s}.${ZR_APP:s}
+AppID=${ZR_APP_ID}
 AppName=${ZR_APP}
 AppVerName=${ZR_APP} ${ZR_VERSION}
 AppPublisher=${ZR_ORG}

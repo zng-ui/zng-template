@@ -26,11 +26,3 @@ app=
 #
 # Used in `zng::env::init` as the 'organization' value.
 org=""
-
-# Domain qualifier
-#
-# Used in `zng::env::init` as the 'qualifier' value.
-#
-# Examples:
-#  -s"qualifier=br.com" 
-qualifier=""

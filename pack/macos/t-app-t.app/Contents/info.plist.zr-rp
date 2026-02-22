@@ -7,7 +7,7 @@
 		<key>CFBundleExecutable</key>
 		<string>t-app-t</string>
 		<key>CFBundleIdentifier</key>
-		<string>${ZR_QUALIFIER:s}.${ZR_ORG:s}.${ZR_APP:s}</string>
+		<string>${ZR_APP_ID}</string>
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
