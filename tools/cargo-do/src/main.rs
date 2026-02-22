@@ -285,6 +285,10 @@ fn build_ndk(args: Vec<String>) {
     ];
     if let Some(p) = options.get("--platform") {
         args.extend_from_slice(&["--platform", p[0]]);
+    } else {
+        // required min for audio, can be 21 without "audio" feature
+        // note that this must match the AndroidManifest.xml minSdkVersion
+        args.extend_from_slice(&["--platform", "26"]);
     }
 
     let installed_targets;

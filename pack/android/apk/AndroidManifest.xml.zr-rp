@@ -3,7 +3,7 @@
     android:versionName="${ZR_VERSION}"
     android:versionCode="1">    <!--increment versionCode for each APK release-->
 
-    <uses-sdk android:minSdkVersion="21"
+    <uses-sdk android:minSdkVersion="26"
         android:targetSdkVersion="29" />
 
     <application android:label="${ZR_APP}"
