@@ -8,7 +8,7 @@ mod android {
         zng::env::init!();
 
         // writes to Logcat
-        zng::app::print_tracing(tracing::Level::INFO);
+        zng::app::print_tracing(tracing::Level::INFO, false, |_| true);
 
         // set Android app instance and paths
         android::init_android_app(app.clone());
