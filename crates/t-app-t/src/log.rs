@@ -12,7 +12,7 @@ pub fn init(
     directory: Option<PathBuf>,
 ) -> Result<Option<PathBuf>, Txt> {
     // always print, good for debug and the crash-handler collects stdout/err.
-    let log = registry().with(fmt::layer().without_time());
+    let log = registry().with(fmt::layer().without_time().with_writer(std::io::stderr));
 
     // log filter from Zng (noisy dependencies)
     let zng_filter = tracing_subscriber::filter::FilterFn::new(|m| {

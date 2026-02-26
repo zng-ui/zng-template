@@ -1,0 +1,6 @@
+[package]
+name = "tools-util"
+version = "0.0.0-local"
+edition = "2024"
+
+[dependencies]

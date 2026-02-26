@@ -1,5 +1,5 @@
 [package]
-name = "cargo-do-local"
+name = "cargo-do-pack-local"
 version = "0.0.0"
 edition = "2024"
 

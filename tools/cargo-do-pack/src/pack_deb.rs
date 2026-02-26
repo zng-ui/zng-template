@@ -1,9 +1,9 @@
-//! Helpers for `cargo do pack deb`
+//! Helpers for `cargo do-pack deb`
 
-use crate::util::{self, *};
 use std::{env, fs, io, path::Path};
+use tools_util::{self as util, *};
 
-pub fn depends() -> String {
+pub fn depends() {
     // fake staging to call pkg-shlibdeps
     let temp: &Path = "target/tmp/do/pack/deb_deps".as_ref();
     let _ = fs::remove_dir_all(&temp);
@@ -30,7 +30,7 @@ pub fn depends() -> String {
     // parse package dependencies
     let last_line = stdout.lines().rev().next().unwrap_or_default();
     match last_line.strip_prefix("shlibs:Depends=") {
-        Some(deps) => deps.to_owned(),
+        Some(deps) => println!("{deps}"),
         None => die!("dpkg-shlibdeps did not return dependencies"),
     }
 }

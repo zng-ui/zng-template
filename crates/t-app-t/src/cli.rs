@@ -101,6 +101,24 @@ struct Cli {
     #[clap(long, env = "T_APP_T_LANG_DIR", value_names = &["DIR"], default_value = "{res}/l10n")]
     pub lang_dir: Option<PathBuf>,
 }
+impl Cli {
+    fn parse() -> Result<(Cli, clap::ArgMatches), clap::Error> {
+        let cmd = Cli::command();
+        #[cfg(windows)]
+        let cmd = windows_bin_name(cmd);
+        let matches = cmd.try_get_matches()?;
+        let cli = Cli::from_arg_matches(&matches)?;
+        Ok((cli, matches))
+    }
+
+    fn is_cli_only(&self) -> bool {
+        self.cache_clear
+            || self.env_reset
+            || self.env_save
+            || self.cache_migrate.is_some()
+            || self.config_migrate.is_some()
+    }
+}
 
 /// Runs CLI.
 ///
@@ -108,18 +126,26 @@ struct Cli {
 ///
 /// Exits process if CLI only flags are set.
 fn run() {
-    // init saved env (and .env in dev builds)
+    // init saved env (and .env in dev builds), before CLI init because it uses env
     let dotenv_init_result = dotenv_init();
+
+    // parse args and env
+    let (cli, matches) = match Cli::parse() {
+        Ok(c) => c,
+        Err(e) => {
+            zng::env::windows_subsystem::attach_console();
+            e.exit()
+        }
+    };
+    let is_cli_only = cli.is_cli_only();
+    if is_cli_only {
+        // enable printing in Windows
+        zng::env::windows_subsystem::attach_console();
+    }
+
     if let Err(e) = &dotenv_init_result {
         eprintln!("{e}");
     }
-
-    // parse args and env
-    let matches = Cli::command().get_matches();
-    let cli = match Cli::from_arg_matches(&matches) {
-        Ok(c) => c,
-        Err(e) => e.exit(),
-    };
 
     // start logging
     let log_dir = match crate::log::init(cli.log, cli.log_rotation, cli.log_dir) {
@@ -154,24 +180,19 @@ fn run() {
         zng::env::exit(0);
     }
 
-    let mut is_cli_only_run = false;
-
     if cli.cache_clear {
         run_cache_clear();
-        is_cli_only_run = true;
     }
     if let Some(p) = cli.cache_migrate {
         // writes new cache dir to config
         run_migrate_cache(p);
-        is_cli_only_run = true;
     }
 
     if let Some(p) = cli.config_migrate {
         run_migrate_config(p);
-        is_cli_only_run = true;
     }
 
-    if is_cli_only_run {
+    if is_cli_only {
         zng::env::exit(0);
     }
 
@@ -276,4 +297,19 @@ fn run_cache_clear() {
     } else {
         println!("cache cleared")
     }
+}
+
+// On Windows both `t-app-t.exe` and `t-app-t.com` are deployed, users must call `t-app-t`
+#[cfg(windows)]
+fn windows_bin_name(mut cli_cmd: clap::Command) -> clap::Command {
+    if let Ok(exe) = std::env::current_exe()
+        && let Some(name) = exe.file_name()
+        && let Some(name) = name.to_str()
+    {
+        let name = name.to_lowercase();
+        if let Some(name) = name.strip_prefix(".exe") {
+            cli_cmd.set_bin_name(name);
+        }
+    }
+    cli_cmd
 }

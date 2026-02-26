@@ -1,6 +1,8 @@
-//! Helpers for cargo do pack android
+//! Helpers for cargo do-pack android
 
 use std::{env, fs, path::PathBuf};
+
+use tools_util::die;
 
 use crate::ResultExt;
 

@@ -1,2 +1,3 @@
 [alias]
 do = ["run", "--manifest-path", "tools/cargo-do/Cargo.toml", "--quiet", "--"]
+do-pack = ["run", "--manifest-path", "tools/cargo-do-pack/Cargo.toml", "--quiet", "--"]

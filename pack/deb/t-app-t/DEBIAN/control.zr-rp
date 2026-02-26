@@ -5,6 +5,6 @@ Homepage: ${ZR_HOMEPAGE:?}
 Architecture: amd64
 Section: graphics
 Priority: optional
-Depends: ${DO_PACK_DEB_DEPENDS}
+Depends: ${!cargo do-pack deb --depends}
 Description: ${ZR_DESCRIPTION:?${ZR_APP} package.}
   A Zng based GUI application

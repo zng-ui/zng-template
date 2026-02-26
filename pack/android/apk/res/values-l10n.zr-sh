@@ -1,2 +1,2 @@
 # ensure that a './values-{locale}/strings.xml' exists for each 'res/l10n/{locale}'
-cargo do pack android --locales
+cargo do-pack android --locales
