@@ -103,19 +103,10 @@ struct Cli {
 }
 impl Cli {
     fn parse() -> Result<(Cli, clap::ArgMatches), clap::Error> {
-        let mut cmd = Cli::command();
-        // On Windows suggest the name without extension to engage the com proxy
+        let cmd = Cli::command();
         #[cfg(windows)]
-        if let Ok(exe) = std::env::current_exe()
-            && let Some(name) = exe.file_name()
-            && let Some(name) = name.to_str()
-        {
-            let name = name.to_lowercase();
-            if let Some(name) = name.strip_prefix(".exe") {
-                cmd.set_bin_name(name);
-            }
-        }
-        let matches = Cli::command().try_get_matches()?;
+        let cmd = windows_bin_name(cmd);
+        let matches = cmd.try_get_matches()?;
         let cli = Cli::from_arg_matches(&matches)?;
         Ok((cli, matches))
     }
@@ -306,4 +297,19 @@ fn run_cache_clear() {
     } else {
         println!("cache cleared")
     }
+}
+
+// On Windows both `t-app-t.exe` and `t-app-t.com` are deployed, users must call `t-app-t`
+#[cfg(windows)]
+fn windows_bin_name(mut cli_cmd: clap::Command) -> clap::Command {
+    if let Ok(exe) = std::env::current_exe()
+        && let Some(name) = exe.file_name()
+        && let Some(name) = name.to_str()
+    {
+        let name = name.to_lowercase();
+        if let Some(name) = name.strip_prefix(".exe") {
+            cli_cmd.set_bin_name(name);
+        }
+    }
+    cli_cmd
 }
