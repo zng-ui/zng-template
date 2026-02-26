@@ -4,17 +4,41 @@ use std::{
     process::{Command, ExitStatus},
 };
 
+/// Print help for tool commands like cargo-do
+pub fn print_help(cmd_name_in_docs: &str, header: &str, main_rs: &str) {
+    println!("{header}\n\nCOMMANDS\n");
+    let mut print = false;
+    let docs_prefix = format!(" {cmd_name_in_docs} ");
+    for line in main_rs.lines() {
+        if let Some(c) = line.strip_prefix("///") {
+            if c.starts_with(&docs_prefix) {
+                print = true;
+            }
+            if print {
+                println!("{c}");
+            }
+        } else {
+            if print {
+                println!();
+            }
+            print = false;
+        }
+    }
+}
+
+/// Print error and exit.
 #[macro_export]
 macro_rules! die {
     ($($println_args:tt)*) => {
         {
-            $crate::util::print_error();
+            $crate::print_error();
             eprintln!($($println_args)*);
             std::process::exit(102);
         }
     };
 }
 
+/// Declare [`Command`].
 pub fn cmd<S, A>(program: &str, args: A) -> Command
 where
     S: AsRef<str>,
@@ -27,6 +51,7 @@ where
     cmd
 }
 
+/// `Result<T, E>` extension methods that print error and exit.
 pub trait ResultExt<T, E> {
     fn unwrap_or_die(self, comment: &str) -> T;
     fn ok_or_die(self, comment: &str);
@@ -41,6 +66,7 @@ impl<T, E: std::error::Error> ResultExt<T, E> for Result<T, E> {
     }
 }
 
+/// `io::Result<std::process::Output>` extensions that print error or error code and exit.
 #[allow(unused)]
 pub trait CmdOutputExt {
     /// Returns the stdout
@@ -60,7 +86,7 @@ impl CmdOutputExt for io::Result<std::process::Output> {
         }
     }
 }
-
+/// `io::Result<ExitStatus>` extensions that print error or error code and exit.
 pub trait CmdStatusExt {
     fn success_or_die(self, comment: &str);
 }
@@ -72,7 +98,6 @@ impl CmdStatusExt for io::Result<ExitStatus> {
         }
     }
 }
-
 fn handle_exit_status(comment: &str, s: &ExitStatus) {
     if !s.success() {
         die!(
@@ -90,6 +115,7 @@ pub fn print_error() {
     eprint!("{BOLD_RED}error{BOLD_WHITE}: {CLEAR}");
 }
 
+/// Get command args, assert running in project root.
 pub fn args() -> (String, Vec<String>) {
     if !std::env::current_dir()
         .unwrap()

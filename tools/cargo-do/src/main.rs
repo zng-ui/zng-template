@@ -1,12 +1,4 @@
-mod help;
-#[macro_use]
-mod util;
-mod pack_android;
-mod pack_deb;
-
-use std::path::Path;
-
-use util::*;
+use tools_util::*;
 
 fn main() {
     let (arg_cmd, args) = args();
@@ -83,19 +75,12 @@ fn l10n(args: Vec<String>) {
 ///    ARGS
 ///       <PACKAGE>  - Name of a pack/{PACKAGE}
 ///       --no-build - Skips release build, you must call 'do build-release' before
-///       --dev      - Pack the dev (debug) binary.
+///       --dev      - Build with dev profile and release features
 fn pack(args: Vec<String>) {
     // parse args
     let (package, options, args) =
         split_args(&args, &["PACKAGE"], &["--no-build", "--dev"], false, true);
     let package = package[0].as_str();
-
-    if package == "deb" && options.contains_key("--changelog") {
-        return pack_deb::changelog();
-    }
-    if package == "android" && options.contains_key("--locales") {
-        return pack_android::locales();
-    }
 
     if options.contains_key("--no-build") {
         println!("packing previous build");
@@ -126,28 +111,6 @@ fn pack(args: Vec<String>) {
         ],
     );
     pack_cmd.args(&args);
-
-    let name = format!("t-app-t{}", std::env::consts::EXE_SUFFIX);
-
-    let app_path = Path::new("target")
-        .canonicalize()
-        .unwrap()
-        .join(if options.contains_key("--dev") {
-            "debug"
-        } else {
-            "release"
-        })
-        .join(&name)
-        .display()
-        .to_string();
-    #[cfg(windows)]
-    let app_path = app_path.trim_start_matches(r#"\\?\"#).replace('\\', "/");
-    pack_cmd.env("DO_PACK_EXE", app_path);
-
-    if package == "deb" {
-        pack_cmd.env("DO_PACK_DEB_DEPENDS", pack_deb::depends());
-    }
-
     pack_cmd
         .status()
         .success_or_die("cannot package, failed cargo zng res");
@@ -159,7 +122,7 @@ fn pack(args: Vec<String>) {
 ///    ARGS
 ///       -z      - Optimize release for binary size
 ///       --bleed - Build with nightly compiler optimizations.
-///       --dev   - Build with dev profile and release features.
+///       --dev   - Build with dev profile and release features
 fn build_release(args: Vec<String>) {
     let (_, options, args) = split_args(&args, &[], &["-z", "--bleed", "--dev"], true, true);
     let bleed = options.contains_key("--bleed");
@@ -218,7 +181,7 @@ fn build(args: Vec<String>) {
 ///    Compile and run the "portable" pack
 ///
 ///    ARGS
-///       --dev   - Build with dev profile and release features.
+///       --dev   - Build with dev profile and release features
 fn run_release(mut args: Vec<String>) {
     let app_args = if let Some(i) = args.iter().position(|a| a == "--") {
         args.split_off(i)
@@ -370,5 +333,9 @@ fn update(args: Vec<String>) {
 /// do help
 ///    Prints this help
 fn help(_: Vec<String>) {
-    self::help::print();
+    tools_util::print_help(
+        "do",
+        "cargo do <COMMAND> [args...]\n   {{app}} project commands. implemented in 'tools/cargo-do/src/main.rs'",
+        include_str!("main.rs"),
+    );
 }
