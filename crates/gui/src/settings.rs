@@ -42,9 +42,9 @@ mod lang {
         L10N.available_langs().map(|m| {
             let mut r = vec![];
             for (lang, files) in m.iter() {
-                if cfg!(feature = "release")
-                    && ["template", "pseudo"].contains(&lang.language.as_str())
-                {
+                if lang.language.as_str() == "template" {
+                    continue;
+                } else if cfg!(feature = "release") && lang.language.as_str().contains("pseudo") {
                     // exclude test langs from release builds.
                     continue;
                 }
@@ -54,7 +54,7 @@ mod lang {
                     r.push(lang.clone());
                 }
             }
-            r.sort();
+            r.sort_by_cached_key(|r| r.to_string());
             r.push(SYSTEM_LANG);
             r
         })
@@ -94,7 +94,14 @@ mod lang {
     fn lang_text(lang: impl IntoVar<Lang>) -> UiNode {
         let lang = lang.into_var();
         Text! {
-            txt = lang.map_to_txt();
+            lang = lang.map_into();
+            txt = lang.map(|l| {
+                if l.is_machine_translation() {
+                    formatx!("{l:#} 🤖")
+                } else {
+                    formatx!("{l:#}")
+                }
+            });
             when *#{lang} == SYSTEM_LANG {
                 txt = l10n!("settings/system-lang", "<system language>");
                 font_style = FontStyle::Italic;
