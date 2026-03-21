@@ -21,4 +21,5 @@ dev = [
 release = [
     # `shared`dependency enables "zng/default" for release builds
     # you can set only the used features here to optimize binary size
+    "zng/lang_autonym"
 ]
