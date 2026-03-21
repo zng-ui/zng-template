@@ -103,6 +103,7 @@ mod lang {
                 }
             });
             when *#{lang} == SYSTEM_LANG {
+                lang = L10N.sys_lang();
                 txt = l10n!("settings/system-lang", "<system language>");
                 font_style = FontStyle::Italic;
             }

@@ -20,11 +20,15 @@ pub(crate) fn locales() {
 
                 // en    -> values-en/
                 // en-US -> values-en-rUS/
+                // en-machine -> values-en/
                 let value = if let Some((lang, region)) = lang.split_once('-') {
                     if region.contains('-') {
                         die!("{lang} to locale folder name not implemented");
+                    } else if region == "machine" {
+                        format!("values-{lang}")
+                    } else {
+                        format!("values-{lang}-r{region}")
                     }
-                    format!("values-{lang}-r{region}")
                 } else {
                     format!("values-{lang}")
                 };
