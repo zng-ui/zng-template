@@ -2,8 +2,6 @@
 
 use std::{env, fs, path::PathBuf};
 
-use tools_util::die;
-
 use crate::ResultExt;
 
 /// Generates dummy values-{locale} resources to indicate support
@@ -18,20 +16,11 @@ pub(crate) fn locales() {
                     continue;
                 }
 
-                // en    -> values-en/
-                // en-US -> values-en-rUS/
-                // en-machine -> values-en/
-                let value = if let Some((lang, region)) = lang.split_once('-') {
-                    if region.contains('-') {
-                        die!("{lang}-{region} to locale folder name not implemented");
-                    } else if region == "machine" {
-                        format!("values-{lang}")
-                    } else {
-                        format!("values-{lang}-r{region}")
-                    }
-                } else {
-                    format!("values-{lang}")
-                };
+                // pt-machine -> values-b+pt
+                // pt-PT -> values-b+pt+PT
+                let lang = lang.strip_prefix("-machine").unwrap_or(lang);
+                let lang = lang.replace('-', "+");
+                let value = format!("values-b+{lang}");
 
                 let apk_res_value = apk_res.join(value);
                 if !apk_res_value.exists() {
