@@ -134,7 +134,7 @@ pub fn args() -> (String, Vec<String>) {
 /// Returns (positional_args, options, unknowns)
 pub fn split_args<'a, S: AsRef<str>>(
     args: &'a [S],
-    arg_names: &'_ [&str],
+    positional_names: &'_ [&str],
     option_names: &'_ [&str],
     allow_no_positional: bool,
     allow_unknown_options: bool,
@@ -149,43 +149,37 @@ pub fn split_args<'a, S: AsRef<str>>(
             .unwrap_or(args.len()),
     );
 
-    if positional.len() != arg_names.len() && !(positional.is_empty() && allow_no_positional) {
-        die!("unexpected args, expected: {}", arg_names.join(", "));
+    if positional.len() != positional_names.len() && !(positional.is_empty() && allow_no_positional)
+    {
+        die!("unexpected args, expected: {}", positional_names.join(", "));
     }
 
     let mut options_map = HashMap::<_, Vec<_>>::new();
     let mut unknowns = vec![];
 
-    let mut last = "";
-    let mut last_unknown = false;
-    for opt in options {
+    let mut options = options.into_iter().peekable();
+    while let Some(opt) = options.next() {
         let opt = opt.as_ref();
         if opt.starts_with('-') {
-            let (key, val) = opt.split_once('=').unwrap_or((opt, ""));
-
-            last_unknown = !option_names.contains(&key);
-            if last_unknown {
-                if allow_unknown_options {
-                    unknowns.push(opt);
-                } else {
-                    die!("unknown option '{key}'");
+            let (key, mut val) = opt.split_once('=').unwrap_or((opt, ""));
+            if val.is_empty()
+                && let Some(next) = options.next_if(|o| !o.as_ref().starts_with('-'))
+            {
+                val = next.as_ref();
+            }
+            if option_names.contains(&key) {
+                options_map.entry(key).or_default().push(val);
+            } else if allow_unknown_options {
+                unknowns.push(key);
+                if !val.is_empty() {
+                    unknowns.push(val);
                 }
+            } else {
+                die!("unexpected option '{opt}'");
             }
-
-            options_map.entry(key).or_default().push(val);
-            if val.is_empty() {
-                last = key;
-            }
-        }
-        if last.is_empty() {
-            die!("unexpected value '{opt}'");
         } else {
-            if last_unknown {
-                unknowns.push(opt);
-            }
-            options_map.entry(last).or_default().push(opt);
+            die!("unexpected value '{opt}'");
         }
     }
-
     (positional, options_map, unknowns)
 }

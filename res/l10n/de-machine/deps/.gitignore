@@ -1,0 +1,5 @@
+# Dependency localization files
+# Call `cargo zng l10n --package t-app-t --output "res/l10n" --no-pkg --no-local --clean-deps` to update
+
+*
+!.gitignore
