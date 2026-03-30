@@ -8,7 +8,8 @@ use crate::ResultExt;
 pub(crate) fn locales() {
     let apk_res = PathBuf::from(env::var("ZR_TARGET_DD").unwrap());
     let mut create_default = false;
-    for lang in fs::read_dir("res/l10n").unwrap_or_die("cannot read '../assets/res/l10n'") {
+    for lang in fs::read_dir(apk_res.join("l10n")).unwrap_or_die("cannot read '../assets/res/l10n'")
+    {
         let lang = lang.unwrap_or_die("cannot read 'res/l10n' entry").path();
         if lang.is_dir() {
             if let Some(lang) = lang.file_name().and_then(|f| f.to_str()) {

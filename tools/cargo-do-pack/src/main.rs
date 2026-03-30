@@ -1,6 +1,7 @@
 use tools_util::*;
 
 mod pack_android;
+mod pack_common;
 mod pack_deb;
 #[cfg(windows)]
 mod pack_windows;
@@ -8,12 +9,22 @@ mod pack_windows;
 fn main() {
     let (arg_cmd, args) = args();
     match arg_cmd.as_str() {
+        "common" => common(args),
         "deb" => deb(args),
         "android" => android(args),
         #[cfg(windows)]
         "windows" => windows(args),
         "help" | "--help" | "-h" | "" => help(args),
         u => die!("unknown command {u}"),
+    }
+}
+
+/// do-pack common [--l10n]
+fn common(args: Vec<String>) {
+    let (_, options, _) = split_args(&args, &[], &["--l10n"], false, false);
+
+    if options.contains_key("--l10n") {
+        return pack_common::l10n();
     }
 }
 
@@ -47,8 +58,10 @@ fn windows(args: Vec<String>) {
         return pack_windows::iss_languages();
     }
 
-    if options.contains_key("--iscc") {
-        return pack_windows::iscc(args);
+    if let Some(file) = options.get("--iscc")
+        && let Some(file) = file.first()
+    {
+        return pack_windows::iscc(file, args);
     }
 }
 

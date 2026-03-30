@@ -26,8 +26,10 @@ fn inno_setup() -> PathBuf {
 }
 
 /// Run ISCC.exe.
-pub(crate) fn iscc(args: Vec<&str>) {
-    cmd(inno_setup(), args)
+pub(crate) fn iscc(file: &str, args: Vec<&str>) {
+    cmd(inno_setup(), &[file])
+        .current_dir(std::env::var("ZR_TARGET_DD").unwrap_or_die("expected `ZR_TARGET_DD` env var"))
+        .args(args)
         .status()
         .success_or_die("failed ISCC run");
 }
@@ -68,8 +70,9 @@ pub(crate) fn iss_languages() {
 }
 
 fn l10n_langs() -> io::Result<Vec<String>> {
+    let res = PathBuf::from(std::env::var("ZR_TARGET_DD").unwrap());
     let mut r = vec![];
-    for lang in fs::read_dir("res/l10n")? {
+    for lang in fs::read_dir(res.join("l10n"))? {
         let lang = lang?.path();
         if lang.is_dir()
             && let Some(lang) = lang.file_name().and_then(|f| f.to_str())

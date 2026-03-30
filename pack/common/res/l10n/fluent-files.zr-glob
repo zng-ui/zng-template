@@ -1,5 +1,0 @@
-res/l10n/*
-# only Fluent files
-**/*.ftl
-# except test locales
-!:**/pseudo*
