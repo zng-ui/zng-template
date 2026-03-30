@@ -5,3 +5,6 @@ edition = "2024"
 
 [dependencies]
 tools-util = { path = "../tools-util" }
+
+[target.'cfg(windows)'.dependencies]
+lcid = "0.3.0"

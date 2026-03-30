@@ -1,58 +1,126 @@
-use std::path::PathBuf;
+use std::{
+    collections::HashSet,
+    fs,
+    io::{self, BufRead},
+    path::{Path, PathBuf},
+};
 
-/// Fragment of .iss file that declares tasks for enabling file associations
-pub(crate) fn iss_tasks() {
-    // Name: assoc_png; Description: .PNG; GroupDescription: {cm:FileAssociations}; Check: not WizardSilent
-    for [name, exts, _] in formats() {
-        let ext = exts.split(',').next().unwrap();
-        println!(
-            "Name: assoc_{ext}; Description: {name}; GroupDescription: {{cm:FileAssociations}}; Check: not WizardSilent"
-        );
+use tools_util::*;
+
+use crate::pack_common::release_l10n;
+
+fn inno_setup() -> PathBuf {
+    if let Ok(p) = std::env::var("ISCC_PATH") {
+        let path = PathBuf::from(&p);
+        if !path.is_file() {
+            die!("ISCC_PATH='{p}' does not point to an existing ISCC.exe file")
+        }
+        path
+    } else {
+        if let Ok(pf) = std::env::var("ProgramFiles(x86)") {
+            let iscc = Path::new(pf.as_str()).join("Inno Setup 6/ISCC.exe");
+            if iscc.is_file() {
+                return iscc;
+            }
+        }
+        die!("cannot find ISCC.exe in default location, set ISCC_PATH to resolve");
     }
 }
 
-/// Fragment of .iss file that declares Windows Registry entries to associate files
-pub(crate) fn iss_registry() {
-    // Root: HKCR; Subkey: ".png"; ValueType: string; ValueData: "${ZR_PKG_NAME}.Image"; Flags: uninsdeletevalue; Tasks: assoc_png
-    let formats = formats();
-    let pgk_name = std::env::var("ZR_PKG_NAME").expect("expected ZR_PKG_NAME");
-    for [_, exts, _] in formats {
-        let exts = exts.split(',').collect::<Vec<_>>();
-        for ext in &exts {
-            println!(
-                r#"Root: HKCR; Subkey: ".{ext}"; ValueType: string; ValueData: "{pgk_name}.Image"; Flags: uninsdeletevalue; Tasks: assoc_{}"#,
-                exts[0]
-            );
+/// Run ISCC.exe.
+pub(crate) fn iscc(file: &str, args: Vec<&str>) {
+    cmd(inno_setup(), &[file])
+        .current_dir(std::env::var("ZR_TARGET_DD").unwrap_or_die("expected `ZR_TARGET_DD` env var"))
+        .args(args)
+        .status()
+        .success_or_die("failed ISCC run");
+}
+
+/// Fragment of .iss file that declares installer languages
+pub(crate) fn iss_languages() {
+    // This script matches the InnoSetup language resources with l10n, automatically selecting
+    // languages that the app support
+    let inno_langs = inno_setup_langs().unwrap_or_die("cannot search InnoSetup languages");
+
+    // match res/l10n with Inno compiler languages
+    let mut matches = HashSet::new();
+    for lang in l10n_langs() {
+        let mut best = ("", "");
+        let mut best_score = 0;
+        for (file, inno_lang) in &inno_langs {
+            let score = lang
+                .split('-')
+                .zip(inno_lang.split('-'))
+                .take_while(|(a, b)| a == b)
+                .count();
+            if score > best_score {
+                best_score = score;
+                best = (file.as_str(), *inno_lang);
+            }
         }
+        if !best.0.is_empty() {
+            matches.insert(best);
+        }
+    }
+
+    // generate [Languages] ISS code
+    for (file, lang) in matches {
+        let id = lang.replace('-', "_");
+        // Name: pt_br; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
+        println!(r"Name: {id}; MessagesFile: compiler:{file}");
     }
 }
 
-/// [[name, extensions, mimes]]
-fn formats() -> Vec<[String; 3]> {
-    let mut path = PathBuf::from("target/release/image-viewer.exe");
-    if !path.exists() {
-        path = PathBuf::from("target/debug/image-viewer.exe");
-        if !path.exists() {
-            tools_util::die!("not built");
+fn l10n_langs() -> Vec<String> {
+    let mut r = vec![];
+    for lang in release_l10n() {
+        let lang = lang.file_name().unwrap().to_str().unwrap();
+        let lang = lang.strip_prefix("-machine").unwrap_or(lang);
+        if !r.iter().any(|l| l == lang) {
+            r.push(lang.to_owned());
         }
     }
-    let out = std::process::Command::new(path)
-        .arg("--supported-formats")
-        .output()
-        .unwrap();
-    let out = String::from_utf8(out.stdout).unwrap();
+    r.sort();
+    r
+}
+
+/// Returns [("file.isl", "unic-lang-id")]
+fn inno_setup_langs() -> io::Result<Vec<(String, &'static str)>> {
+    // InnoSetup language resources do not use a standard name, we need to parse each to get the
+    // LanguageID value that is a Windows LCID and convert it to Unicode Language Identifier
+
+    let inno = inno_setup();
+    let inno_dir = inno.parent().unwrap();
 
     let mut r = vec![];
-    for line in out.lines().skip(1) {
-        let mut s = line.split("\t");
-        if let Some(name) = s.next()
-            && let Some(exts) = s.next()
-            && let Some(mimes) = s.next()
+    if let Some(l) = isl_lang(&inno_dir.join("Default.isl")) {
+        r.push(("Default.isl".to_owned(), l))
+    }
+    for file in fs::read_dir(inno_dir.join("Languages"))? {
+        let file = file?.path();
+        if file.is_file()
+            && let Some(ext) = file.extension()
+            && ext == "isl"
+            && let Some(l) = isl_lang(&file)
         {
-            r.push([name.to_owned(), exts.to_owned(), mimes.to_owned()])
-        } else {
+            let res = file.file_name().unwrap().to_str().unwrap();
+            r.push((format!(r"Languages\{res}"), l));
+        }
+    }
+    Ok(r)
+}
+
+fn isl_lang(isl: &Path) -> Option<&'static str> {
+    for line in io::BufReader::new(fs::File::open(isl).ok()?).lines() {
+        let line = line.ok()?;
+        if let Some(code) = line.strip_prefix("LanguageID=$") {
+            if let Ok(code) = u32::from_str_radix(code.trim_end(), 16)
+                && let Ok(l) = <&'static lcid::LanguageId>::try_from(code)
+            {
+                return Some(l.name);
+            }
             break;
         }
     }
-    r
+    None
 }

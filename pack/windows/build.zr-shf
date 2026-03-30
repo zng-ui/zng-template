@@ -1,7 +1,1 @@
-cd $ZR_TARGET_DD
-if [[ -z "$ISCC_PATH" ]]; then
-    PROGRAM_FILES="$(printenv 'ProgramFiles(x86)')"
-    ISCC_PATH=$PROGRAM_FILES"/Inno Setup 6/ISCC.exe"
-fi
-"$ISCC_PATH" setup/setup.iss
-rm -r setup
+cargo do-pack windows --iscc setup/setup.iss

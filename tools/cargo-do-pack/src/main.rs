@@ -1,17 +1,30 @@
 use tools_util::*;
 
 mod pack_android;
+mod pack_common;
 mod pack_deb;
+#[cfg(windows)]
 mod pack_windows;
 
 fn main() {
     let (arg_cmd, args) = args();
     match arg_cmd.as_str() {
+        "common" => common(args),
         "deb" => deb(args),
         "android" => android(args),
+        #[cfg(windows)]
         "windows" => windows(args),
         "help" | "--help" | "-h" | "" => help(args),
         u => die!("unknown command {u}"),
+    }
+}
+
+/// do-pack common [--l10n]
+fn common(args: Vec<String>) {
+    let (_, options, _) = split_args(&args, &[], &["--l10n"], false, false);
+
+    if options.contains_key("--l10n") {
+        return pack_common::l10n();
     }
 }
 
@@ -36,16 +49,19 @@ fn android(args: Vec<String>) {
     }
 }
 
-/// do-pack windows [--iss-tasks] [--iss-registry]
+/// do-pack windows [--iscc args] [--iss-languages]
+#[cfg(windows)]
 fn windows(args: Vec<String>) {
-    let (_, options, _) = split_args(&args, &[], &["--iss-tasks", "--iss-registry"], true, false);
+    let (_, options, args) = split_args(&args, &[], &["--iscc", "--iss-languages"], true, false);
 
-    if options.contains_key("--iss-tasks") {
-        return pack_windows::iss_tasks();
+    if options.contains_key("--iss-languages") {
+        return pack_windows::iss_languages();
     }
 
-    if options.contains_key("--iss-registry") {
-        return pack_windows::iss_registry();
+    if let Some(file) = options.get("--iscc")
+        && let Some(file) = file.first()
+    {
+        return pack_windows::iscc(file, args);
     }
 }
 

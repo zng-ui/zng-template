@@ -1,11 +1,8 @@
 [Files]
 Source: files\*; DestDir: {app}; Flags: recursesubdirs createallsubdirs ignoreversion;
 
-; InnoSetup uses non-standard localization files, please map each res/l10n lang manually
-; Options are in %programfiles%/Inno Setup*/Languages
 [Languages]
-Name: en; MessagesFile: compiler:Default.isl
-; Name: pt_br; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
+${!cargo do-pack windows --iss-languages}
 
 [Setup]
 AppID=${ZR_APP_ID}

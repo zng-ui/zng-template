@@ -1,5 +1,6 @@
 use std::{
     collections::HashMap,
+    ffi::OsStr,
     io::{self, Write},
     process::{Command, ExitStatus},
 };
@@ -39,9 +40,9 @@ macro_rules! die {
 }
 
 /// Declare [`Command`].
-pub fn cmd<S, A>(program: &str, args: A) -> Command
+pub fn cmd<S, A>(program: impl AsRef<OsStr>, args: A) -> Command
 where
-    S: AsRef<str>,
+    S: AsRef<OsStr>,
     A: IntoIterator<Item = S>,
 {
     let mut cmd = Command::new(program);

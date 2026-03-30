@@ -2,32 +2,25 @@
 
 use std::{env, fs, path::PathBuf};
 
-use crate::ResultExt;
+use crate::{ResultExt, pack_common::release_l10n};
 
 /// Generates dummy values-{locale} resources to indicate support
 pub(crate) fn locales() {
     let apk_res = PathBuf::from(env::var("ZR_TARGET_DD").unwrap());
+
     let mut create_default = false;
-    for lang in fs::read_dir("res/l10n").unwrap_or_die("cannot read '../assets/res/l10n'") {
-        let lang = lang.unwrap_or_die("cannot read 'res/l10n' entry").path();
-        if lang.is_dir() {
-            if let Some(lang) = lang.file_name().and_then(|f| f.to_str()) {
-                if lang == "template" || lang.starts_with("pseudo") {
-                    continue;
-                }
+    for lang in release_l10n() {
+        let lang = lang.file_name().unwrap().to_str().unwrap();
+        // pt-machine -> values-b+pt
+        // pt-PT -> values-b+pt+PT
+        let lang = lang.strip_prefix("-machine").unwrap_or(lang);
+        let lang = lang.replace('-', "+");
+        let value = format!("values-b+{lang}");
 
-                // pt-machine -> values-b+pt
-                // pt-PT -> values-b+pt+PT
-                let lang = lang.strip_prefix("-machine").unwrap_or(lang);
-                let lang = lang.replace('-', "+");
-                let value = format!("values-b+{lang}");
-
-                let apk_res_value = apk_res.join(value);
-                if !apk_res_value.exists() {
-                    write_dummy(apk_res_value);
-                    create_default = true;
-                }
-            }
+        let apk_res_value = apk_res.join(value);
+        if !apk_res_value.exists() {
+            write_dummy(apk_res_value);
+            create_default = true;
         }
     }
 
