@@ -2,6 +2,7 @@ use tools_util::*;
 
 mod pack_android;
 mod pack_deb;
+#[cfg(windows)]
 mod pack_windows;
 
 fn main() {
@@ -9,6 +10,7 @@ fn main() {
     match arg_cmd.as_str() {
         "deb" => deb(args),
         "android" => android(args),
+        #[cfg(windows)]
         "windows" => windows(args),
         "help" | "--help" | "-h" | "" => help(args),
         u => die!("unknown command {u}"),
@@ -36,16 +38,17 @@ fn android(args: Vec<String>) {
     }
 }
 
-/// do-pack windows [--iss-tasks] [--iss-registry]
+/// do-pack windows [--iscc args] [--iss-languages]
+#[cfg(windows)]
 fn windows(args: Vec<String>) {
-    let (_, options, _) = split_args(&args, &[], &["--iss-tasks", "--iss-registry"], true, false);
+    let (_, options, args) = split_args(&args, &[], &["--iscc", "--iss-languages"], true, false);
 
-    if options.contains_key("--iss-tasks") {
-        return pack_windows::iss_tasks();
+    if options.contains_key("--iss-languages") {
+        return pack_windows::iss_languages();
     }
 
-    if options.contains_key("--iss-registry") {
-        return pack_windows::iss_registry();
+    if options.contains_key("--iscc") {
+        return pack_windows::iscc(args);
     }
 }
 
