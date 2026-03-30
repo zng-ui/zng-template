@@ -7,6 +7,8 @@ use std::{
 
 use tools_util::*;
 
+use crate::pack_common::release_l10n;
+
 fn inno_setup() -> PathBuf {
     if let Ok(p) = std::env::var("ISCC_PATH") {
         let path = PathBuf::from(&p);
@@ -42,7 +44,7 @@ pub(crate) fn iss_languages() {
 
     // match res/l10n with Inno compiler languages
     let mut matches = HashSet::new();
-    for lang in l10n_langs().unwrap_or_die("cannot read 'res/l10n'") {
+    for lang in l10n_langs() {
         let mut best = ("", "");
         let mut best_score = 0;
         for (file, inno_lang) in &inno_langs {
@@ -64,27 +66,22 @@ pub(crate) fn iss_languages() {
     // generate [Languages] ISS code
     for (file, lang) in matches {
         let id = lang.replace('-', "_");
-        // ; Name: pt_br; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
-        println!(r"; Name: {id}; MessagesFile: compiler:{file}");
+        // Name: pt_br; MessagesFile: compiler:Languages\BrazilianPortuguese.isl
+        println!(r"Name: {id}; MessagesFile: compiler:{file}");
     }
 }
 
-fn l10n_langs() -> io::Result<Vec<String>> {
-    let res = PathBuf::from(std::env::var("ZR_TARGET_DD").unwrap());
+fn l10n_langs() -> Vec<String> {
     let mut r = vec![];
-    for lang in fs::read_dir(res.join("l10n"))? {
-        let lang = lang?.path();
-        if lang.is_dir()
-            && let Some(lang) = lang.file_name().and_then(|f| f.to_str())
-        {
-            if lang == "template" || lang.starts_with("pseudo") {
-                continue;
-            }
-            let lang = lang.strip_prefix("-machine").unwrap_or(lang);
+    for lang in release_l10n() {
+        let lang = lang.file_name().unwrap().to_str().unwrap();
+        let lang = lang.strip_prefix("-machine").unwrap_or(lang);
+        if !r.iter().any(|l| l == lang) {
             r.push(lang.to_owned());
         }
     }
-    Ok(r)
+    r.sort();
+    r
 }
 
 /// Returns [("file.isl", "unic-lang-id")]
