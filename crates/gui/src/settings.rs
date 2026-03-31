@@ -72,19 +72,33 @@ mod lang {
                 popup::Popup!(presenter(
                     available_langs(),
                     wgt_fn!(selected, |langs: Vec<Lang>| {
-                        Stack! {
+                        let use_scroll = langs.len() > 16;
+
+                        // lang list
+                        let mut list = Stack! {
                             toggle::selector = toggle::Selector::single(selected.clone());
 
                             direction = StackDirection::top_to_bottom();
+                            children_align = Align::FILL;
+
                             children = langs.into_iter().map(|l| {
-                                // drop down item
+                                // lang item
                                 Toggle! {
                                     child = lang_text(l.clone());
-                                    child_align = Align::START;
+                                    child_align = Align::FILL;
                                     value::<Lang> = l;
                                 }
                             });
+                        };
+                        if use_scroll {
+                            list = Scroll! {
+                                mode = zng::scroll::ScrollMode::VERTICAL;
+                                layout::max_height = 400;
+                                child_align = Align::FILL;
+                                child = list;
+                            };
                         }
+                        list
                     })
                 ))
             });
