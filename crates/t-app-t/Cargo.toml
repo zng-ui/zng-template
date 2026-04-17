@@ -14,7 +14,7 @@ shared = { path = "../shared" }
 # gui
 zng = { workspace = true }
 gui = { path = "../gui" }
-rfd = "0.14"
+rfd = "0.17"
 
 # log
 tracing.workspace = true
@@ -28,7 +28,7 @@ dotenv = "0.15"
 # packaging
 [target.'cfg(windows)'.build-dependencies]
 winresource = "0.1"
-zng-env = { version = "0.10.1", features = ["build_cli_com_proxy"] }
+zng-env = { version = "0.11.0", features = ["build_cli_com_proxy"] }
 
 [features]
 default = ["dev"]
