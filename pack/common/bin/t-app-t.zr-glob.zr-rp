@@ -1,0 +1,2 @@
+# executable file
+${CARGO_DO_BUILD_TARGET}/t-app-t

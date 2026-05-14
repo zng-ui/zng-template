@@ -111,6 +111,12 @@ fn pack(args: Vec<String>) {
         ],
     );
     pack_cmd.args(&args);
+    let profile_target = if options.contains_key("--dev") {
+        "target/debug"
+    } else {
+        "target/release"
+    };
+    pack_cmd.env("CARGO_DO_BUILD_TARGET", profile_target);
     pack_cmd
         .status()
         .success_or_die("cannot package, failed cargo zng res");
