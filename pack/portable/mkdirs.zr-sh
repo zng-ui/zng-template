@@ -1,3 +1,2 @@
 cd $ZR_TARGET_DD
-mkdir config
 mkdir cache
