@@ -54,22 +54,29 @@ pub fn init(
                     .filename_prefix("t-app-t")
                     .filename_suffix("log")
                     .build(&dir)
-                    .unwrap();
+                    .map_err(|e| formatx!("cannot build log appender, {e}"))?;
 
                 let write_log = fmt::layer().with_ansi(false).with_writer(file_appender);
 
-                log.with(write_log).with(filter).with(zng_filter).init();
+                log.with(write_log)
+                    .with(filter)
+                    .with(zng_filter)
+                    .try_init()
+                    .map_err(|e| formatx!("{e}"))?;
 
                 Ok(Some(dir))
             }
             Err(e) => {
-                log.with(filter).with(zng_filter).init();
+                log.with(filter)
+                    .with(zng_filter)
+                    .try_init()
+                    .map_err(|e| formatx!("{e}"))?;
                 Err(formatx!("cannot log to `{}`, {e}", dir.display()))
             }
         }
     } else {
         // init with only printer
-        log.with(filter).init();
+        log.with(filter).try_init().map_err(|e| formatx!("{e}"))?;
         Ok(None)
     }
 }
