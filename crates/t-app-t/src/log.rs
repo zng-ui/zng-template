@@ -11,6 +11,11 @@ pub fn init(
     rotation: String,
     directory: Option<PathBuf>,
 ) -> Result<Option<PathBuf>, Txt> {
+    // don't init if recorder is enabled, it sets tracing subscriber
+    if zng::app::trace_recorder::is_enabled() {
+        return Ok(None);
+    }
+
     // always print, good for debug and the crash-handler collects stdout/err.
     let log = registry().with(fmt::layer().without_time().with_writer(std::io::stderr));
 
