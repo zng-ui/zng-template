@@ -21,8 +21,11 @@ fn crash_dialog_process(args: crash_handler::CrashArgs) {
             // you can start packing a crash report here
             // if let Some(_logs) = &shared::env::args().log_dir { }
 
+            // apply render config
+            shared::render_cfg::init();
+
             // load/watch Fluent localization files and set initial lang.
-            shared::l10n::app_init();
+            shared::l10n::init();
 
             gui::crash::window(args).await
         });

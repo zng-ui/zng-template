@@ -1,7 +1,10 @@
 use std::{fs, io, path::PathBuf};
 
 use clap::*;
-use zng::text::{Txt, formatx};
+use zng::{
+    text::{Txt, formatx},
+    window::RenderMode,
+};
 
 // called on `zng::env::init!`
 zng::env::on_process_start!(|_| {
@@ -100,6 +103,35 @@ struct Cli {
     /// Localization files dir.
     #[clap(long, env = "T_APP_T_LANG_DIR", value_names = &["DIR"], default_value = "{res}/l10n")]
     pub lang_dir: Option<PathBuf>,
+
+    /// Screen render mode
+    ///
+    /// Integrated - Hardware accelerated rendering using the CPU integrated GPU
+    ///
+    /// Dedicated - Hardware accelerated rendering using the GPU card
+    ///
+    /// Software - Slower software rendering using only the CPU
+    #[arg(
+        long,
+        env = "IMAGE_VIEWER_RENDER_MODE",
+        default_value = "Integrated",
+        value_parser = builder::PossibleValuesParser::new(["Integrated", "Dedicated", "Software"]),
+        value_name = "MODE",
+    )]
+    pub render_mode: String,
+
+    /// Don't save compiled shaders to disk
+    ///
+    /// In this mode shaders are compiled every instance
+    #[clap(long, env = "IMAGE_VIEWER_NO_SHADER_CACHE", action)]
+    pub no_shader_cache: bool,
+
+    /// Don't use Windows DirectX (ANGLE EGL) for GPU rendering
+    ///
+    /// In this mode GPU rendering targets the native OpenGL driver
+    #[cfg(windows)]
+    #[clap(long, env = "IMAGE_VIEWER_NO_ANGLE", action)]
+    pub no_angle: bool,
 }
 impl Cli {
     fn parse() -> Result<(Cli, clap::ArgMatches), clap::Error> {
@@ -196,6 +228,13 @@ fn run() {
         zng::env::exit(0);
     }
 
+    let render_mode = match cli.render_mode.as_str() {
+        "Integrated" => RenderMode::Integrated,
+        "Dedicated" => RenderMode::Dedicated,
+        "Software" => RenderMode::Software,
+        _ => unreachable!(),
+    };
+
     shared::env::init_args(shared::env::TtAppTtArgs {
         paths: cli.paths,
         log_dir,
@@ -203,6 +242,10 @@ fn run() {
         no_crash_handler: cli.no_crash_handler,
         lang: cli.lang,
         lang_dir,
+        render_mode,
+        no_shader_cache: cli.no_shader_cache,
+        #[cfg(windows)]
+        no_angle: cli.no_angle || render_mode == RenderMode::Software,
     })
 }
 

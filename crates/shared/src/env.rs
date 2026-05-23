@@ -4,6 +4,7 @@ use zng::{
     config::{ConfigKey, FallbackConfigReset},
     hot_reload::{lazy_static, lazy_static_init},
     l10n::Langs,
+    window::RenderMode,
 };
 
 pub struct TtAppTtArgs {
@@ -26,6 +27,13 @@ pub struct TtAppTtArgs {
     pub lang: Langs,
     /// Localization resources.
     pub lang_dir: PathBuf,
+
+    pub render_mode: RenderMode,
+
+    pub no_shader_cache: bool,
+
+    #[cfg(windows)]
+    pub no_angle: bool,
 }
 
 /// {{app}} parsed startup args.

@@ -4540,6 +4540,7 @@ dependencies = [
  "tracing",
  "zng",
  "zng-tp-licenses",
+ "zng-view-angle",
 ]
 
 [[package]]
@@ -7547,6 +7548,21 @@ dependencies = [
  "zng-unit",
  "zng-view-api",
  "zng-webrender",
+]
+
+[[package]]
+name = "zng-view-angle"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f508caaea2d2a603223dde8da37193ee075607c8dddccc8ff858d261a544096e"
+dependencies = [
+ "bitflags 2.11.1",
+ "serde",
+ "tracing",
+ "zng-app",
+ "zng-ext-window",
+ "zng-view-api",
+ "zng-wgt",
 ]
 
 [[package]]
