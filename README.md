@@ -84,6 +84,11 @@ lower framerate in debug builds.
 [`zng`]: https://github.com/zng-ui/zng/crates/zng
 [zng repository]: https://github.com/zng-ui/zng
 
+#### Windows ANGLE
+
+On Windows this project also downloads prebuilt ANGLE DLLs, you can disable this by removing the `"download"` feature of
+`zng-view-angle`. Note that ANGLE provides significant lower RAM usage at equivalent GPU performance as the native OpenGL.
+
 ### Resources
 
 App resources are placed in [`res/`](./res/). Some of these resources are embedded in [`shared/src/res.rs`](./crates/shared/src/res.rs).
