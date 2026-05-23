@@ -36,6 +36,8 @@ fn app() {
         no_crash_handler: true,
         lang: Default::default(),
         lang_dir: zng::env::res("l10n"),
+        render_mode: zng::window::RenderMode::Integrated,
+        no_shader_cache: false,
     });
 
     // start app scope, with default extensions.
@@ -49,11 +51,14 @@ fn app() {
         #[cfg(feature = "release")]
         zng::third_party::LICENSES.register(shared::res::licenses);
 
+        // apply render config
+        shared::render_cfg::init();
+
         // load Fluent localization files and set initial lang.
-        shared::l10n::app_init();
+        shared::l10n::init();
 
         // load user config files.
-        shared::config::app_init();
+        shared::config::init();
         // register settings metadata providers.
         gui::settings::init();
 
