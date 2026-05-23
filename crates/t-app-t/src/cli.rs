@@ -251,7 +251,11 @@ fn run_env_save(matches: ArgMatches) {
             let id = arg.get_id().as_str();
             let env = env.to_string_lossy();
 
-            if let Some(v) = matches.get_one::<String>(id) {
+            if let Some(mut v) = matches.get_raw(id)
+                && let Some(v) = v.next()
+                && let Some(v) = v.to_str()
+            {
+                s.push('\n');
                 s.push_str(&env);
                 s.push('=');
                 s.push_str(v);
