@@ -1,7 +1,10 @@
 use std::{fs, io, path::PathBuf};
 
 use clap::*;
-use zng::text::{Txt, formatx};
+use zng::{
+    text::{Txt, formatx},
+    window::RenderMode,
+};
 
 // called on `zng::env::init!`
 zng::env::on_process_start!(|_| {
@@ -17,25 +20,25 @@ struct Cli {
     #[arg(num_args(0..))]
     paths: Vec<PathBuf>, // avoids clap errors if the user attempts to open files
 
-    /// Saves the configs associated with [env: VAR] as the new default next run.
+    /// Saves the configs associated with [env: VAR] as the new default next run
     ///
-    /// The app does not run with this flag, it just saves and closes.
+    /// The app does not run with this flag, it just saves and closes
     #[arg(long, action)]
     env_save: bool,
 
-    /// Clear saved env configs.
+    /// Clear saved env configs
     #[arg(long, action)]
     env_reset: bool,
 
-    /// Move config files to new path.
+    /// Move config files to new path
     #[arg(long, value_name = "DIR")]
     config_migrate: Option<PathBuf>,
 
-    /// Remove cache files.
+    /// Remove cache files
     #[arg(long, action)]
     cache_clear: bool,
 
-    /// Move cache files to new path.
+    /// Move cache files to new path
     #[arg(long, value_name = "DIR")]
     cache_migrate: Option<PathBuf>,
 
@@ -79,27 +82,60 @@ struct Cli {
 
     /// Run the system integration and renderer in the same process
     ///
-    /// In this mode the app will not recover from driver related crashes.
+    /// In this mode the app will not recover from driver related crashes
     #[clap(long, env = "T_APP_T_NO_VIEW_PROCESS", action)]
     pub no_view_process: bool,
 
     /// Don't handle app crashes
     ///
-    /// In this mode crashes are handled directly by the OS or attached debugger.
+    /// In this mode crashes are handled directly by the OS or attached debugger
     #[clap(long, env = "T_APP_T_NO_CRASH_HANDLER", action)]
     pub no_crash_handler: bool,
 
     /// Initial language
     ///
-    /// Value must be an Unicode Language Identifier, examples: "en-US", "zh-Hans, en".
+    /// Value must be an Unicode Language Identifier, examples: "en-US", "zh-Hans, en"
     ///
-    /// Is the system language by default.
+    /// Is the system language by default
     #[clap(long, env = "T_APP_T_LANG", default_value = "")]
     pub lang: zng::l10n::Langs,
 
-    /// Localization files dir.
-    #[clap(long, env = "T_APP_T_LANG_DIR", value_names = &["DIR"], default_value = "{res}/l10n")]
+    /// Localization files dir
+    ///
+    /// If the dir does not exist the embedded localization is extracted to it
+    ///
+    /// The localization resources can be live edited
+    #[clap(long, env = "T_APP_T_LANG_DIR", value_names = &["DIR"])]
     pub lang_dir: Option<PathBuf>,
+
+    /// Screen render mode
+    ///
+    /// Integrated - Hardware accelerated rendering using the CPU integrated GPU
+    ///
+    /// Dedicated - Hardware accelerated rendering using the GPU card
+    ///
+    /// Software - Slower software rendering using only the CPU
+    #[arg(
+        long,
+        env = "IMAGE_VIEWER_RENDER_MODE",
+        default_value = "Integrated",
+        value_parser = builder::PossibleValuesParser::new(["Integrated", "Dedicated", "Software"]),
+        value_name = "MODE",
+    )]
+    pub render_mode: String,
+
+    /// Don't save compiled shaders to disk
+    ///
+    /// In this mode shaders are compiled every instance
+    #[clap(long, env = "IMAGE_VIEWER_NO_SHADER_CACHE", action)]
+    pub no_shader_cache: bool,
+
+    /// Don't use Windows DirectX (ANGLE EGL) for GPU rendering
+    ///
+    /// In this mode GPU rendering targets the native OpenGL driver
+    #[cfg(windows)]
+    #[clap(long, env = "IMAGE_VIEWER_NO_ANGLE", action)]
+    pub no_angle: bool,
 }
 impl Cli {
     fn parse() -> Result<(Cli, clap::ArgMatches), clap::Error> {
@@ -162,14 +198,24 @@ fn run() {
 
     // resolve localization resources
     let mut lang_dir = cli.lang_dir;
-    if let Some(lang) = &mut lang_dir {
-        if let Ok(d) = lang.strip_prefix("{res}") {
-            *lang = zng::env::res(d)
-        } else if let Ok(d) = lang.strip_prefix("{config}") {
-            *lang = zng::env::config(d)
+    if let Some(dir) = &mut lang_dir {
+        if let Ok(d) = dir.strip_prefix("{res}") {
+            *dir = zng::env::res(d)
+        } else if let Ok(d) = dir.strip_prefix("{config}") {
+            *dir = zng::env::config(d)
+        }
+
+        #[cfg(feature = "release")]
+        if !dir.exists() {
+            if let Err(e) = shared::res::extract_l10n(&dir) {
+                tracing::error!("cannot extract l10n, {e}");
+            }
         }
     }
-    let lang_dir = lang_dir.unwrap_or_else(|| zng::env::res("l10n"));
+    #[cfg(feature = "dev")]
+    if lang_dir.is_none() {
+        lang_dir = Some(zng::env::res("l10n"));
+    }
 
     // if args are just for saving..
     if cli.env_save {
@@ -196,6 +242,13 @@ fn run() {
         zng::env::exit(0);
     }
 
+    let render_mode = match cli.render_mode.as_str() {
+        "Integrated" => RenderMode::Integrated,
+        "Dedicated" => RenderMode::Dedicated,
+        "Software" => RenderMode::Software,
+        _ => unreachable!(),
+    };
+
     shared::env::init_args(shared::env::TtAppTtArgs {
         paths: cli.paths,
         log_dir,
@@ -203,6 +256,10 @@ fn run() {
         no_crash_handler: cli.no_crash_handler,
         lang: cli.lang,
         lang_dir,
+        render_mode,
+        no_shader_cache: cli.no_shader_cache,
+        #[cfg(windows)]
+        no_angle: cli.no_angle || render_mode == RenderMode::Software,
     })
 }
 
@@ -251,7 +308,11 @@ fn run_env_save(matches: ArgMatches) {
             let id = arg.get_id().as_str();
             let env = env.to_string_lossy();
 
-            if let Some(v) = matches.get_one::<String>(id) {
+            if let Some(mut v) = matches.get_raw(id)
+                && let Some(v) = v.next()
+                && let Some(v) = v.to_str()
+            {
+                s.push('\n');
                 s.push_str(&env);
                 s.push('=');
                 s.push_str(v);

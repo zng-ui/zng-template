@@ -21,8 +21,7 @@ fn crash_dialog_process(args: crash_handler::CrashArgs) {
             // you can start packing a crash report here
             // if let Some(_logs) = &shared::env::args().log_dir { }
 
-            // load/watch Fluent localization files and set initial lang.
-            shared::l10n::app_init();
+            shared::config::init();
 
             gui::crash::window(args).await
         });

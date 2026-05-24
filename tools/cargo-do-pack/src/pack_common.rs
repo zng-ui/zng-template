@@ -5,7 +5,7 @@ use std::{
 
 use tools_util::*;
 
-/// Generate .zr-copy instruction files for each [`valid_l10n`].
+/// Generate .zr-copy instruction files for each [`release_l10n`].
 pub fn l10n() {
     let copy = release_l10n();
 

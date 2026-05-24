@@ -29,13 +29,13 @@ for each screen or widget.
 The Zng project uses this pattern successfully, we learned it from the Rust-Analyzer project, read 
 [Large Rust Workspaces](https://matklad.github.io/2021/08/22/large-rust-workspaces.html) for more details.
 
-### Startup Config
+### Env Config
 
-This project implements "startup config" distinct from "user config". Startup config is required to customize
+This project implements "env config" distinct from "user config". Env config is required to customize
 the app per installation, just compiling for each target platform is not enough, eventually some weird requirement
 will show up and ideally you can just tell an advanced user to run `t-app-t.exe --something`.
 
-The startup config is set up in [`t-app-t/src/cli.rs`](./crates/t-app-t/src/cli.rs).
+The env config is set up in [`t-app-t/src/cli.rs`](./crates/t-app-t/src/cli.rs).
 
 ### User Config
 
@@ -58,15 +58,13 @@ across all Zng crates because it provides structured spans that are easy to inte
 Localization is implemented using the [Project Fluent] format. Use the `zng::l10n::l10n!` macro to declare localizable text.
 Use `cargo do l10n` to scrape a localization template and test locales.
 
-The localization files are saved in [`res/l10n`](./res/l10n/). Localization is set up in [`shared/src/l10n.rs`](./crates/shared/src/l10n.rs),
-the `L10N` service watches the files and updates text in real time, you can use this and the app's `--lang-dir` option to set up a translation
-environment that provides real time feedback as the localization files are edited.
+The localization files are saved in [`res/l10n`](./res/l10n/). Localization is set up in [`shared/src/config.rs`](./crates/shared/src/config.rs), it is embedded by default in release builds and can optionally load from a directory. The `L10N` service watches the files and updates text in real time, you can use this and the app's `--lang-dir` option to set up a translation environment that provides real time feedback as the localization files are edited.
 
 [Project Fluent]: https://projectfluent.org/
 
-### Licenses Bundling
+### Licenses
 
-Release builds of this project collect all Cargo dependency licenses and bundles them with the app. The license scraping is done
+Release builds of this project collect all Cargo dependency licenses and embed them with the app. The license scraping is done
 by [`cargo-about`](https://github.com/EmbarkStudios/cargo-about), it must be installed or release builds will fail. The scraping
 is initiated in [`shared/build.rs`](./crates/shared/build.rs), you can add more non-cargo dependency licenses here too.
 
@@ -83,6 +81,11 @@ lower framerate in debug builds.
 
 [`zng`]: https://github.com/zng-ui/zng/crates/zng
 [zng repository]: https://github.com/zng-ui/zng
+
+#### Windows ANGLE
+
+On Windows this project also downloads prebuilt ANGLE DLLs, you can disable this by removing the `"download"` feature of
+`zng-view-angle`. Note that ANGLE provides significant lower RAM usage at equivalent GPU performance as the native OpenGL.
 
 ### Resources
 

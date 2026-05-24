@@ -33,15 +33,8 @@ fn app_process() {
         // if you use "single_instance" for the app, hook event here.
         // zng::app::APP_INSTANCE_EVENT.on_pre_event(..);
 
-        // register bundled licenses, used by the default `OPEN_LICENSES_CMD` screen.
-        #[cfg(feature = "release")]
-        zng::third_party::LICENSES.register(shared::res::licenses);
-
-        // load/watch Fluent localization files and set initial lang.
-        shared::l10n::app_init();
-
-        // load/watch user config files.
-        shared::config::app_init();
+        // load/apply config.
+        shared::config::init();
         // register settings metadata providers.
         gui::settings::init();
 

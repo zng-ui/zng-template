@@ -1,0 +1,2 @@
+# Windows ANGLE DLL
+${CARGO_DO_BUILD_TARGET}/libEGL.dll
