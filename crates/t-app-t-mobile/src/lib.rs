@@ -35,7 +35,7 @@ fn app() {
         no_view_process: true,
         no_crash_handler: true,
         lang: Default::default(),
-        lang_dir: zng::env::res("l10n"),
+        lang_dir: None,
         render_mode: zng::window::RenderMode::Integrated,
         no_shader_cache: false,
     });
