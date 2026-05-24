@@ -1,0 +1,4 @@
+cd $ZR_TARGET_DD
+tar -cf "l10n.tar" "l10n"
+tar -cf "l10n-template.tar" "l10n-template"
+# separate tar because template is only used for extraction feature

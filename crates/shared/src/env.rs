@@ -26,7 +26,7 @@ pub struct TtAppTtArgs {
     /// Preferred initial language.
     pub lang: Langs,
     /// Localization resources.
-    pub lang_dir: PathBuf,
+    pub lang_dir: Option<PathBuf>,
 
     pub render_mode: RenderMode,
 

@@ -20,25 +20,25 @@ struct Cli {
     #[arg(num_args(0..))]
     paths: Vec<PathBuf>, // avoids clap errors if the user attempts to open files
 
-    /// Saves the configs associated with [env: VAR] as the new default next run.
+    /// Saves the configs associated with [env: VAR] as the new default next run
     ///
-    /// The app does not run with this flag, it just saves and closes.
+    /// The app does not run with this flag, it just saves and closes
     #[arg(long, action)]
     env_save: bool,
 
-    /// Clear saved env configs.
+    /// Clear saved env configs
     #[arg(long, action)]
     env_reset: bool,
 
-    /// Move config files to new path.
+    /// Move config files to new path
     #[arg(long, value_name = "DIR")]
     config_migrate: Option<PathBuf>,
 
-    /// Remove cache files.
+    /// Remove cache files
     #[arg(long, action)]
     cache_clear: bool,
 
-    /// Move cache files to new path.
+    /// Move cache files to new path
     #[arg(long, value_name = "DIR")]
     cache_migrate: Option<PathBuf>,
 
@@ -82,26 +82,30 @@ struct Cli {
 
     /// Run the system integration and renderer in the same process
     ///
-    /// In this mode the app will not recover from driver related crashes.
+    /// In this mode the app will not recover from driver related crashes
     #[clap(long, env = "T_APP_T_NO_VIEW_PROCESS", action)]
     pub no_view_process: bool,
 
     /// Don't handle app crashes
     ///
-    /// In this mode crashes are handled directly by the OS or attached debugger.
+    /// In this mode crashes are handled directly by the OS or attached debugger
     #[clap(long, env = "T_APP_T_NO_CRASH_HANDLER", action)]
     pub no_crash_handler: bool,
 
     /// Initial language
     ///
-    /// Value must be an Unicode Language Identifier, examples: "en-US", "zh-Hans, en".
+    /// Value must be an Unicode Language Identifier, examples: "en-US", "zh-Hans, en"
     ///
-    /// Is the system language by default.
+    /// Is the system language by default
     #[clap(long, env = "T_APP_T_LANG", default_value = "")]
     pub lang: zng::l10n::Langs,
 
-    /// Localization files dir.
-    #[clap(long, env = "T_APP_T_LANG_DIR", value_names = &["DIR"], default_value = "{res}/l10n")]
+    /// Localization files dir
+    ///
+    /// If the dir does not exist the embedded localization is extracted to it
+    ///
+    /// The localization resources can be live edited
+    #[clap(long, env = "T_APP_T_LANG_DIR", value_names = &["DIR"])]
     pub lang_dir: Option<PathBuf>,
 
     /// Screen render mode
@@ -194,14 +198,24 @@ fn run() {
 
     // resolve localization resources
     let mut lang_dir = cli.lang_dir;
-    if let Some(lang) = &mut lang_dir {
-        if let Ok(d) = lang.strip_prefix("{res}") {
-            *lang = zng::env::res(d)
-        } else if let Ok(d) = lang.strip_prefix("{config}") {
-            *lang = zng::env::config(d)
+    if let Some(dir) = &mut lang_dir {
+        if let Ok(d) = dir.strip_prefix("{res}") {
+            *dir = zng::env::res(d)
+        } else if let Ok(d) = dir.strip_prefix("{config}") {
+            *dir = zng::env::config(d)
+        }
+
+        #[cfg(feature = "release")]
+        if !dir.exists() {
+            if let Err(e) = shared::res::extract_l10n(&dir) {
+                tracing::error!("cannot extract l10n, {e}");
+            }
         }
     }
-    let lang_dir = lang_dir.unwrap_or_else(|| zng::env::res("l10n"));
+    #[cfg(feature = "dev")]
+    if lang_dir.is_none() {
+        lang_dir = Some(zng::env::res("l10n"));
+    }
 
     // if args are just for saving..
     if cli.env_save {

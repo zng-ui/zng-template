@@ -2,7 +2,7 @@
 //!
 //! - *env* - Defined from CLI, env variables and "env-save.env" files, aggregated in [`crate::env::args`].
 //! - *config* - Defined in app resources and user config, not defined by the user directly (things like window state).
-//! - *settings* - Config the user can edit directly in the settings screen.
+//! - *settings* - Configs the user can edit directly in the settings screen.
 
 use zng::{config::*, prelude::*};
 
@@ -47,7 +47,12 @@ fn init_config() {
 
 /// Load localization.
 fn init_l10n() {
-    L10N.load_dir(&crate::env::args().lang_dir); // !!: TODO embedded setup
+    if let Some(dir) = &crate::env::args().lang_dir {
+        L10N.load_dir(dir);
+        return;
+    }
+    #[cfg(feature = "release")]
+    L10N.load_tar(crate::res::L10N_TAR);
 }
 
 /// Configure render.
