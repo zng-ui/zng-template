@@ -47,17 +47,7 @@ fn app() {
 
     // run and open main window
     app.run_window("main", async {
-        // register bundled licenses, used by the default `OPEN_LICENSES_CMD` screen.
-        #[cfg(feature = "release")]
-        zng::third_party::LICENSES.register(shared::res::licenses);
-
-        // apply render config
-        shared::render_cfg::init();
-
-        // load Fluent localization files and set initial lang.
-        shared::l10n::init();
-
-        // load user config files.
+        // Load/apply config.
         shared::config::init();
         // register settings metadata providers.
         gui::settings::init();
