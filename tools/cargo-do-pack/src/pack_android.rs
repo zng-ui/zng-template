@@ -2,18 +2,17 @@
 
 use std::{env, fs, path::PathBuf};
 
-use crate::{ResultExt, pack_common::release_l10n};
+use crate::{ResultExt, util::release_langs};
 
 /// Generates dummy values-{locale} resources to indicate support
 pub(crate) fn locales() {
     let apk_res = PathBuf::from(env::var("ZR_TARGET_DD").unwrap());
 
     let mut create_default = false;
-    for lang in release_l10n() {
-        let lang = lang.file_name().unwrap().to_str().unwrap();
+    for lang in release_langs() {
         // pt-machine -> values-b+pt
         // pt-PT -> values-b+pt+PT
-        let lang = lang.strip_prefix("-machine").unwrap_or(lang);
+        let lang = lang.strip_prefix("-machine").unwrap_or(&lang);
         let lang = lang.replace('-', "+");
         let value = format!("values-b+{lang}");
 

@@ -1,2 +1,2 @@
 # copy all "release l10n", excluding pseudo*, template
-cargo do-pack common --l10n
+res/l10n

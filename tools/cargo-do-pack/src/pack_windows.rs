@@ -7,7 +7,7 @@ use std::{
 
 use tools_util::*;
 
-use crate::pack_common::release_l10n;
+use crate::util::release_langs;
 
 fn inno_setup() -> PathBuf {
     if let Ok(p) = std::env::var("ISCC_PATH") {
@@ -73,9 +73,8 @@ pub(crate) fn iss_languages() {
 
 fn l10n_langs() -> Vec<String> {
     let mut r = vec![];
-    for lang in release_l10n() {
-        let lang = lang.file_name().unwrap().to_str().unwrap();
-        let lang = lang.strip_prefix("-machine").unwrap_or(lang);
+    for lang in release_langs() {
+        let lang = lang.strip_prefix("-machine").unwrap_or(&lang);
         if !r.iter().any(|l| l == lang) {
             r.push(lang.to_owned());
         }
