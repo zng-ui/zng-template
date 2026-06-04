@@ -11,6 +11,7 @@
         "*.zr-shf": "shellscript",
         "*.zr-copy": "ini",
         "*.zr-glob": "ini",
+        "*.zr-l10n": "ini",
         "*.md.zr-rp": "markdown",
         "*.xml.zr-rp": "xml",
         "*.iss.zr-rp": "innosetup",
