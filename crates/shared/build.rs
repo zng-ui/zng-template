@@ -38,6 +38,6 @@ mod release {
             "release",
         );
         // add extra licenses here
-        zng_tp_licenses::write_bundle(&licenses);
+        zng_tp_licenses::write_embeddings(&licenses);
     }
 }
