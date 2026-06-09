@@ -73,7 +73,7 @@ This is a quick way to fulfill license requirements, but you must make sure that
 ### Prebuilt View-Process
 
 This project uses the `"view_prebuilt"` Cargo feature. It downloads a prebuilt view-process library from the [zng repository]
-on the first build and bundles it. 
+on the first build and embeds it. 
 
 If you prefer to build it yourself, change the Cargo feature to `"view"` and install all build dependencies
 described in the [zng repository]. Also override the `profile.dev.package.zng-view` crate `opt-level`, the renderer has a noticeable

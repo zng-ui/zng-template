@@ -7,10 +7,10 @@ edition = "2024"
 zng.workspace = true
 tracing.workspace = true
 
-# dependency license collection & bundling in builds with `features=bundle_licenses`.
-zng-tp-licenses = { version = "0.9.1", features = ["bundle"], optional = true }
+# dependency license collection & bundling in release builds.
+zng-tp-licenses = { version = "0.9.2", features = ["embed"], optional = true }
 [build-dependencies]
-zng-tp-licenses = { version = "0.9.1", features = ["build"], optional = true }
+zng-tp-licenses = { version = "0.9.2", features = ["build"], optional = true }
 
 # use ANGLE on Windows
 [target.'cfg(windows)'.dependencies]
@@ -23,7 +23,7 @@ dev = [
     "zng/config_json",
 ]
 release = [
-    # Collect and bundle crate licenses
+    # Collect and embed crate licenses
     "dep:zng-tp-licenses",
     # enable default features in release builds, 
     # you can replace this with only features used to optimize binary size

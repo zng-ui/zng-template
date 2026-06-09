@@ -77,7 +77,7 @@ fn init_render() {
 /// Load licenses.
 #[cfg(feature = "release")]
 fn init_licenses() {
-    // register bundled licenses, used by the default `OPEN_LICENSES_CMD` screen.
+    // register embedded licenses, used by the default `OPEN_LICENSES_CMD` screen.
     zng::third_party::LICENSES.register(crate::res::licenses);
 
     #[cfg(windows)]
