@@ -79,8 +79,13 @@ fn l10n(args: Vec<String>) {
 ///       --bleed    - Build with nightly compiler optimizations.
 fn pack(args: Vec<String>) {
     // parse args
-    let (package, options, args) =
-        split_args(&args, &["PACKAGE"], &["--no-build", "--dev", "--bleed"], false, true);
+    let (package, options, args) = split_args(
+        &args,
+        &["PACKAGE"],
+        &["--no-build", "--dev", "--bleed"],
+        false,
+        true,
+    );
     let package = package[0].as_str();
 
     if options.contains_key("--no-build") {
@@ -162,17 +167,20 @@ fn build_release(args: Vec<String>) {
         cmd.env("CARGO_PROFILE_RELEASE_OPT_LEVEL", "z");
     }
 
+    let mut rustflags = std::env::var("RUSTFLAGS").unwrap_or_default();
     if bleed {
-        // -Zshare-generics               - halves binary size
-        // -C link-args=-znostart-stop-gc - Fixes build error
-        cmd.env(
-            "RUSTFLAGS",
-            format!(
-                "{} -Z share-generics -C link-args=-znostart-stop-gc",
-                std::env::var("RUSTFLAGS").unwrap_or_default()
-            ),
-        );
+        // Reduces binary size
+        rustflags.push_str(" -Z share-generics");
+
+        // Fixes build error (ELF only)
+        if !cfg!(target_os = "macos") && !cfg!(windows) {
+            rustflags.push_str(" -C link-args=-znostart-stop-gc");
+        }
     }
+    if !rustflags.is_empty() {
+        cmd.env("RUSTFLAGS", rustflags);
+    }
+
     cmd.status().success_or_die("release build failed");
 }
 fn build(args: Vec<String>) {
