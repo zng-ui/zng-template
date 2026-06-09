@@ -6,7 +6,7 @@ pub static ICON_MEDIUM: &[u8] = include_bytes!("../../../res/icon/256x256.png");
 
 #[cfg(feature = "release")]
 pub fn licenses() -> Vec<zng::third_party::LicenseUsed> {
-    zng_tp_licenses::decode_embeddings!()
+    zng_tp_licenses::decode_embedding!()
 }
 
 #[cfg(feature = "release")]

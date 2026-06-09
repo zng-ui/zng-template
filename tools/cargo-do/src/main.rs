@@ -76,10 +76,11 @@ fn l10n(args: Vec<String>) {
 ///       <PACKAGE>  - Name of a pack/{PACKAGE}
 ///       --no-build - Skips release build, you must call 'do build-release' before
 ///       --dev      - Build with dev profile and release features
+///       --bleed    - Build with nightly compiler optimizations.
 fn pack(args: Vec<String>) {
     // parse args
     let (package, options, args) =
-        split_args(&args, &["PACKAGE"], &["--no-build", "--dev"], false, true);
+        split_args(&args, &["PACKAGE"], &["--no-build", "--dev", "--bleed"], false, true);
     let package = package[0].as_str();
 
     if options.contains_key("--no-build") {
@@ -89,11 +90,11 @@ fn pack(args: Vec<String>) {
         if package == "android" {
             build_ndk(vec!["--release".to_owned()]);
         } else {
-            let args = if options.contains_key("--dev") {
-                vec!["--dev".to_owned()]
-            } else {
-                vec![]
-            };
+            let args = options
+                .keys()
+                .filter(|k| ["--dev", "--bleed"].contains(k))
+                .map(|k| str::to_owned(k))
+                .collect();
             build_release(args);
         }
     }
