@@ -1,4 +1,4 @@
-use zng::{prelude::*, window::WindowButton};
+use zng::prelude::*;
 
 pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowRoot {
     // l10n-## Crash Dialog
@@ -12,7 +12,8 @@ pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowR
         icon = shared::res::ICON_SMALL;
         save_state = false;
         padding = 10;
-        enabled_buttons = WindowButton::CLOSE | WindowButton::MINIMIZE;
+        can_maximize = false;
+        can_fullscreen = false;
         size = (400, 150);
         child = Container! {
             // error icon to the left (or right if RTL)
