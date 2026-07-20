@@ -14,7 +14,7 @@ zng-tp-licenses = { version = "0.10.0", features = ["build"], optional = true }
 
 # use ANGLE on Windows
 [target.'cfg(windows)'.dependencies]
-zng-view-angle = { version = "0.2.0", features = ["download"] }
+zng-view-angle = { version = "0.3.0", features = ["download"] }
 
 [features]
 dev = [
