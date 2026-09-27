@@ -71,6 +71,8 @@ struct Cli {
     pub log_dir: Option<PathBuf>,
 
     /// Log file rotation rolling frequency
+    ///
+    /// A new log file is created when the interval elapses
     #[clap(
         long,
         env="T_APP_T_LOG_ROTATION",

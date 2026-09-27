@@ -57,7 +57,7 @@ pub fn init(
                         }
                     })
                     .filename_prefix("t-app-t")
-                    .filename_suffix("log")
+                    .filename_suffix(format!("{:#}.log", zng::env::process_path()))
                     .build(&dir)
                     .map_err(|e| formatx!("cannot build log appender, {e}"))?;
 
