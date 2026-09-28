@@ -13,7 +13,7 @@ mod release {
     // Pack l10n dir for embedding using `l10N.load_tar`.
     fn build_l10n() {
         println!("cargo::rerun-if-changed=pack-l10n");
-        println!("cargo::rerun-if-changed=../res/l10n");
+        println!("cargo::rerun-if-changed=../../res/l10n");
 
         let res_dir = std::path::PathBuf::from(std::env::var_os("CARGO_MANIFEST_DIR").unwrap())
             .join("pack-l10n");
