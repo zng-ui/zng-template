@@ -88,14 +88,14 @@ fn init_licenses() {
 pub mod lang {
     use zng::{l10n::Lang, prelude::*};
 
-    pub const CONFIG_KEY: &str = "settings.lang";
+    pub const LANG_KEY: &str = "settings.lang";
 
     /// Config placeholder for [`L10N::sys_lang`].
     pub const SYSTEM_LANG: Lang = lang!("system");
 
     /// Bind `L10n.app_lang` to the setting.
     pub(super) fn bind() {
-        let cfg_lang = CONFIG.get(CONFIG_KEY, SYSTEM_LANG);
+        let cfg_lang = CONFIG.get(LANG_KEY, SYSTEM_LANG);
 
         if let Some(lang) = &crate::env::args().lang {
             cfg_lang.set(lang.clone());

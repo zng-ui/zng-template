@@ -14,7 +14,7 @@ pub fn init() {
 // l10n-## Lang
 mod lang {
     use super::*;
-    use shared::config::lang::{CONFIG_KEY, SYSTEM_LANG};
+    use shared::config::lang::{LANG_KEY, SYSTEM_LANG};
     use widget::node::presenter;
     use zng::l10n::Lang;
 
@@ -28,7 +28,7 @@ mod lang {
     }
 
     pub(super) fn register(b: &mut SettingsBuilder) {
-        b.entry(CONFIG_KEY, CATEGORY_ID, |b| {
+        b.entry(LANG_KEY, CATEGORY_ID, |b| {
             // l10n-# Label of the field lang
             b.name(l10n!("settings/lang.name", "Lang"));
             b.description(l10n!("settings/lang.description", "App text language"));
@@ -61,7 +61,7 @@ mod lang {
     }
 
     fn editor(_: Setting) -> UiNode {
-        let selected = CONFIG.get(CONFIG_KEY, SYSTEM_LANG);
+        let selected = CONFIG.get(LANG_KEY, SYSTEM_LANG);
         // combo box
         Toggle! {
             style_fn = toggle::ComboStyle!();
