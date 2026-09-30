@@ -95,8 +95,14 @@ pub mod lang {
 
     /// Bind `L10n.app_lang` to the setting.
     pub(super) fn bind() {
+        let cfg_lang = CONFIG.get(CONFIG_KEY, SYSTEM_LANG);
+
+        if let Some(lang) = &crate::env::args().lang {
+            cfg_lang.set(lang.clone());
+        }
+
         let actual_lang = expr_var! {
-            let lang = #{CONFIG.get(CONFIG_KEY, SYSTEM_LANG)};
+            let lang = #{cfg_lang};
             if lang == &SYSTEM_LANG {
                 #{L10N.sys_lang()}.clone()
             } else {
