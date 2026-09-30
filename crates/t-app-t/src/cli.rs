@@ -94,13 +94,11 @@ struct Cli {
     #[clap(long, env = "T_APP_T_NO_CRASH_HANDLER", action)]
     pub no_crash_handler: bool,
 
-    /// Initial language
+    /// Set or replace the language setting
     ///
-    /// Value must be an Unicode Language Identifier, examples: "en-US", "zh-Hans, en"
-    ///
-    /// Is the system language by default
-    #[clap(long, env = "T_APP_T_LANG", default_value = "")]
-    pub lang: zng::l10n::Langs,
+    /// Value must be language identifier e.g. "en-US", "en", or "system" to use the system language
+    #[clap(long, env = "T_APP_T_LANG")]
+    pub lang: Option<zng::l10n::Lang>,
 
     /// Localization files dir
     ///

@@ -3,7 +3,7 @@ use zng::{
     app::app_local,
     config::{ConfigKey, FallbackConfigReset},
     hot_reload::{lazy_static, lazy_static_init},
-    l10n::Langs,
+    l10n::Lang,
     window::RenderMode,
 };
 
@@ -23,8 +23,8 @@ pub struct TtAppTtArgs {
 
     pub no_crash_handler: bool,
 
-    /// Preferred initial language.
-    pub lang: Langs,
+    /// Set language.
+    pub lang: Option<Lang>,
     /// Localization resources.
     pub lang_dir: Option<PathBuf>,
 
