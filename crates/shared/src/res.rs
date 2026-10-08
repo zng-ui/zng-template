@@ -10,7 +10,8 @@ pub fn licenses() -> Vec<zng::third_party::LicenseUsed> {
 }
 
 #[cfg(feature = "release")]
-pub(crate) const L10N_TAR: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/pack-l10n/l10n.tar.zst"));
+pub(crate) const L10N_TAR: &[u8] =
+    include_bytes!(concat!(env!("OUT_DIR"), "/pack-l10n/l10n.tar.zst"));
 
 /// Extract embedded resources for live editing.
 #[cfg(feature = "release")]
