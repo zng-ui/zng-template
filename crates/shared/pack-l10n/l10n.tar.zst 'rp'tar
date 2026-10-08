@@ -1,0 +1,6 @@
+[std]
+level = 19
+
+[[entry]]
+source = "${ZR_TARGET_DD}/l10n"
+name = "l10n"
