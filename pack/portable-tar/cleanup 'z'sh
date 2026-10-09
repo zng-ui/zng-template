@@ -1,0 +1,2 @@
+cd $ZR_TARGET_DD
+rm -r "t-app-t"

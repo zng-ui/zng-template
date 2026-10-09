@@ -1,0 +1,6 @@
+[zstd]
+level = 19
+
+[[entry]]
+path = "${ZR_TARGET_DD}/l10n"
+name = "l10n"

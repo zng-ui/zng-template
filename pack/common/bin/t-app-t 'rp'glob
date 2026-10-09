@@ -1,0 +1,2 @@
+# executable file (plus .com proxy on Windows)
+${CARGO_DO_BUILD_TARGET}/t-app-t{,.exe,.com}

@@ -1,0 +1,5 @@
+[gzip]
+
+[[entry]]
+path = "${ZR_TARGET_DD}/t-app-t"
+name = "t-app-t"

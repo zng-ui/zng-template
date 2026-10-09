@@ -63,7 +63,7 @@ pub(crate) fn changelog() {
             continue;
         }
 
-        if let Some(version) = line.strip_prefix("# ") {
+        if let Some(version) = line.strip_prefix("## ") {
             let version = version.trim();
 
             let was_in_session = in_session;
