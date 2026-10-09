@@ -1,5 +1,5 @@
 [gzip]
 
 [[entry]]
-path = "t-app-t"
+path = "${ZR_TARGET_DD}/t-app-t"
 name = "t-app-t"
