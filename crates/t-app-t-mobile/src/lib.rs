@@ -12,7 +12,7 @@ mod android {
 
         // set Android app instance and paths
         android::init_android_app(app.clone());
-        // install assets packed by `.zr-apk` from the 'pack/apk/assets/res' content
+        // install assets packed by `'z'apk` from the 'pack/apk/assets/res' content
         zng::env::android_install_res(|| app.asset_manager().open(c"res.tar"));
 
         run_same_process(super::app);

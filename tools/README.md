@@ -12,7 +12,7 @@ Crates that are used to manage the project, generate content.
 
 ## `cargo-do-pack`
 
-Generators called from `${!cargo do-pack *}` directives in `*.zr-rp` files in `pack/*`.
+Generators called from `${!cargo do-pack *}` directives in `*'rp` files in `pack/*`.
 
 ## `tools-util`
 
