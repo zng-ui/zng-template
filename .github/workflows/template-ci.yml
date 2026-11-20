@@ -117,6 +117,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: template
+      - uses: ZhongRuoyu/setup-llvm@v0
+        with:
+          llvm-version: 22
       - uses: dtolnay/rust-toolchain@stable
       # winget returns an error code when package is already installed...
       # GitHub removed InnoSetup at least once before.
