@@ -14,7 +14,8 @@ pub async fn window(args: zng::app::crash_handler::CrashArgs) -> window::WindowR
         padding = 10;
         can_maximize = false;
         can_fullscreen = false;
-        size = (400, 150);
+        max_size = (500, 800);
+        auto_size = true;
         child = Container! {
             // error icon to the left (or right if RTL)
             child_start = Wgt! {
