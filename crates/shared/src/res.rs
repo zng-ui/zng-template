@@ -17,9 +17,12 @@ pub(crate) const L10N_TAR: &[u8] =
 #[cfg(feature = "release")]
 pub fn extract_l10n(dir: &std::path::Path) -> Result<(), Box<dyn std::error::Error>> {
     let tmp_dir = dir.with_added_extension(".tmp-dir");
-    let _cleanup = zng::app::RunOnDrop::new(zng::clmv!(tmp_dir, || {
-        let _ = std::fs::remove_dir_all(tmp_dir);
-    }));
+    let _cleanup = std::mem::DropGuard::new(
+        (),
+        zng::clmv!(tmp_dir, |_| {
+            let _ = std::fs::remove_dir_all(tmp_dir);
+        }),
+    );
     std::fs::create_dir_all(&tmp_dir)?;
 
     zng::l10n::L10nTarData::Static(L10N_TAR).extract(&tmp_dir)?;
